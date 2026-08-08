@@ -3,6 +3,2212 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stylish Addis</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-glow"></div>
+  <div class="login-logo-wrap">
+    <div class="login-logo-bg" id="login-logo-inner">👟</div>
+    <div class="login-badge">✓</div>
+  </div>
+  <div class="login-brand" id="login-brand-name">Stylish<span>Addis</span></div>
+  <div class="login-tagline" id="login-tagline">Quality Needs No Introduction</div>
+  <div class="login-loading" id="login-loading">
+    <div class="login-spinner"></div>
+    <p>Connecting to Telegram…</p>
+  </div>
+  <div id="login-tg-found" style="display:none;width:100%">
+    <div class="tg-user-card">
+      <div class="tg-user-row">
+        <div class="tg-avatar" id="tg-avatar-el">?</div>
+        <div><div class="tg-name" id="tg-name-el">—</div><div class="tg-handle" id="tg-handle-el">@—</div></div>
+        <div style="margin-left:auto"><div class="tg-verified">✓ Verified</div></div>
+      </div>
+      <div class="tg-id-row"><div class="tg-id-lbl">Telegram ID</div><div class="tg-id-val" id="tg-id-el">—</div></div>
+    </div>
+    <button class="login-continue-btn" onclick="enterApp()">Continue as <span id="tg-first-name-btn">me</span> →</button>
+    <div class="login-disclaimer">Your Telegram account is used for login only.<br><span>No password needed</span> — verified by Telegram.</div>
+  </div>
+  <div id="login-notg" style="display:none" class="login-notg">
+    <div class="notg-icon">📱</div>
+    <div class="notg-title">Open in Telegram</div>
+    <div class="notg-desc">This app works inside the Telegram app only.</div>
+    <div class="notg-steps">
+      <div class="notg-step"><div class="notg-num">1</div><div class="notg-step-text">Open <b>Telegram</b> on your phone</div></div>
+      <div class="notg-step"><div class="notg-num">2</div><div class="notg-step-text">Search for <b>@StylishAddisBot</b></div></div>
+      <div class="notg-step"><div class="notg-num">3</div><div class="notg-step-text">Tap <b>Start</b> then <b>🛍 Shop Now</b></div></div>
+    </div>
+    <button class="notg-open-btn" onclick="window.open('https://t.me/StylishAddisBot','_blank')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.026 9.54c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.889.681z"/></svg>
+      Open in Telegram
+    </button>
+    <div style="width:100%;display:flex;align-items:center;gap:10px;margin:12px 0"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:11px;color:var(--gray)">or</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
+    <button onclick="enterPreviewMode()" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:13px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">👁 Preview as Guest</button>
+    <div style="font-size:11px;color:var(--gray);margin-top:8px;text-align:center;line-height:1.5">Preview mode lets you browse without a Telegram account.</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr" id="main-hdr">
+  <div class="logo" onclick="goShop()">
+    <div id="hdr-logo-img" class="logo-emoji">👟</div>
+    <div><div class="logo-name" id="hdr-brand-name">Stylish<span>Addis</span></div><div class="logo-sub" id="hdr-brand-sub">Quality Needs No Introduction</div></div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-btn" id="admin-hdr-btn" onclick="showAdminDirect()" style="display:none">⚙️</div>
+    <div class="hdr-btn" onclick="showCart()">🛒<div class="cart-badge" id="cart-badge" style="display:none">0</div></div>
+  </div>
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page active" id="page-shop">
+  <div class="scroll">
+    <div class="hero" id="hero-section">
+      <div class="hero-search-bar" onclick="goSearch()">
+        <span class="hero-search-icon">🔍</span>
+        <span class="hero-search-placeholder">Search brands, models, styles…</span>
+      </div>
+      <div class="hero-tag" id="hero-tag">👟 New Arrivals</div>
+      <h1 id="hero-title">Step Into<br><span>Stylish Shoes</span></h1>
+      <p id="hero-subtitle">Premium sneakers for every step. Quality needs no introduction.</p>
+      <button class="hero-btn" onclick="document.getElementById('cats-bar').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
+      <div id="hero-img-container"></div>
+    </div>
+    <div class="sec-title" id="shop-sec-title">Brands</div>
+    <div class="cats" id="cats-bar"></div>
+    <div id="shop-breadcrumb" class="bc-wrap" style="display:none"></div>
+    <div id="products-grid"></div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div class="pg-hdr"><button class="back-btn" onclick="detGoBack()">← Back</button><h2 id="det-title">Product</h2></div>
+  <div class="scroll2" id="det-content"></div>
+</div>
+
+<!-- CART PAGE -->
+<div class="page" id="page-cart">
+  <div class="pg-hdr"><h2>🛒 My Cart</h2></div>
+  <div class="scroll2" id="cart-content"></div>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div class="page" id="page-checkout">
+  <div class="pg-hdr">
+    <button class="back-btn" onclick="showCart()">← Cart</button>
+    <h2>Checkout</h2>
+  </div>
+  <div class="scroll2" id="checkout-scroll">
+    <div style="height:14px"></div>
+    <div class="form-sec">
+      <h3>📦 Step 1 — Delivery Method</h3>
+      <div id="ship-opts-container"></div>
+    </div>
+    <div id="addr-form-wrap">
+      <div class="form-sec">
+        <h3>📍 Delivery Address</h3>
+        <div class="inp-group"><label>Full Name</label><input type="text" placeholder="Your full name" id="inp-name"></div>
+        <div class="inp-group"><label>Phone Number</label><input type="tel" placeholder="+251 9XX XXX XXX" id="inp-phone"></div>
+        <div class="inp-group"><label>City / Subcity</label>
+          <select id="inp-city">
+            <option>Addis Ababa - Bole</option><option>Addis Ababa - Kirkos</option>
+            <option>Addis Ababa - Yeka</option><option>Addis Ababa - Kolfe</option>
+            <option>Addis Ababa - Nifas Silk</option><option>Addis Ababa - Arada</option>
+            <option>Other City</option>
+          </select>
+        </div>
+        <div class="inp-group"><label>Address / Landmark</label><input type="text" placeholder="Near landmark / building" id="inp-address"></div>
+      </div>
+    </div>
+    <div id="pickup-info-wrap" style="display:none">
+      <div class="form-sec">
+        <h3>🏪 Store Location</h3>
+        <div id="pickup-store-card" style="background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px"></div>
+      </div>
+    </div>
+    <div class="form-sec">
+      <h3>💳 Step 2 — Payment Method</h3>
+      <div class="pay-opt selected" id="pay-cbe" onclick="selectPayment('cbe')">
+        <div class="ship-radio"><div class="ship-dot"></div></div>
+        <div class="pay-opt-logo" style="background:#006937;color:#fff;font-size:13px;font-weight:800;letter-spacing:-.5px">CBE</div>
+        <div class="pay-opt-info"><div class="pay-opt-name">CBE Birr</div><div class="pay-opt-desc">Commercial Bank of Ethiopia mobile</div></div>
+      </div>
+      <div class="pay-opt" id="pay-telebirr" onclick="selectPayment('telebirr')">
+        <div class="ship-radio"><div class="ship-dot"></div></div>
+        <div class="pay-opt-logo" style="background:linear-gradient(135deg,#6610f2,#9b42e8);color:#fff;font-size:10px;font-weight:800;letter-spacing:-.3px">tele<br>birr</div>
+        <div class="pay-opt-info"><div class="pay-opt-name">Telebirr</div><div class="pay-opt-desc">Ethio Telecom mobile money</div></div>
+      </div>
+      <div class="pay-opt" id="pay-pickup-cash" onclick="selectPayment('cash')">
+        <div class="ship-radio"><div class="ship-dot"></div></div>
+        <div class="pay-opt-logo" style="background:var(--card2);font-size:22px">🏪</div>
+        <div class="pay-opt-info"><div class="pay-opt-name">Pay at Store</div><div class="pay-opt-desc">Pay when you collect your order</div></div>
+      </div>
+      <div id="payment-instructions-box"></div>
+    </div>
+    <div class="form-sec">
+      <h3>🧾 Step 3 — Order Summary</h3>
+      <div class="summary-box" id="checkout-summary-box" style="margin:0 0 14px"></div>
+    </div>
+    <button class="place-btn" id="place-order-btn" onclick="placeOrder()">Confirm & Place Order 🎉</button>
+  </div>
+</div>
+
+<!-- SUCCESS / RECEIPT PAGE -->
+<div class="page" id="page-success">
+  <div class="pg-hdr" style="position:sticky;top:0;z-index:50">
+    <h2>🧾 Your Receipt</h2>
+    <button onclick="goShop()" style="margin-left:auto;background:var(--accent);color:var(--bg);border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">🏠 Home</button>
+  </div>
+  <div class="scroll2" style="padding:14px 14px 20px">
+    <div class="receipt-card" id="receipt-card"></div>
+    <div class="receipt-actions">
+      <button class="receipt-action-btn" onclick="shareReceipt()">📤 Share Receipt</button>
+      <button class="receipt-action-btn" onclick="goShop()">🛍 Keep Shopping</button>
+    </div>
+    <div style="background:rgba(35,157,219,.08);border:1px solid rgba(35,157,219,.2);border-radius:12px;padding:13px 14px;display:flex;gap:10px;align-items:flex-start">
+      <div style="font-size:20px;flex-shrink:0">🤖</div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.6">Your receipt has also been sent to you as a message in Telegram. Show it at the store or keep it for delivery tracking.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STORE INFO PAGE -->
+<div class="page" id="page-info">
+  <div class="pg-hdr"><h2>ℹ️ Store Info</h2></div>
+  <div class="scroll2">
+    <div style="height:14px"></div>
+    <div class="info-card" id="store-info-card"></div>
+    <div class="info-card"><h3>👟 About Us</h3><p id="about-text" style="font-size:13px;color:var(--gray);line-height:1.6"></p></div>
+    <!-- CUSTOMERS (admin + owner only) -->
+    <div id="store-customers-section" style="display:none;margin:0 14px 12px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0 10px">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap">⚙️ ADMIN INFO</div>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>
+      <div style="padding:6px 0 10px">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap;text-align:left">👥 CUSTOMERS</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px">
+        <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:12px">Visible only to you and other admins. Data is stored server-side and verified against your Telegram login — customers can't see this and other visitors can't fake admin access to it.</div>
+        <div id="cust-dash-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px"></div>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input id="cust-search" type="text" placeholder="Search name, @username, or ID…" oninput="renderCustomerList()" style="flex:1;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:9px 12px;border-radius:9px;font-size:13px">
+          <button class="btn-outline" onclick="loadCustomerDashboard()">↻ Refresh</button>
+        </div>
+        <div id="cust-list-wrap"><div style="padding:20px;text-align:center;font-size:12px;color:var(--gray)">Tap Refresh to load customer data.</div></div>
+      </div>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="page" id="page-profile">
+  <div class="pg-hdr" id="profile-pg-hdr">
+    <h2>👤 My Profile</h2>
+    <div id="profile-hdr-badge" style="margin-left:auto"></div>
+  </div>
+  <div class="scroll2" id="profile-scroll">
+    <div style="margin:14px 14px 12px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:18px;padding:22px 18px 18px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ffffff,var(--accent),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+        <div id="profile-avatar-big" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#ffffff);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:var(--bg);flex-shrink:0;overflow:hidden;border:3px solid rgba(255,255,255,.4);box-shadow:0 4px 20px rgba(255,255,255,.3)">?</div>
+        <div style="flex:1;min-width:0">
+          <div id="profile-name" style="font-size:20px;font-weight:800;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+          <div id="profile-handle" style="font-size:13px;color:var(--accent);margin-bottom:8px">@—</div>
+          <div id="profile-role-badge"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Telegram ID</div><div id="profile-id" style="font-size:12px;font-weight:600;font-family:monospace;color:var(--light)">—</div></div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Language</div><div id="profile-lang" style="font-size:13px;font-weight:600;color:var(--light)">—</div></div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Orders</div><div id="profile-order-count" style="font-size:13px;font-weight:700;color:var(--accent)">0</div></div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Total Spent</div><div id="profile-total-spent" style="font-size:13px;font-weight:700;color:var(--accent)">—</div></div>
+      </div>
+    </div>
+    <div style="margin:0 14px 12px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:10px 14px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)">Quick Actions</div>
+      <div class="profile-action-row" onclick="goShop()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)"><div style="font-size:20px;width:24px;text-align:center">🛍</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Continue Shopping</div><div style="font-size:11px;color:var(--gray)">Browse all shoes</div></div><div style="color:var(--gray);font-size:18px">›</div></div>
+      <div class="profile-action-row" onclick="showCart()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)"><div style="font-size:20px;width:24px;text-align:center">🛒</div><div style="flex:1"><div style="font-size:13px;font-weight:600">My Cart</div><div id="profile-cart-count" style="font-size:11px;color:var(--gray)">0 items</div></div><div style="color:var(--gray);font-size:18px">›</div></div>
+      <div class="profile-action-row" onclick="showInfo()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px"><div style="font-size:20px;width:24px;text-align:center">🏪</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Store Info</div><div style="font-size:11px;color:var(--gray)">Location, hours & contact</div></div><div style="color:var(--gray);font-size:18px">›</div></div>
+    </div>
+    <div style="margin:0 14px 12px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:10px 14px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)">Order History</div>
+      <div id="profile-orders-list"></div>
+    </div>
+    <!-- ADMIN SETTINGS -->
+    <div id="profile-admin-section" style="display:none;margin:0 14px 12px">
+      <div style="display:flex;align-items:center;gap:8px;padding:14px 0 10px">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap">⚙️ ADMIN SETTINGS</div>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>
+      <div id="sync-status-bar" style="display:none;padding:8px 12px;border-radius:9px;margin-bottom:12px;font-size:12px;font-weight:600;text-align:center"></div>
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card);border-radius:12px 12px 0 0;overflow:hidden;overflow-x:auto;scrollbar-width:none">
+        <div class="padm-tab active" onclick="switchProfileAdminTab(0,this)">Products</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(1,this)">Shipping</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(2,this)">Payment</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(3,this)">Store</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(4,this)">Theme</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(5,this)">Hero</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(6,this)">☁️ Sync</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;overflow:hidden">
+        <div class="padm-panel active" id="padm-panel-0" style="padding:12px">
+          <div style="font-size:11px;color:var(--gray);margin-bottom:10px;line-height:1.5">Tap any model photo to change it. Tap any style to edit its image URL and price.</div>
+          <div id="padm-products-list"></div>
+        </div>
+        <div class="padm-panel" id="padm-panel-1" style="padding:12px">
+          <div id="padm-shipping-list"></div>
+          <button class="btn-add" onclick="padmAddShipping()">＋ Add Method</button>
+        </div>
+        <div class="padm-panel" id="padm-panel-2" style="padding:12px">
+          <div style="font-size:11px;color:var(--gray);margin-bottom:14px;line-height:1.5">Set your payment account numbers. Customers will see these when they choose a payment method.</div>
+          <div class="adm-field"><label>CBE Birr Account Number</label><input id="padm-cbe-num" type="text" placeholder="1000123456789"></div>
+          <div class="adm-field"><label>CBE Account Name</label><input id="padm-cbe-name" type="text" placeholder="Stylish Addis"></div>
+          <div class="adm-field" style="margin-top:14px"><label>Telebirr Number</label><input id="padm-telebirr-num" type="text" placeholder="+251 9XX XXX XXX"></div>
+          <div class="adm-field"><label>Telebirr Account Name</label><input id="padm-telebirr-name" type="text" placeholder="Stylish Addis"></div>
+          <button class="btn-save" onclick="padmSavePayment()" style="width:100%;margin-top:4px">Save Payment Info</button>
+        </div>
+        <div class="padm-panel" id="padm-panel-3" style="padding:12px">
+          <div class="adm-field"><label>Store Name</label><input id="padm-store-name" type="text"></div>
+          <div class="adm-field"><label>Tagline</label><input id="padm-store-sub" type="text"></div>
+          <div class="adm-field"><label>Phone</label><input id="padm-phone" type="text"></div>
+          <div class="adm-field"><label>Email</label><input id="padm-email" type="text"></div>
+          <div class="adm-field"><label>Address</label><input id="padm-address" type="text"></div>
+          <div class="adm-field"><label>Hours</label><input id="padm-hours" type="text"></div>
+          <div class="adm-field"><label>About</label><textarea id="padm-about" rows="3"></textarea></div>
+          <div class="adm-field" style="margin-top:6px"><label>Owner Notification Telegram ID</label>
+            <input id="padm-owner-notify-id" type="text" placeholder="5158823198" style="font-family:monospace">
+            <div style="font-size:10px;color:var(--gray);margin-top:3px">This Telegram ID receives all order notifications. Change this when handing over to the real owner.</div>
+          </div>
+          <button class="btn-save" onclick="padmSaveStore()" style="margin-bottom:12px;width:100%">Save Store Info</button>
+          <hr style="border:none;border-top:1px solid var(--border);margin-bottom:12px">
+          <div class="adm-field"><label>Logo Image URL</label><input id="padm-logo-url" type="url" placeholder="https://..."></div>
+          <div class="adm-field"><label>Logo Emoji (fallback)</label><input id="padm-logo-emoji" type="text" maxlength="4"></div>
+          <div class="adm-field"><label>Brand Name Part 1</label><input id="padm-brand1" type="text"></div>
+          <div class="adm-field"><label>Brand Name Part 2 (accent)</label><input id="padm-brand2" type="text"></div>
+          <button class="btn-save" onclick="padmSaveLogo()" style="width:100%">Save Logo</button>
+        </div>
+        <div class="padm-panel" id="padm-panel-4" style="padding:12px">
+
+          <!-- COLOR EDITORS -->
+          <div id="theme-colors-list"></div>
+
+          <!-- PRESET THEMES -->
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Quick Presets</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px">
+              <button onclick="applyPreset('dark')"    style="background:#111;border:1px solid #333;color:#fff;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">⚫ Dark</button>
+              <button onclick="applyPreset('vision')"  style="background:#111;border:1px solid #ffffff;color:#ffffff;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🖤 Mono</button>
+              <button onclick="applyPreset('legacy')"  style="background:#080d1a;border:1px solid #1a56db;color:#1a56db;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">⚡ Legacy</button>
+              <button onclick="applyPreset('fire')"    style="background:#0d0500;border:1px solid #f97316;color:#f97316;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🔥 Fire</button>
+              <button onclick="applyPreset('emerald')" style="background:#021a0e;border:1px solid #10b981;color:#10b981;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">💚 Emerald</button>
+              <button onclick="applyPreset('royal')"   style="background:#0a0020;border:1px solid #7c3aed;color:#7c3aed;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">👑 Royal</button>
+              <button onclick="applyPreset('red')"     style="background:#0d0000;border:1px solid #ef4444;color:#ef4444;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">❤️ Red</button>
+            </div>
+          </div>
+
+          <!-- CURRENCY -->
+          <div class="adm-2col" style="margin-bottom:12px">
+            <div class="adm-field"><label>Currency</label><input id="padm-currency" type="text" maxlength="5"></div>
+            <div class="adm-field"><label>Position</label><select id="padm-cur-pos"><option value="before">Before (ETB 100)</option><option value="after">After (100 ETB)</option></select></div>
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <button class="btn-save" onclick="padmSaveTheme()" style="flex:1">Save Theme</button>
+            <button class="btn-outline" onclick="padmResetTheme()">Reset</button>
+          </div>
+        </div>
+        <div class="padm-panel" id="padm-panel-5" style="padding:12px">
+          <div class="adm-field"><label>Tag Pill</label><input id="padm-hero-tag" type="text"></div>
+          <div class="adm-field"><label>Headline Line 1</label><input id="padm-hero-h1a" type="text"></div>
+          <div class="adm-field"><label>Headline Line 2 (accent)</label><input id="padm-hero-h1b" type="text"></div>
+          <div class="adm-field"><label>Subtitle</label><input id="padm-hero-sub" type="text"></div>
+          <div class="adm-field"><label>Hero Image URL</label><input id="padm-hero-img" type="url" placeholder="https://..."></div>
+          <button class="btn-save" onclick="padmSaveHero()" style="width:100%">Save Hero</button>
+        </div>
+        <!-- SYNC TAB -->
+        <div class="padm-panel" id="padm-panel-6" style="padding:12px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--accent)">☁️ Cloud Sync Settings</div>
+          <div style="font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:14px">Every save you make is pushed to all users in real time, through your bot's Worker. There's nothing to configure here — sync is verified using your Telegram identity, not a stored key.</div>
+          <div id="sync-current-status" style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--gray)">Checking sync status…</div>
+          <button class="btn-outline" onclick="testCloudSync()" style="width:100%">Test Connection</button>
+          <button class="btn-save" onclick="pushConfigToCloud()" style="width:100%;margin-top:12px;background:linear-gradient(135deg,#22c55e,#16a34a)">⬆️ Push Config to Cloud (apply to all users)</button>
+          <button class="btn-outline" onclick="pullConfigFromCloud()" style="width:100%;margin-top:8px">⬇️ Pull Latest Config from Cloud</button>
+        </div>
+      </div>
+    </div>
+    <!-- OWNER CONTROLS -->
+    <div id="profile-owner-section" style="display:none;margin:0 14px 12px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0 10px">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap">👑 OWNER CONTROLS</div>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border)"><div style="font-size:13px;font-weight:700">Manage Admins</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Give shop editing access to trusted accounts</div></div>
+        <div style="padding:12px 14px;background:rgba(255,255,255,.08);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+          <div id="owner-row-avatar" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden">👑</div>
+          <div><div id="owner-row-name" style="font-size:12px;font-weight:700">You (Owner)</div><div id="owner-id-display" style="font-size:11px;font-family:monospace;color:var(--accent)">—</div></div>
+          <div style="margin-left:auto;font-size:11px;color:var(--gray)">Full Access</div>
+        </div>
+        <div id="admin-ids-list"></div>
+        <div style="padding:12px 14px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;color:var(--gray);margin-bottom:8px;line-height:1.5">Add a Telegram user ID to grant admin access.</div>
+          <div style="display:flex;gap:8px;margin-bottom:6px">
+            <input id="new-admin-id-inp" type="number" inputmode="numeric" placeholder="Telegram User ID" style="flex:1;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:10px;border-radius:9px;font-size:13px;outline:none;font-family:monospace" onkeydown="if(event.key==='Enter')addAdmin()">
+            <button class="btn-save" onclick="addAdmin()">Add</button>
+          </div>
+          <div style="font-size:11px;color:var(--gray)">💡 User IDs are shown on each user's profile card inside the app.</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin-bottom:12px">
+        <div style="font-size:18px">🪪</div>
+        <div style="flex:1"><div style="font-size:12px;color:var(--gray);margin-bottom:2px">Your Telegram ID</div><div id="owner-my-id-copy" style="font-size:14px;font-weight:700;font-family:monospace;color:var(--accent)">—</div></div>
+        <button onclick="copyOwnerId()" style="background:var(--card2);border:1px solid var(--border);color:var(--white);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer">Copy</button>
+      </div>
+    </div>
+    <div style="margin:0 14px 20px;background:rgba(35,157,219,.07);border:1px solid rgba(35,157,219,.2);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+      <div style="font-size:18px;flex-shrink:0">🔒</div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.6">Your identity is verified by Telegram. No password stored. Next time you open this app, you'll be logged in automatically.</div>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column">
+  <!-- Search Header -->
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--dark);border-bottom:1px solid var(--border);padding-top:max(12px,env(safe-area-inset-top))">
+    <div style="flex:1;display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;transition:border-color .2s" id="search-input-wrap">
+      <span style="font-size:16px;color:var(--gray)">🔍</span>
+      <input id="search-input" type="text" placeholder="Search brands, models, styles…"
+        style="flex:1;background:none;border:none;outline:none;color:var(--white);font-size:15px;font-family:inherit"
+        oninput="liveSearch(this.value)"
+        onfocus="document.getElementById('search-input-wrap').style.borderColor='var(--accent)'"
+        onblur="document.getElementById('search-input-wrap').style.borderColor='var(--border)'">
+      <span id="search-clear" onclick="clearSearch()" style="display:none;color:var(--gray);cursor:pointer;font-size:18px;line-height:1;padding:0 2px">✕</span>
+    </div>
+    <button onclick="closeSearch()" style="background:none;border:none;color:var(--accent);font-size:14px;font-weight:700;cursor:pointer;padding:4px;white-space:nowrap;flex-shrink:0">Cancel</button>
+  </div>
+  <!-- Search Results -->
+  <div id="search-results" style="flex:1;overflow-y:auto;padding:0 0 80px"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bot-nav">
+  <div class="nav-item active" id="nav-shop" onclick="goShop()"><div class="nav-icon">🏠</div><div class="nav-lbl">Shop</div></div>
+  <div class="nav-item" id="nav-cart" onclick="showCart()"><div class="nav-icon" style="position:relative">🛒<div id="nav-cart-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:var(--accent);color:var(--bg);border-radius:50%;min-width:17px;height:17px;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 3px;line-height:1">0</div></div><div class="nav-lbl">Cart</div></div>
+  <div class="nav-item" id="nav-info" onclick="showInfo()"><div class="nav-icon">🏪</div><div class="nav-lbl">Store</div></div>
+  <div class="nav-item" id="nav-profile" onclick="showProfile()"><div class="nav-icon" id="nav-profile-icon">👤</div><div class="nav-lbl">Profile</div></div>
+</div>
+
+<!-- PRODUCT/CREST EDIT MODAL -->
+<div id="prod-modal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:500;overflow-y:auto;padding-bottom:20px">
+  <div class="pg-hdr" style="position:sticky;top:0;z-index:10">
+    <button class="back-btn" onclick="closeProdModal()">← Cancel</button>
+    <h2 id="prod-modal-title">Edit</h2>
+    <button class="btn-save" onclick="saveProdModal()" style="margin-left:auto">Save</button>
+  </div>
+  <div style="padding:14px">
+    <div class="adm-field">
+      <label id="pm-img-label">Image URL</label>
+      <div class="img-preview" id="prod-modal-preview">👟</div>
+      <input id="pm-img" type="url" placeholder="https://i.imgur.com/..." oninput="previewProdImg(this.value)">
+      <div class="img-url-hint" id="pm-img-hint">Paste a direct image URL (Imgur, etc.)</div>
+    </div>
+    <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="👟" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'👟'"></div>
+    <div class="adm-field" id="pm-name-row"><label>Style / Colorway</label><input id="pm-name" type="text" placeholder="e.g. Triple White"></div>
+    <div class="adm-field" id="pm-price-row"><label>Price (ETB)</label><input id="pm-price" type="number" placeholder="1850" min="0"></div>
+    <div class="adm-field" id="pm-badge-row"><label>Badge</label><select id="pm-badge"><option value="">None</option><option value="new">NEW</option><option value="hot">HOT</option><option value="sale">SALE</option><option value="local">LOCAL</option></select></div>
+    <div class="adm-field" id="pm-desc-row"><label>Description</label><textarea id="pm-desc" rows="3" placeholder="Premium sneaker, true to size..."></textarea></div>
+  </div>
+</div>
+
+<!-- CUSTOMER DETAIL MODAL -->
+<div id="cust-modal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:500;overflow-y:auto;padding-bottom:20px">
+  <div class="pg-hdr" style="position:sticky;top:0;z-index:10">
+    <button class="back-btn" onclick="closeCustModal()">← Back</button>
+    <h2>Customer</h2>
+  </div>
+  <div style="padding:14px" id="cust-modal-content"></div>
+</div>
+
+<script>
+
+const VERIFY_WORKER_URL = "https://ancient-mud-9bee.amantifekede14.workers.dev";
+// Bot worker — sends receipts to customers and order alerts to owner
+// Replace with your actual bot worker URL after deploying
+const BOT_WORKER_URL = "https://sportswearminibot.amantifekede14.workers.dev";
+
+// ── OWNER IDs — only these Telegram IDs are owners ──────────────────
+// To add another owner, just add their ID to this array.
+const OWNER_IDS = ["5158823198"];
+
+// ── CLOUD SYNC — goes through BOT_WORKER_URL, not a client-side key ──
+// The Worker verifies each admin's Telegram signature server-side before accepting a
+// config write. No credential capable of writing shop data is ever shipped to the browser.
+
+// ═══════════════════════════════════════════
+// DEFAULT CONFIG — unchanged from original
+// ═══════════════════════════════════════════
+const DEFAULT_CONFIG = {
+  pin:"1234",ownerTelegramId:"",adminIds:[],ownerNotifyId:"5158823198",
+  brandName1:"Stylish",brandName2:"Addis",logoUrl:"data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//2Q==",logoEmoji:"👟",
+  storeName:"Stylish Addis",storeSub:"Quality Needs No Introduction",
+  phone:"+251 911 234 567",email:"info@stylishaddis.com",
+  address:"Bole Road, Near Edna Mall, Addis Ababa",hours:"Mon–Sat 9AM–7PM",
+  about:"Addis Ababa's home for premium sneakers — Nike, Adidas, Puma, New Balance, Converse and Vans. Every pair is 100% authentic. Quality needs no introduction.",
+  currency:"ETB",currencyPos:"before",
+  payment:{ cbeNum:"1000123456789", cbeName:"Stylish Addis", telebirrNum:"+251 911 234 567", telebirrName:"Stylish Addis" },
+  hero:{tag:"👟 New Arrivals",h1a:"Step Into",h1b:"Stylish Shoes",sub:"Premium sneakers for every step. Quality needs no introduction.",imgUrl:""},
+  theme:{"--accent":"#ffffff","--bg":"#1a1a1a","--card":"#242424","--dark":"#111111","--white":"#ffffff","--border":"#333333","--accent2":"#cccccc"},
+  sizes:["38","39","40","41","42","43","44","45","46"],
+  deletedProductIds:[],
+  shipping:[
+    {id:"delivery",icon:"🚚",name:"Home Delivery",desc:"3–5 business days",price:80},
+    {id:"pickup",  icon:"🏪",name:"Pick from Store",desc:"Ready in 1–2 hours · Addis",price:0},
+    {id:"express", icon:"⚡",name:"Express Delivery",desc:"Same day delivery",price:180},
+  ],
+  leagues:[
+    {id:"nike",label:"Nike",emoji:"✔️",teams:[
+      {id:"af1",name:"Air Force 1",emoji:"👟",color:"#F2F2F2",crestUrl:"",products:[
+        {id:101,kitType:"Triple White",emoji:"👟",imgUrl:"",price:4200,badge:"hot",desc:"Classic all-white leather low-top. The everyday sneaker that never goes out of style."},
+        {id:102,kitType:"Triple Black",emoji:"👟",imgUrl:"",price:4200,badge:"",desc:"All-black leather Air Force 1. Sleek, versatile, easy to match with anything."},
+        {id:103,kitType:"Panda (White/Black)",emoji:"👟",imgUrl:"",price:4400,badge:"new",desc:"White leather upper with black Swoosh and outsole detailing."},
+      ]},
+      {id:"am90",name:"Air Max 90",emoji:"👟",color:"#DA2C1F",crestUrl:"",products:[
+        {id:104,kitType:"Infrared",emoji:"👟",imgUrl:"",price:5200,badge:"hot",desc:"OG 1990 colorway — white and grey base with the iconic Infrared accents."},
+        {id:105,kitType:"Triple White",emoji:"👟",imgUrl:"",price:4900,badge:"",desc:"Clean all-white Air Max 90 with the classic visible Air cushioning."},
+      ]},
+      {id:"aj1",name:"Air Jordan 1 High",emoji:"👟",color:"#C8102E",crestUrl:"",products:[
+        {id:106,kitType:"Chicago",emoji:"👟",imgUrl:"",price:7800,badge:"hot",desc:"The original 1985 colorway — white, black and Varsity Red."},
+        {id:107,kitType:"Bred (Black/Red)",emoji:"👟",imgUrl:"",price:7500,badge:"",desc:"Black leather with Varsity Red accents and a white midsole."},
+        {id:108,kitType:"University Blue",emoji:"👟",imgUrl:"",price:7900,badge:"new",desc:"Off-white base with University Blue overlays and a black Swoosh."},
+      ]},
+      {id:"dunk",name:"Dunk Low",emoji:"👟",color:"#1E88E5",crestUrl:"",products:[
+        {id:109,kitType:"Panda (Black/White)",emoji:"👟",imgUrl:"",price:5400,badge:"hot",desc:"Black and white leather in the Dunk's clean, minimal colorblocking."},
+        {id:110,kitType:"University Blue",emoji:"👟",imgUrl:"",price:5600,badge:"new",desc:"White base with University Blue overlays on the toe and heel."},
+      ]},
+      {id:"pegasus",name:"Air Zoom Pegasus",emoji:"👟",color:"#333333",crestUrl:"",products:[
+        {id:111,kitType:"Black/Volt",emoji:"👟",imgUrl:"",price:4700,badge:"",desc:"Everyday running shoe with responsive Zoom Air cushioning."},
+        {id:112,kitType:"White/Grey",emoji:"👟",imgUrl:"",price:4700,badge:"",desc:"Lightweight mesh upper built for daily training miles."},
+      ]},
+    ]},
+    {id:"adidas",label:"Adidas",emoji:"🔷",teams:[
+      {id:"stansmith",name:"Stan Smith",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
+        {id:113,kitType:"White/Green",emoji:"👟",imgUrl:"",price:3600,badge:"hot",desc:"The original tennis-court classic. Clean leather upper, perforated 3-Stripes."},
+        {id:114,kitType:"Triple White",emoji:"👟",imgUrl:"",price:3600,badge:"",desc:"All-white Stan Smith for a minimal, monochrome look."},
+      ]},
+      {id:"superstar",name:"Superstar",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:115,kitType:"White/Black Shell Toe",emoji:"👟",imgUrl:"",price:3800,badge:"",desc:"The classic shell-toe silhouette that defined 70s street style."},
+        {id:116,kitType:"Triple White",emoji:"👟",imgUrl:"",price:3800,badge:"new",desc:"Fully white Superstar, shell toe and all."},
+      ]},
+      {id:"ultraboost",name:"Ultraboost",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:117,kitType:"Core Black",emoji:"👟",imgUrl:"",price:6800,badge:"hot",desc:"Boost cushioning wrapped in a Primeknit sock-like upper."},
+        {id:118,kitType:"Cloud White",emoji:"👟",imgUrl:"",price:6800,badge:"",desc:"Bright, minimal colorway of adidas' flagship running shoe."},
+      ]},
+      {id:"samba",name:"Samba OG",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:119,kitType:"Black/White Gum",emoji:"👟",imgUrl:"",price:4100,badge:"hot",desc:"Football-terrace classic in black leather with a gum sole."},
+        {id:120,kitType:"White/Navy",emoji:"👟",imgUrl:"",price:4100,badge:"new",desc:"Crisp white leather Samba with navy detailing."},
+      ]},
+      {id:"gazelle",name:"Gazelle",emoji:"👟",color:"#7B241C",crestUrl:"",products:[
+        {id:121,kitType:"Navy Suede",emoji:"👟",imgUrl:"",price:3900,badge:"",desc:"Retro suede trainer with the classic 3-Stripes on the side."},
+        {id:122,kitType:"Red Suede",emoji:"👟",imgUrl:"",price:3900,badge:"",desc:"Bold red suede colorway of the 1968 original."},
+      ]},
+    ]},
+    {id:"puma",label:"Puma",emoji:"🐆",teams:[
+      {id:"rsx",name:"RS-X",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
+        {id:123,kitType:"White/Blue",emoji:"👟",imgUrl:"",price:4300,badge:"new",desc:"Chunky retro-running silhouette with layered mesh and suede."},
+        {id:124,kitType:"Black/Red",emoji:"👟",imgUrl:"",price:4300,badge:"",desc:"Bold colorblocked RS-X for a statement look."},
+      ]},
+      {id:"suedeclassic",name:"Suede Classic",emoji:"👟",color:"#B71C1C",crestUrl:"",products:[
+        {id:125,kitType:"Black",emoji:"👟",imgUrl:"",price:3200,badge:"",desc:"The 1968 suede trainer that became a streetwear staple."},
+        {id:126,kitType:"Red",emoji:"👟",imgUrl:"",price:3200,badge:"",desc:"Same iconic silhouette in a bold red suede."},
+      ]},
+      {id:"cali",name:"Cali",emoji:"👟",color:"#F8BBD0",crestUrl:"",products:[
+        {id:127,kitType:"White/Pink",emoji:"👟",imgUrl:"",price:3700,badge:"new",desc:"Chunky platform sneaker with a soft, feminine colorway."},
+        {id:128,kitType:"White/Silver",emoji:"👟",imgUrl:"",price:3700,badge:"",desc:"Clean white leather Cali with metallic silver accents."},
+      ]},
+      {id:"roma",name:"Roma",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:129,kitType:"Black/White",emoji:"👟",imgUrl:"",price:3300,badge:"",desc:"Understated retro court sneaker with a low-profile silhouette."},
+        {id:130,kitType:"White/Gold",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"Premium leather Roma with gold detailing."},
+      ]},
+    ]},
+    {id:"newbalance",label:"New Balance",emoji:"🔵",teams:[
+      {id:"nb550",name:"550",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
+        {id:131,kitType:"White/Green",emoji:"👟",imgUrl:"",price:4600,badge:"hot",desc:"Retro basketball silhouette from 1989, back in full force."},
+        {id:132,kitType:"White/Grey",emoji:"👟",imgUrl:"",price:4600,badge:"",desc:"Clean tonal colorway of the 550."},
+      ]},
+      {id:"nb574",name:"574",emoji:"👟",color:"#455A64",crestUrl:"",products:[
+        {id:133,kitType:"Grey",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"The do-it-all New Balance classic — ENCAP cushioning, suede/mesh upper."},
+        {id:134,kitType:"Navy",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"Navy suede colorway of the everyday 574."},
+      ]},
+      {id:"nb990",name:"990v6",emoji:"👟",color:"#616161",crestUrl:"",products:[
+        {id:135,kitType:"Grey (Made in USA)",emoji:"👟",imgUrl:"",price:7200,badge:"hot",desc:"Premium dad-shoe icon, handcrafted with pigskin suede."},
+        {id:136,kitType:"Navy",emoji:"👟",imgUrl:"",price:7200,badge:"",desc:"Navy colorway of the flagship 990 series."},
+      ]},
+      {id:"nb327",name:"327",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:137,kitType:"White/Black",emoji:"👟",imgUrl:"",price:4200,badge:"new",desc:"Chunky retro-runner with an exaggerated N logo."},
+        {id:138,kitType:"Sea Salt",emoji:"👟",imgUrl:"",price:4200,badge:"",desc:"Soft off-white colorway of the 327."},
+      ]},
+    ]},
+    {id:"converse",label:"Converse",emoji:"⭐",teams:[
+      {id:"chuckall",name:"Chuck Taylor All Star",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:139,kitType:"Black",emoji:"👟",imgUrl:"",price:2600,badge:"",desc:"The original 1917 canvas high-top basketball shoe."},
+        {id:140,kitType:"White",emoji:"👟",imgUrl:"",price:2600,badge:"hot",desc:"Classic white canvas Chuck Taylor."},
+        {id:141,kitType:"Red",emoji:"👟",imgUrl:"",price:2600,badge:"",desc:"Bold red canvas colorway of the icon."},
+      ]},
+      {id:"chuck70",name:"Chuck 70",emoji:"👟",color:"#5D4037",crestUrl:"",products:[
+        {id:142,kitType:"Black",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"Premium remake of the Chuck Taylor with vintage detailing."},
+        {id:143,kitType:"Parchment",emoji:"👟",imgUrl:"",price:3400,badge:"new",desc:"Off-white canvas with an aged, vintage look."},
+      ]},
+      {id:"runstarhike",name:"Run Star Hike",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:144,kitType:"Black Platform",emoji:"👟",imgUrl:"",price:4500,badge:"hot",desc:"Chunky platform sole under the classic canvas high-top."},
+        {id:145,kitType:"White Platform",emoji:"👟",imgUrl:"",price:4500,badge:"",desc:"Same bold platform silhouette in white canvas."},
+      ]},
+    ]},
+    {id:"vans",label:"Vans",emoji:"🛹",teams:[
+      {id:"oldskool",name:"Old Skool",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:146,kitType:"Black/White",emoji:"👟",imgUrl:"",price:3100,badge:"hot",desc:"The Vans classic with the iconic side stripe, since 1977."},
+        {id:147,kitType:"Checkerboard",emoji:"👟",imgUrl:"",price:3200,badge:"new",desc:"Signature checkerboard print Old Skool."},
+      ]},
+      {id:"sk8hi",name:"Sk8-Hi",emoji:"👟",color:"#111111",crestUrl:"",products:[
+        {id:148,kitType:"Black/White",emoji:"👟",imgUrl:"",price:3300,badge:"",desc:"High-top skate classic with padded collar for support."},
+        {id:149,kitType:"Red",emoji:"👟",imgUrl:"",price:3300,badge:"",desc:"Bold red colorway of the Sk8-Hi."},
+      ]},
+      {id:"authentic",name:"Authentic",emoji:"👟",color:"#263238",crestUrl:"",products:[
+        {id:150,kitType:"Black",emoji:"👟",imgUrl:"",price:2700,badge:"",desc:"The original low-top Vans silhouette, simple canvas construction."},
+        {id:151,kitType:"Navy",emoji:"👟",imgUrl:"",price:2700,badge:"",desc:"Navy canvas colorway of the Authentic."},
+      ]},
+      {id:"era",name:"Era",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
+        {id:152,kitType:"Black/White",emoji:"👟",imgUrl:"",price:2800,badge:"",desc:"Padded collar version of the Authentic, born from skate culture."},
+        {id:153,kitType:"Blue",emoji:"👟",imgUrl:"",price:2900,badge:"new",desc:"Bold blue canvas colorway of the Era."},
+      ]},
+    ]},
+  ],
+};
+
+function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+
+// Removes products the admin has explicitly deleted, even though mergeLeagues would
+// otherwise resurrect them from DEFAULT_CONFIG on the next sync/reload.
+function applyDeletedProducts(c){
+  const deleted=c.deletedProductIds||[];
+  if(!deleted.length) return;
+  (c.leagues||[]).forEach(lg=>(lg.teams||[]).forEach(team=>{
+    team.products=(team.products||[]).filter(p=>!deleted.includes(p.id));
+  }));
+}
+function nextProductId(){
+  let max=100;
+  cfg.leagues.forEach(lg=>(lg.teams||[]).forEach(t=>(t.products||[]).forEach(p=>{ if(p.id>max) max=p.id; })));
+  return max+1;
+}
+function addProduct(lgId,teamId){
+  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
+  const team=lg.teams.find(t=>t.id===teamId); if(!team) return;
+  const newId=nextProductId();
+  team.products=team.products||[];
+  team.products.push({id:newId,kitType:'New Style',emoji:'👟',imgUrl:'',price:1500,badge:'',desc:''});
+  save();
+  padmRenderProducts();
+  renderShopGrid();
+  showToast('New style added — fill in the details ✏️');
+  openProdModal(lgId,teamId,newId);
+}
+function deleteProduct(lgId,teamId,prodId){
+  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
+  const team=lg.teams.find(t=>t.id===teamId); if(!team) return;
+  const p=team.products.find(x=>x.id===prodId);
+  if(!confirm(`Delete "${team.name} ${p?p.kitType:''}"? This can't be undone and will remove it for all users.`)) return;
+  if(!cfg.deletedProductIds) cfg.deletedProductIds=[];
+  if(!cfg.deletedProductIds.includes(prodId)) cfg.deletedProductIds.push(prodId);
+  team.products=team.products.filter(x=>x.id!==prodId);
+  save();
+  padmRenderProducts();
+  renderShopGrid();
+  showToast('Product deleted 🗑️');
+}
+
+function mergeLeagues(saved, defaults) {
+  // If no saved data, use defaults
+  if(!saved||!saved.length) return deepClone(defaults);
+  const savedMap={};
+  (saved||[]).forEach(lg=>{savedMap[lg.id]=lg;});
+  return defaults.map(defLg=>{
+    const savLg=savedMap[defLg.id];
+    if(!savLg) return deepClone(defLg);
+    const stm={};
+    (savLg.teams||[]).forEach(t=>{stm[t.id]=t;});
+    const mergedTeams=defLg.teams.map(defTeam=>{
+      const savTeam=stm[defTeam.id];
+      if(!savTeam) return deepClone(defTeam);
+      const spm={};
+      (savTeam.products||[]).forEach(p=>{spm[p.id]=p;});
+      const mergedProds=defTeam.products.map(defProd=>{
+        const savProd=spm[defProd.id];
+        if(!savProd) return deepClone(defProd);
+        // Trust saved data completely — kitType, imgUrl, backImgUrl, price, badge, desc, emoji all from saved
+        return {
+          ...deepClone(defProd),
+          kitType: savProd.kitType||defProd.kitType,
+          imgUrl: savProd.imgUrl||'',
+          backImgUrl: savProd.backImgUrl||'',
+          emoji:  savProd.emoji||defProd.emoji,
+          price:  savProd.price,
+          badge:  savProd.badge,
+          desc:   savProd.desc||defProd.desc,
+        };
+      });
+      // Keep any products that exist only in saved data (e.g. newly added via "+ Add Style") —
+      // otherwise the merge would silently drop them since it only knows the original seed list.
+      const defIds=new Set(defTeam.products.map(dp=>dp.id));
+      (savTeam.products||[]).forEach(sp=>{ if(!defIds.has(sp.id)) mergedProds.push(deepClone(sp)); });
+      return {
+        ...deepClone(defTeam),
+        crestUrl: savTeam.crestUrl||savTeam.crest||'',
+        emoji:    savTeam.emoji||defTeam.emoji,
+        products: mergedProds,
+      };
+    });
+    return {...deepClone(defLg),teams:mergedTeams};
+  });
+}
+
+// ── CLOUD SYNC (JSONBin) ──────────────────────────
+function hasCloudSync(){ return true; /* Worker is always reachable; pushes just require a verified Telegram session */ }
+
+let _lastSyncError=null;
+function describeSyncError(){
+  if(!_lastSyncError) return '';
+  const {status,statusText,body}=_lastSyncError;
+  if(status==='empty') return `— ${statusText}.`;
+  if(status===403) return `(403) — this Telegram account isn't an admin.`;
+  if(status===0) return `(${statusText})`;
+  return `(${status} ${statusText}${body?': '+body:''})`;
+}
+
+async function fetchCloudConfig(){
+  const controller=new AbortController();
+  const timeoutId=setTimeout(()=>controller.abort(),5000); // never let login hang forever on a stalled request
+  try{
+    const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'pull_config'}),signal:controller.signal});
+    if(!res.ok){ let body=''; try{ body=(await res.text()).slice(0,150); }catch(e){} _lastSyncError={status:res.status,statusText:res.statusText,body}; return null; }
+    const data=await res.json();
+    if(!data.ok){ _lastSyncError={status:'error',statusText:data.error||'Worker returned an error',body:''}; return null; }
+    if(!data.config){ _lastSyncError={status:'empty',statusText:'No config has been pushed to the cloud yet',body:''}; return null; }
+    _lastSyncError=null;
+    return (typeof data.config==='object'&&data.config!==null&&!Array.isArray(data.config)&&Object.keys(data.config).length>2)?data.config:null;
+  }catch(e){ _lastSyncError={status:0,statusText:e.name==='AbortError'?'Timed out reaching the Worker':(e.message||'Network error'),body:''}; return null; }
+  finally{ clearTimeout(timeoutId); }
+}
+
+let _syncRetryTimer=null;
+let _syncRetryAttempt=0;
+const MAX_SYNC_RETRIES=6;
+
+async function pushCloudConfig(showMsg=true, _isAutoRetry=false){
+  if(!tgInitData){
+    setSyncStatus('❌ Sync requires opening this app inside Telegram','#ef4444');
+    showMsg&&showToast('Cloud sync needs your verified Telegram session — open this app from inside Telegram, not a plain browser.');
+    return false;
+  }
+  setSyncStatus('⏳ Syncing to cloud…','#ffffff');
+  const controller=new AbortController();
+  const timeoutId=setTimeout(()=>controller.abort(),8000);
+  try{
+    cfg._lastUpdated=Date.now();
+    const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'push_config',initData:tgInitData,config:cfg}),signal:controller.signal});
+    const data=await res.json().catch(()=>null);
+    if(res.ok&&data&&data.ok){
+      setSyncStatus('✅ Synced to cloud — all users will see changes','#22c55e');
+      showMsg&&showToast('Config pushed to all users! ✅');
+      if(_isAutoRetry) showToast('✅ Auto-synced — your earlier change is now live for everyone.');
+      _lastKnownRemoteTs=cfg._lastUpdated; clearTimeout(_syncRetryTimer); _syncRetryAttempt=0;
+      return true;
+    }
+    else{
+      const reason=(data&&data.error)?data.error:`HTTP ${res.status} ${res.statusText}`;
+      setSyncStatus('❌ Sync failed — '+reason,'#ef4444');
+      // Always surface a failure — this is what was silently swallowing changes before:
+      // background saves passed showMsg=false, so nobody ever saw sync fail.
+      showToast('⚠️ Auto-sync failed ('+reason+') — retrying automatically…');
+      scheduleSyncRetry();
+      return false;
+    }
+  }catch(e){
+    const msg=e.name==='AbortError'?'Timed out reaching the Worker':(e.message||'Network error');
+    setSyncStatus('❌ '+msg,'#ef4444');
+    showToast('⚠️ Auto-sync failed ('+msg+') — retrying automatically…');
+    scheduleSyncRetry();
+    return false;
+  }
+  finally{ clearTimeout(timeoutId); }
+}
+
+// Keeps retrying a failed push in the background, with increasing delay, so an admin
+// never has to remember to manually hit "Push Config to Cloud" — a blip in connectivity
+// heals itself. Gives up after MAX_SYNC_RETRIES and points to the manual button as a fallback.
+function scheduleSyncRetry(){
+  clearTimeout(_syncRetryTimer);
+  if(_syncRetryAttempt>=MAX_SYNC_RETRIES){
+    showToast('⚠️ Auto-sync keeps failing — open ☁️ Sync and tap "Push Config to Cloud" to retry manually.');
+    return;
+  }
+  _syncRetryAttempt++;
+  const delay=Math.min(5000*Math.pow(2,_syncRetryAttempt-1),60000); // 5s,10s,20s,40s,60s,60s
+  _syncRetryTimer=setTimeout(()=>{ pushCloudConfig(false,true); },delay);
+}
+
+function setSyncStatus(msg,color){
+  const el=document.getElementById('sync-status-bar'); if(!el) return;
+  el.style.display='block'; el.style.background=color+'22'; el.style.border=`1px solid ${color}55`; el.style.color=color; el.textContent=msg;
+  clearTimeout(el._t); if(color==='#22c55e') el._t=setTimeout(()=>{ el.style.display='none'; },5000);
+}
+
+async function testCloudSync(){
+  setSyncStatus('⏳ Testing connection…','#ffffff');
+  const result=await fetchCloudConfig();
+  if(result!==null){ setSyncStatus('✅ Connected — pulled the current cloud config','#22c55e'); }
+  else if(_lastSyncError&&_lastSyncError.status==='empty'){ setSyncStatus('✅ Worker reachable — nothing pushed yet, tap "Push Config to Cloud" below','#22c55e'); }
+  else{ setSyncStatus('❌ Connection failed '+describeSyncError(),'#ef4444'); }
+}
+
+async function pushConfigToCloud(){ await pushCloudConfig(true); }
+
+async function pullConfigFromCloud(){
+  const remote=await fetchCloudConfig();
+  if(!remote){ showToast('Could not fetch config from cloud'); return; }
+  applyRemoteConfig(remote); showToast('Latest config pulled from cloud ✅');
+}
+
+function applyRemoteConfig(remote){
+  cfg=Object.assign({},DEFAULT_CONFIG,remote);
+  // Use remote leagues directly — they already contain all admin edits (images, prices etc).
+  // Only fall back to mergeLeagues if remote is missing some leagues entirely.
+  cfg.leagues=remote.leagues&&remote.leagues.length
+    ? mergeLeagues(remote.leagues, DEFAULT_CONFIG.leagues)
+    : deepClone(DEFAULT_CONFIG.leagues);
+  applyDeletedProducts(cfg);
+  if(!cfg.payment) cfg.payment=deepClone(DEFAULT_CONFIG.payment);
+  // Always enforce hardcoded brand — cloud can never override the store name
+  cfg.brandName1=DEFAULT_CONFIG.brandName1;
+  cfg.brandName2=DEFAULT_CONFIG.brandName2;
+  cfg.storeName=DEFAULT_CONFIG.storeName;
+  cfg.storeSub=DEFAULT_CONFIG.storeSub;
+  localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
+  applyTheme(); renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
+}
+
+// ── Early variable declarations needed by polling ──
+let _pendingOrder=null;
+let cart=[];
+// showTxnProofScreen() replaces #checkout-scroll's entire innerHTML with the payment-
+// verification UI (ship options, address form, pay cards, and the place-order button all
+// live inside it). Snapshot the original markup now, before anything touches it, so it can
+// be restored — otherwise showCheckout() later tries to update elements that no longer
+// exist, throws, and silently stops the "Proceed to Checkout" button from doing anything.
+const CHECKOUT_SCROLL_TEMPLATE=document.getElementById('checkout-scroll').innerHTML;
+function restoreCheckoutScroll(){ document.getElementById('checkout-scroll').innerHTML=CHECKOUT_SCROLL_TEMPLATE; }
+let tgUser=null;
+let tgInitData=null; // raw Telegram WebApp initData — used to prove identity to the Worker for admin-only calls
+
+// ── CHANGE 3 of 4: live polling system ──────────────
+// Every 8 seconds, cheaply check if cloud config changed by comparing
+// _lastUpdated timestamp. Only re-fetches full config when it actually changed.
+// Skips polling during checkout/payment so it never interrupts an order.
+let _pollTimer=null;
+const POLL_INTERVAL_MS=8000;
+let _lastKnownRemoteTs=0; // initialized after cfg below
+
+function startLiveSyncPolling(){
+  if(_pollTimer||!hasCloudSync()) return;
+  _pollTimer=setInterval(pollForRemoteChanges,POLL_INTERVAL_MS);
+}
+function stopLiveSyncPolling(){
+  if(_pollTimer){ clearInterval(_pollTimer); _pollTimer=null; }
+}
+async function pollForRemoteChanges(){
+  const activePage=document.querySelector('.page.active')?.id||'';
+  if(activePage.includes('checkout')||activePage.includes('success')) return;
+  if(_pendingOrder) return;
+  const remote=await fetchCloudConfig();
+  if(!remote) return;
+  const remoteTs=remote._lastUpdated||0;
+  if(remoteTs>_lastKnownRemoteTs){
+    _lastKnownRemoteTs=remoteTs;
+    applyRemoteConfig(remote);
+    if(activePage.includes('profile')&&isAdmin()){ populatePadmForms(); updateSyncStatusPanel(); }
+    if(activePage.includes('cart')) showCart();
+    if(activePage.includes('info')) showInfo();
+  }
+}
+// Pause when app backgrounded, resume + immediate check when foregrounded
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){ stopLiveSyncPolling(); }
+  else{
+    if(hasCloudSync()){ pollForRemoteChanges(); startLiveSyncPolling(); }
+    // If a push was still waiting to retry (e.g. timer got throttled while backgrounded), try now.
+    if(_syncRetryAttempt>0){ clearTimeout(_syncRetryTimer); pushCloudConfig(false,true); }
+  }
+});
+
+function updateSyncStatusPanel(){
+  const el=document.getElementById('sync-current-status'); if(!el) return;
+  if(tgInitData){ el.innerHTML=`<span style="color:#22c55e;font-weight:700">☁️ Cloud Sync ENABLED</span><br>Synced through your secure Worker — no keys are stored in this app.<br>Every save pushes to all users automatically.`; }
+  else { el.innerHTML=`<span style="color:#ffffff;font-weight:700">⚠️ Pushing requires Telegram</span><br>You're viewing this outside Telegram, so identity can't be verified — reading still works, but pushing changes needs the real Telegram app.`; }
+}
+
+let savedCfg=JSON.parse(localStorage.getItem('emartzon_cfg')||'null');
+let cfg;
+if(savedCfg){
+  cfg=Object.assign({},DEFAULT_CONFIG,savedCfg);
+  cfg.leagues=savedCfg.leagues&&savedCfg.leagues.length
+    ? mergeLeagues(savedCfg.leagues,DEFAULT_CONFIG.leagues)
+    : deepClone(DEFAULT_CONFIG.leagues);
+  applyDeletedProducts(cfg);
+  if(!cfg.payment) cfg.payment=deepClone(DEFAULT_CONFIG.payment);
+}
+else { cfg=deepClone(DEFAULT_CONFIG); }
+// Always enforce hardcoded brand — localStorage can never override the store name
+cfg.brandName1=DEFAULT_CONFIG.brandName1;
+cfg.brandName2=DEFAULT_CONFIG.brandName2;
+cfg.storeName=DEFAULT_CONFIG.storeName;
+cfg.storeSub=DEFAULT_CONFIG.storeSub;
+// NOW safe to read cfg._lastUpdated since cfg is initialized above
+_lastKnownRemoteTs=cfg._lastUpdated||0;
+
+function cartKey(){ return tgUser ? 'emartzon_cart_'+String(tgUser.id) : null; }
+function loadCart(){ const k=cartKey(); if(!k) return; try{ const saved=localStorage.getItem(k); if(saved) cart=JSON.parse(saved); } catch(e){ cart=[]; } updateBadge(); }
+function saveCart(){ const k=cartKey(); if(!k) return; localStorage.setItem(k,JSON.stringify(cart)); pushCartSnapshot(); }
+
+// ── Live cart tracking (for the owner/admin dashboard) ──────────────
+let _cartPushTimer=null;
+function pushCartSnapshot(){
+  if(!tgUser||String(tgUser.id).startsWith('guest_')) return;
+  clearTimeout(_cartPushTimer);
+  _cartPushTimer=setTimeout(()=>{
+    fetch(BOT_WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        type:'cart_update',
+        telegramId:tgUser.id,
+        items:(cart||[]).map(i=>({name:i.name,qty:i.qty,size:i.size,price:i.price}))
+      })
+    }).catch(()=>{});
+  },1500); // debounce so rapid qty changes don't spam the Worker
+}
+
+function getUsedTxns(){ try{ return JSON.parse(localStorage.getItem('emartzon_used_txns')||'[]'); }catch(e){ return []; } }
+function markTxnUsed(url){ const used=getUsedTxns(); used.push(url.trim().toLowerCase()); localStorage.setItem('emartzon_used_txns',JSON.stringify(used)); }
+function isTxnUsed(url){ return getUsedTxns().includes(url.trim().toLowerCase()); }
+
+function validateTxnUrl(url,method){
+  const u=url.trim().toLowerCase();
+  if(!u.startsWith('http')) return 'Please enter a valid URL starting with https://';
+  if(method==='telebirr'&&!u.includes('transactioninfo.ethiotelecom.et'))
+    return 'Telebirr links must be from transactioninfo.ethiotelecom.et\nExample: https://transactioninfo.ethiotelecom.et/receipt/XXXXXXXX';
+  if(method==='cbe'&&!u.includes('cbe')&&!u.includes('combanketh')&&!u.includes('cbebirr'))
+    return 'CBE links must be from an official CBE domain.\nExample: https://cbebirr.com/receipt/...';
+  return null;
+}
+
+function showTxnProofScreen(p){
+  _pendingOrder=p;
+  const isT=p.rawPayment==='telebirr';
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-checkout').classList.add('active');
+  document.getElementById('main-hdr').style.display='none';
+  const accentColor=isT?'#a78bfa':'#4CAF50';
+  const providerName=isT?'Telebirr':'CBE Birr';
+  const exampleUrl=isT?'https://transactioninfo.ethiotelecom.et/receipt/XXXXXXXX':'https://cbebirr.com/receipt/...';
+  const howToSteps=isT
+    ?'1. Open <b>Telebirr</b> app → tap the transfer you just made<br>2. Tap <b>Share / Receipt</b> then copy the link'
+    :'1. Open <b>CBE Birr</b> app → tap the transfer<br>2. Tap <b>Share Receipt</b> then copy the link';
+  const acctNum=isT?(cfg.payment?.telebirrNum||'—'):(cfg.payment?.cbeNum||'—');
+  const acctName=isT?(cfg.payment?.telebirrName||cfg.storeName):(cfg.payment?.cbeName||cfg.storeName);
+  const logoBg=isT?'linear-gradient(135deg,#6610f2,#9b42e8)':'#006937';
+  const logoText=isT?'tele<br>birr':'CBE';
+  document.getElementById('checkout-scroll').innerHTML=`
+    <div style="height:20px"></div>
+    <div style="margin:0 14px 14px;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.35);border-radius:16px;padding:18px;text-align:center">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Amount to Transfer</div>
+      <div style="font-size:32px;font-weight:900;color:var(--accent);letter-spacing:-1px">${p.totalFmt}</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:4px">via <b style="color:var(--white)">${providerName}</b></div>
+    </div>
+    <div style="margin:0 14px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px">Send To This Account</div>
+      <div style="padding:13px 14px;display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:12px;background:${logoBg};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;text-align:center;line-height:1.2">${logoText}</div>
+        <div style="flex:1">
+          <div style="font-size:17px;font-weight:800;font-family:monospace;letter-spacing:.5px;color:var(--white)">${acctNum}</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:2px">${acctName}</div>
+        </div>
+        <button onclick="copyToClipboard('${acctNum}')" style="background:var(--card2);border:1px solid var(--border);color:var(--white);padding:7px 11px;border-radius:8px;font-size:12px;cursor:pointer">📋 Copy</button>
+      </div>
+    </div>
+    <div style="margin:0 14px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px">How to get your receipt link</div>
+      <div style="padding:13px 14px;font-size:12px;color:var(--gray);line-height:1.9">
+        <span style="color:${accentColor};font-weight:700">📱 ${providerName}</span><br>
+        ${howToSteps}<br>
+        <span style="font-family:monospace;font-size:10px;color:var(--light);word-break:break-all">${exampleUrl}</span>
+      </div>
+    </div>
+    <div style="margin:0 14px 6px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px">
+      <label style="font-size:12px;font-weight:700;color:var(--light);display:block;margin-bottom:8px">Paste Your Receipt Link</label>
+      <input type="url" id="txn-url-input" placeholder="${exampleUrl}"
+        style="width:100%;box-sizing:border-box;background:var(--card2);border:1.5px solid var(--border);color:var(--white);padding:12px;border-radius:10px;font-size:12px;outline:none;font-family:monospace;transition:border-color .2s"
+        oninput="document.getElementById('txn-err').style.display='none';this.style.borderColor='var(--border)'">
+      <div id="txn-err" style="display:none;margin-top:10px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px">
+        <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:4px" id="txn-err-title">Verification Failed</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.6;white-space:pre-wrap" id="txn-err-msg"></div>
+        <div id="txn-partial-info" style="display:none;margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:10px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">💰 Partial Payment Detected</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">
+            <div><div style="color:var(--gray);font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px">Order Total</div><div style="font-weight:700;color:var(--white)" id="txn-partial-total">—</div></div>
+            <div><div style="color:var(--gray);font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px">You Sent</div><div style="font-weight:700;color:#ef4444" id="txn-partial-sent">—</div></div>
+            <div style="grid-column:span 2;border-top:1px solid var(--border);padding-top:8px;margin-top:2px">
+              <div style="color:var(--gray);font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px">Still Remaining</div>
+              <div style="font-weight:900;color:var(--accent);font-size:18px" id="txn-partial-remaining">—</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--gray);margin-top:8px;line-height:1.5;border-top:1px solid var(--border);padding-top:8px">Please send the remaining amount to the same account, then paste the new receipt link here.</div>
+        </div>
+      </div>
+      <div id="txn-verifying" style="display:none;margin-top:12px;text-align:center;padding:14px 0">
+        <div style="font-size:26px;margin-bottom:8px">🔍</div>
+        <div style="font-size:13px;font-weight:700;color:var(--light)">Verifying your payment…</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:4px;margin-bottom:12px">Checking amount · recipient · status</div>
+        <div style="height:3px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--accent);border-radius:3px;animation:txn-progress 1.8s ease-in-out infinite"></div></div>
+      </div>
+      <div id="txn-success-state" style="display:none;margin-top:12px;text-align:center;padding:14px 0">
+        <div style="font-size:40px;margin-bottom:8px">✅</div>
+        <div style="font-size:15px;font-weight:800;color:#22c55e">Payment Verified!</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:4px">Completing your order…</div>
+      </div>
+    </div>
+    <div style="margin:0 14px 20px">
+      <button id="txn-verify-btn" onclick="submitTxnProof()" style="width:100%;background:var(--accent);color:var(--bg);border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .2s">
+        🔍 Verify &amp; Complete Order
+      </button>
+      <div onclick="cancelTxnProof()" style="text-align:center;margin-top:12px;font-size:13px;color:var(--gray);cursor:pointer;padding:6px">← Go back to checkout</div>
+    </div>
+    <style>@keyframes txn-progress{0%{width:0%;margin-left:0}50%{width:70%;margin-left:0}100%{width:0%;margin-left:100%}}</style>
+    <div style="height:20px"></div>`;
+}
+
+async function submitTxnProof(){
+  const url=(document.getElementById('txn-url-input')?.value||'').trim();
+  const errBox=document.getElementById('txn-err');
+  const verifying=document.getElementById('txn-verifying');
+  const successEl=document.getElementById('txn-success-state');
+  const btn=document.getElementById('txn-verify-btn');
+  const inp=document.getElementById('txn-url-input');
+  errBox.style.display='none';
+  document.getElementById('txn-partial-info').style.display='none';
+  verifying.style.display='none';
+  successEl.style.display='none';
+  if(!url){ showTxnError('Please paste your receipt link.',null,null); inp.style.borderColor='#ef4444'; return; }
+  if(!url.startsWith('http')){ showTxnError('The link must start with https://',null,null); inp.style.borderColor='#ef4444'; return; }
+  if(isTxnUsed(url)){ showTxnError('This receipt link was already used for a previous order.\nEach transaction link can only be used once.',null,null); inp.style.borderColor='#ef4444'; return; }
+  const fmtErr=validateTxnUrl(url,_pendingOrder?.rawPayment);
+  if(fmtErr){ showTxnError(fmtErr,null,null); inp.style.borderColor='#ef4444'; return; }
+  btn.disabled=true; btn.style.opacity='0.5';
+  inp.style.borderColor='var(--accent)';
+  verifying.style.display='block';
+  const pay=cfg.payment||DEFAULT_CONFIG.payment;
+  const isTPay=_pendingOrder?.rawPayment==='telebirr';
+  const expectedAccount=isTPay?(pay.telebirrNum||''):(pay.cbeNum||'');
+  let result;
+  try{
+    const res=await fetch(VERIFY_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,expectedAccount})});
+    result=await res.json();
+  }catch(e){
+    verifying.style.display='none'; btn.disabled=false; btn.style.opacity='1';
+    showTxnError('Could not reach the verification server.\nCheck your internet connection and try again.',null,null); return;
+  }
+  verifying.style.display='none'; btn.disabled=false; btn.style.opacity='1';
+  if(!result.ok){ showTxnError(result.error||'Verification failed. Please try again.',null,null); inp.style.borderColor='#ef4444'; return; }
+  let needsManualReview=false;
+  if(result.status&&!['success','completed','approved','successful'].includes(result.status.toLowerCase())){
+    if(result.manualReview){
+      // The receipt link is valid, but the verifier couldn't automatically confirm the
+      // amount/account (e.g. CBE's page format changed). Let the order through instead of
+      // blocking the customer, but flag it so the store owner checks the receipt by hand.
+      needsManualReview=true;
+    } else {
+      showTxnError(`Your transaction status is "${result.status}".\nOnly completed transactions are accepted.`,null,null); inp.style.borderColor='#ef4444'; return;
+    }
+  }
+  if(_pendingOrder) _pendingOrder.needsManualReview=needsManualReview;
+  if(result.accountMatched===false){
+    showTxnError(`This receipt shows payment to a different account than the store's.\n\nPlease send to the correct account and paste the new receipt.`,null,null);
+    inp.style.borderColor='#ef4444'; return;
+  }
+  if(result.accountMatched===undefined&&result.receiver&&expectedAccount&&!result.receiver.includes('*')){
+    const norm=s=>s.replace(/[\s\+]/g,'').replace(/^251/,'').replace(/^0/,'');
+    const expN=norm(expectedAccount); const recN=norm(result.receiver);
+    if(expN&&recN&&!recN.includes(expN)&&!expN.includes(recN)){
+      showTxnError(`This receipt shows payment to a different account.\n\nExpected: ${expectedAccount}\nReceipt:  ${result.receiver}\n\nPlease send to the correct account and paste the new receipt.`,null,null);
+      inp.style.borderColor='#ef4444'; return;
+    }
+  }
+  const orderTotal=_pendingOrder?.total||0;
+  if(result.amount!=null){
+    const TOLERANCE=1;
+    if(result.amount<orderTotal-TOLERANCE){
+      inp.style.borderColor='#ef4444';
+      showTxnError('The transferred amount is less than your order total.',orderTotal,result.amount);
+      document.getElementById('txn-partial-total').textContent=fmt(orderTotal);
+      document.getElementById('txn-partial-sent').textContent=fmt(result.amount);
+      document.getElementById('txn-partial-remaining').textContent=fmt(orderTotal-result.amount);
+      document.getElementById('txn-partial-info').style.display='block'; return;
+    }
+    if(result.amount>orderTotal+500){
+      showTxnError(`⚠️ You sent more than the order total.\n\nOrder total: ${fmt(orderTotal)}\nAmount sent: ${fmt(result.amount)}\nDifference:  ${fmt(result.amount-orderTotal)}\n\nYour order will be processed and the overpaid amount will be refunded. Tap the button again to confirm.`,null,null);
+      btn.onclick=()=>finalizeTxn(url); btn.textContent='✅ Confirm & Complete Order'; btn.style.display='block'; return;
+    }
+  }
+  finalizeTxn(url);
+}
+
+function finalizeTxn(url){
+  const successEl=document.getElementById('txn-success-state');
+  const btn=document.getElementById('txn-verify-btn');
+  const inp=document.getElementById('txn-url-input');
+  const errBox=document.getElementById('txn-err');
+  if(errBox) errBox.style.display='none';
+  if(inp) inp.style.borderColor='#22c55e';
+  if(successEl) successEl.style.display='block';
+  if(btn) btn.style.display='none';
+  markTxnUsed(url);
+  _pendingOrder.txnUrl=url;
+  setTimeout(()=>completeOrder(_pendingOrder),1200);
+}
+
+function showTxnError(msg,orderTotal,sentAmount){
+  const errBox=document.getElementById('txn-err');
+  const errTitle=document.getElementById('txn-err-title');
+  const errMsg=document.getElementById('txn-err-msg');
+  if(!errBox) return;
+  errTitle.textContent=(sentAmount!=null)?'Insufficient Amount':'Verification Failed';
+  errMsg.textContent=msg;
+  errBox.style.display='block';
+}
+
+function cancelTxnProof(){ _pendingOrder=null; showCheckout(); }
+
+let orderHistory=JSON.parse(localStorage.getItem('emartzon_orders')||'[]');
+let curProduct=null, selSize="M", selQty=1, curShipping=null;
+let selectedPayment='cbe';
+let shopState={leagueId:'all',teamId:null,kitFilter:'all'};
+let modalCtx=null;
+
+function save(){ localStorage.setItem('emartzon_cfg',JSON.stringify(cfg)); if(hasCloudSync()) pushCloudConfig(false); }
+function saveOrders(){ localStorage.setItem('emartzon_orders',JSON.stringify(orderHistory)); }
+function fmt(n){ return cfg.currencyPos==='after'?n.toLocaleString()+' '+cfg.currency:cfg.currency+' '+n.toLocaleString(); }
+function isOwner(){ if(!tgUser) return false; return OWNER_IDS.includes(String(tgUser.id)); }
+function isAdmin(){ if(!tgUser) return false; if(isOwner()) return true; return (cfg.adminIds||[]).map(String).includes(String(tgUser.id)); }
+function claimOwnership(){ /* ownership is hardcoded in OWNER_IDS — nothing to claim at runtime */ }
+// pushCloudConfigSafe removed — ownership is now hardcoded, no sensitive data to strip
+
+window.addEventListener('load',()=>{ applyTheme(); initLogin(); });
+
+async function initLogin(){
+  const li=document.getElementById('login-logo-inner');
+  if(cfg.logoUrl){ li.innerHTML=`<img src="${cfg.logoUrl}" onerror="this.parentNode.textContent='${cfg.logoEmoji||'👟'}'">` }
+  else { li.textContent=cfg.logoEmoji||'👟'; }
+  document.getElementById('login-brand-name').innerHTML=`${cfg.brandName1||'Stylish'}<span>${cfg.brandName2||'Addis'}</span>`;
+  document.getElementById('login-tagline').textContent=cfg.storeSub||'Quality Needs No Introduction';
+  const remote=await fetchCloudConfig();
+  if(remote){ applyRemoteConfig(remote); }
+  function tryTelegram(){
+    try{
+      const tg=window.Telegram?.WebApp;
+      if(tg){ tg.ready(); try{tg.expand();}catch(e){} try{tg.setHeaderColor('#0a0a0a');tg.setBackgroundColor('#0a0a0a');}catch(e){} const u=tg.initDataUnsafe?.user; if(u&&u.id){ tgUser=u; tgInitData=tg.initData||null; const saved=localStorage.getItem('emartzon_user_id'); if(saved&&saved===String(u.id)){ document.getElementById('login-screen').style.display='none'; bootApp(); } else { showTgUser(u); } return true; } }
+    }catch(e){}
+    return false;
+  }
+  if(!tryTelegram()) setTimeout(()=>{ if(!tryTelegram()) showNotTelegram(); },500);
+}
+
+function showTgUser(u){
+  document.getElementById('login-loading').style.display='none';
+  document.getElementById('login-notg').style.display='none';
+  document.getElementById('login-tg-found').style.display='block';
+  const full=[u.first_name,u.last_name].filter(Boolean).join(' ');
+  document.getElementById('tg-name-el').textContent=full||'Telegram User';
+  document.getElementById('tg-handle-el').textContent=u.username?'@'+u.username:'No username';
+  document.getElementById('tg-id-el').textContent=u.id;
+  document.getElementById('tg-first-name-btn').textContent=u.first_name||'me';
+  const av=document.getElementById('tg-avatar-el');
+  const ini=((u.first_name||'?')[0]+(u.last_name?u.last_name[0]:'')).toUpperCase();
+  if(u.photo_url){ av.innerHTML=`<img src="${u.photo_url}" onerror="this.parentNode.textContent='${ini}'">` } else { av.textContent=ini; }
+}
+function showNotTelegram(){ document.getElementById('login-loading').style.display='none'; document.getElementById('login-tg-found').style.display='none'; document.getElementById('login-notg').style.display='block'; }
+function enterPreviewMode(){
+  tgUser={id:'guest_'+Date.now(),first_name:'Guest',last_name:'',username:null,language_code:'en'};
+  const s=document.getElementById('login-screen'); s.style.transition='opacity .3s'; s.style.opacity='0';
+  setTimeout(()=>{ s.style.display='none'; bootApp(); },300);
+}
+function enterApp(){
+  if(tgUser) localStorage.setItem('emartzon_user_id',String(tgUser.id));
+  const s=document.getElementById('login-screen'); s.style.transition='opacity .35s ease,transform .35s ease'; s.style.opacity='0'; s.style.transform='scale(.97)';
+  setTimeout(()=>{ s.style.display='none'; bootApp(); },350);
+}
+
+// ── CHANGE 4 of 4: start polling in bootApp ──
+function bootApp(){
+  claimOwnership(); loadCart(); notifyUserLogin(); if(isOwner()) syncAdminsToWorker();
+  renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
+  renderShipOpts(); renderPickupCard();
+  curShipping=cfg.shipping[0];
+  document.getElementById('page-shop').classList.add('app-revealed');
+  updateNavProfileIcon();
+  const alreadyWelcomed=tgUser&&localStorage.getItem('emartzon_welcomed_'+tgUser.id);
+  if(tgUser&&!alreadyWelcomed&&!String(tgUser.id).startsWith('guest_')){ showToast(`Welcome, ${tgUser.first_name}! 👋`); localStorage.setItem('emartzon_welcomed_'+tgUser.id,'1'); }
+  let tapCount=0,tapTimer;
+  document.querySelector('.logo').addEventListener('click',()=>{ tapCount++; clearTimeout(tapTimer); tapTimer=setTimeout(()=>tapCount=0,700); if(tapCount>=5){ tapCount=0; if(isAdmin()) showAdminDirect(); } });
+  startLiveSyncPolling();
+}
+
+function notifyUserLogin(){
+  if(!tgUser||String(tgUser.id).startsWith('guest_')) return;
+  fetch(BOT_WORKER_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      type:'user_login',
+      telegramId:tgUser.id,
+      username:tgUser.username||null,
+      firstName:tgUser.first_name||'',
+      lastName:tgUser.last_name||'',
+      languageCode:tgUser.language_code||''
+    })
+  }).catch(()=>{});
+}
+
+function updateNavProfileIcon(){
+  if(!tgUser) return;
+  const ini=((tgUser.first_name||'?')[0]+(tgUser.last_name?tgUser.last_name[0]:'')).toUpperCase();
+  const el=document.getElementById('nav-profile-icon');
+  el.style.cssText='width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#ffffff);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--bg);overflow:hidden;';
+  if(tgUser.photo_url){ el.innerHTML=`<img src="${tgUser.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${ini}'">` } else { el.textContent=ini; }
+}
+
+function applyTheme(){ const t=cfg.theme||DEFAULT_CONFIG.theme; Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v)); }
+function liveColor(v,val){
+  // Convert rgb(...) or named colors to hex
+  const hex=colorToHex(val);
+  if(hex) val=hex;
+  document.documentElement.style.setProperty(v,val);
+}
+
+function colorToHex(val){
+  if(!val) return null;
+  val=val.trim();
+  if(val.startsWith('#')&&(val.length===4||val.length===7)) return val;
+  // rgb(r,g,b)
+  const rm=val.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+  if(rm) return '#'+[rm[1],rm[2],rm[3]].map(n=>parseInt(n).toString(16).padStart(2,'0')).join('');
+  // 3-digit hex
+  const sm=val.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+  if(sm) return '#'+sm[1]+sm[1]+sm[2]+sm[2]+sm[3]+sm[3];
+  return null;
+}
+
+function hexToRgb(hex){
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  return {r,g,b};
+}
+
+// Build color editor rows in the theme panel
+const THEME_COLORS=[
+  {key:'accent', label:'Accent Color',    hint:'Buttons, prices, active highlights'},
+  {key:'bg',     label:'Background',      hint:'Main page background'},
+  {key:'card',   label:'Card Color',      hint:'Product cards, panels'},
+  {key:'dark',   label:'Header / Navbar', hint:'Top bar and bottom nav'},
+  {key:'white',  label:'Text Color',      hint:'Primary text color'},
+  {key:'border', label:'Border Color',    hint:'Dividers and outlines'},
+  {key:'gray',   label:'Gray Text',       hint:'Secondary / muted text'},
+];
+
+function renderThemeColorEditors(){
+  const container=document.getElementById('theme-colors-list');
+  if(!container) return;
+  const t=cfg.theme||{};
+  container.innerHTML=THEME_COLORS.map(({key,label,hint})=>{
+    const val=t['--'+key]||'#ffffff';
+    const safeVal=val.startsWith('#')?val:'#ffffff';
+    return `<div class="adm-field" style="margin-bottom:14px">
+      <label style="margin-bottom:6px;display:block">${label} <span style="font-size:10px;color:var(--gray);font-weight:400">${hint}</span></label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <!-- Palette picker -->
+        <input type="color" id="clr-picker-${key}" value="${safeVal}"
+          style="width:44px;height:44px;border:2px solid var(--border);border-radius:10px;cursor:pointer;padding:2px;background:var(--card2);flex-shrink:0"
+          oninput="syncColorFromPicker('${key}',this.value)">
+        <!-- Hex input -->
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--gray);margin-bottom:3px">HEX</div>
+          <input type="text" id="clr-hex-${key}" value="${val}" placeholder="#ffffff" maxlength="7"
+            style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:8px 10px;border-radius:8px;font-size:13px;font-family:monospace;outline:none;box-sizing:border-box"
+            oninput="syncColorFromHex('${key}',this.value)"
+            onblur="finalizeColor('${key}')">
+        </div>
+        <!-- RGB inputs -->
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          ${['R','G','B'].map((c,i)=>`<div style="text-align:center">
+            <div style="font-size:9px;color:var(--gray);margin-bottom:2px">${c}</div>
+            <input type="number" id="clr-${c.toLowerCase()}-${key}" min="0" max="255"
+              value="${hexToRgbPart(safeVal,i)}"
+              style="width:42px;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:6px 4px;border-radius:7px;font-size:12px;text-align:center;outline:none"
+              oninput="syncColorFromRgb('${key}')">
+          </div>`).join('')}
+        </div>
+        <!-- Live preview swatch -->
+        <div id="clr-swatch-${key}" style="width:36px;height:44px;border-radius:10px;border:1px solid var(--border);background:${val};flex-shrink:0"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function hexToRgbPart(hex,part){
+  try{ const h=hex.startsWith('#')?hex.slice(1):'ffffff'; return parseInt(h.slice(part*2,part*2+2),16)||0; }catch(e){ return 0; }
+}
+
+function syncColorFromPicker(key,hex){
+  document.getElementById('clr-hex-'+key).value=hex;
+  const {r,g,b}=hexToRgb(hex);
+  document.getElementById('clr-r-'+key).value=r;
+  document.getElementById('clr-g-'+key).value=g;
+  document.getElementById('clr-b-'+key).value=b;
+  document.getElementById('clr-swatch-'+key).style.background=hex;
+  liveColor('--'+key,hex);
+}
+
+function syncColorFromHex(key,val){
+  const hex=colorToHex(val);
+  if(!hex) return;
+  try{
+    document.getElementById('clr-picker-'+key).value=hex;
+    const {r,g,b}=hexToRgb(hex);
+    document.getElementById('clr-r-'+key).value=r;
+    document.getElementById('clr-g-'+key).value=g;
+    document.getElementById('clr-b-'+key).value=b;
+    document.getElementById('clr-swatch-'+key).style.background=hex;
+    liveColor('--'+key,hex);
+  }catch(e){}
+}
+
+function finalizeColor(key){
+  const inp=document.getElementById('clr-hex-'+key);
+  const hex=colorToHex(inp.value);
+  if(hex) inp.value=hex;
+}
+
+function syncColorFromRgb(key){
+  const r=parseInt(document.getElementById('clr-r-'+key).value)||0;
+  const g=parseInt(document.getElementById('clr-g-'+key).value)||0;
+  const b=parseInt(document.getElementById('clr-b-'+key).value)||0;
+  const hex='#'+[r,g,b].map(n=>Math.min(255,Math.max(0,n)).toString(16).padStart(2,'0')).join('');
+  document.getElementById('clr-hex-'+key).value=hex;
+  document.getElementById('clr-picker-'+key).value=hex;
+  document.getElementById('clr-swatch-'+key).style.background=hex;
+  liveColor('--'+key,hex);
+}
+
+const PRESETS={
+  dark:    {'--accent':'#f5a623','--bg':'#0a0a0a','--card':'#1a1a1a','--dark':'#111111','--white':'#ffffff','--border':'#2a2a2a','--gray':'#888888'},
+  vision:  {'--accent':'#ffffff','--bg':'#1a1a1a','--card':'#242424','--dark':'#111111','--white':'#ffffff','--border':'#333333','--gray':'#888888'},
+  legacy:  {'--accent':'#1a56db','--bg':'#080d1a','--card':'#0f1829','--dark':'#0a1020','--white':'#ffffff','--border':'#1e2d4a','--gray':'#6b82a0'},
+  fire:    {'--accent':'#f97316','--bg':'#0d0500','--card':'#1a0a00','--dark':'#110600','--white':'#ffffff','--border':'#2a1200','--gray':'#886644'},
+  emerald: {'--accent':'#10b981','--bg':'#021a0e','--card':'#0a2a1a','--dark':'#061508','--white':'#ffffff','--border':'#0f3020','--gray':'#4a8870'},
+  royal:   {'--accent':'#7c3aed','--bg':'#0a0020','--card':'#12003a','--dark':'#080018','--white':'#ffffff','--border':'#1e0050','--gray':'#7055aa'},
+  red:     {'--accent':'#ef4444','--bg':'#0d0000','--card':'#1a0000','--dark':'#0a0000','--white':'#ffffff','--border':'#2a0000','--gray':'#885555'},
+};
+
+function applyPreset(name){
+  const p=PRESETS[name]; if(!p) return;
+  Object.entries(p).forEach(([k,v])=>{ cfg.theme[k]=v; document.documentElement.style.setProperty(k,v); });
+  renderThemeColorEditors();
+  showToast('Preset applied — tap Save Theme to keep it ✅');
+}
+
+function renderHeader(){
+  const el=document.getElementById('hdr-logo-img');
+  if(cfg.logoUrl){ el.className='logo-img'; el.outerHTML=`<img id="hdr-logo-img" class="logo-img" src="${cfg.logoUrl}" onerror="this.outerHTML='<div id=hdr-logo-img class=logo-emoji>${cfg.logoEmoji||'👟'}</div>'">`; }
+  else { el.className='logo-emoji'; el.textContent=cfg.logoEmoji||'👟'; }
+  document.getElementById('hdr-brand-name').innerHTML=`${cfg.brandName1||'Stylish'}<span>${cfg.brandName2||'Addis'}</span>`;
+  document.getElementById('hdr-brand-sub').textContent=cfg.storeSub||'Quality Needs No Introduction';
+}
+function renderHero(){
+  const h=cfg.hero;
+  document.getElementById('hero-tag').textContent=h.tag||'';
+  document.getElementById('hero-title').innerHTML=`${h.h1a||'Step Into'}<br><span>${h.h1b||'Stylish Shoes'}</span>`;
+  document.getElementById('hero-subtitle').textContent=h.sub||'';
+  document.getElementById('hero-img-container').innerHTML=h.imgUrl?`<img class="hero-img" src="${h.imgUrl}" onerror="this.style.display='none'">`:'';
+}
+
+function kitIcon(t){ return '👟'; }
+
+function renderLeagueTabs(){
+  const bar=document.getElementById('cats-bar');
+  bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">👟 All Models</div>`+cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${l.emoji} ${l.label}</div>`).join('');
+}
+function selectLeague(id,el){ document.querySelectorAll('#cats-bar .cat-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); shopState={leagueId:id,teamId:null,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
+function selectTeam(lid,tid){ shopState={leagueId:lid,teamId:tid,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); document.querySelector('.scroll').scrollTop=0; }
+function backToLeague(){ shopState.teamId=null; shopState.kitFilter='all'; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
+function filterKitType(type){ shopState.kitFilter=type; renderShopGrid(); }
+function updateShopTitle(){
+  const el=document.getElementById('shop-sec-title'); if(!el) return;
+  const st=shopState;
+  if(st.teamId){ const t=findTeam(st.leagueId,st.teamId); el.textContent=t?t.name:'Products'; }
+  else if(st.leagueId!=='all'){ const l=cfg.leagues.find(x=>x.id===st.leagueId); el.textContent=l?`${l.emoji} ${l.label} — Select Model`:'Models'; }
+  else { el.textContent='All Brands'; }
+}
+function updateBreadcrumb(){
+  const bc=document.getElementById('shop-breadcrumb'); if(!bc) return;
+  const st=shopState; const parts=[];
+  parts.push(`<span class="bc-item" onclick="selectLeague('all',document.querySelector('#cats-bar .cat-btn'))">🏠 All</span>`);
+  if(st.leagueId!=='all'){
+    const lg=cfg.leagues.find(l=>l.id===st.leagueId);
+    if(lg){ parts.push(`<span class="bc-sep">›</span>`);
+      if(st.teamId){ parts.push(`<span class="bc-item" onclick="backToLeague()">${lg.emoji} ${lg.label}</span>`); const t=findTeam(st.leagueId,st.teamId); if(t){ parts.push(`<span class="bc-sep">›</span><span class="bc-item active">${t.name}</span>`); } }
+      else { parts.push(`<span class="bc-item active">${lg.emoji} ${lg.label}</span>`); } }
+  }
+  bc.style.display=(st.leagueId!=='all'||st.teamId)?'flex':'none';
+  bc.innerHTML=parts.join('');
+}
+function findTeam(lid,tid){ return (cfg.leagues.find(l=>l.id===lid)?.teams||[]).find(t=>t.id===tid)||null; }
+function findProduct(pid){ for(const lg of cfg.leagues) for(const team of (lg.teams||[])) for(const p of (team.products||[])) if(p.id===pid) return {p,team,lg}; return null; }
+
+function renderShopGrid(query=''){
+  const st=shopState; const grid=document.getElementById('products-grid');
+  if(st.teamId){
+    const team=findTeam(st.leagueId,st.teamId); const lg=cfg.leagues.find(l=>l.id===st.leagueId);
+    if(!team){ grid.innerHTML=''; return; }
+    let items=team.products||[];
+    if(st.kitFilter!=='all') items=items.filter(p=>p.kitType===st.kitFilter);
+    if(query) items=items.filter(p=>p.kitType.toLowerCase().includes(query.toLowerCase())||(p.desc||'').toLowerCase().includes(query.toLowerCase()));
+    const allTypes=[...new Set((team.products||[]).map(p=>p.kitType))];
+    const crestSrc=team.crestUrl||team.crest||'';
+    grid.innerHTML=`
+      <div class="kits-header">
+        <div class="kits-team-logo" style="background:${team.color?team.color+'11':'var(--card2)'}">
+          ${crestSrc?`<img src="${crestSrc}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;font-size:22px">${team.emoji}</span>`:`<span style="font-size:26px">${team.emoji}</span>`}
+        </div>
+        <div><div class="kits-team-name">${team.name}</div><div class="kits-league">${lg?.label||''}</div></div>
+      </div>
+      <div class="kit-type-tabs">
+        <div class="kit-chip ${st.kitFilter==='all'?'active':''}" onclick="filterKitType('all')">All</div>
+        ${allTypes.map(t=>`<div class="kit-chip ${st.kitFilter===t?'active':''}" onclick="filterKitType(\`${t}\`)">${kitIcon(t)} ${t}</div>`).join('')}
+      </div>
+      <div class="products">
+        ${items.length?items.map(p=>{
+          const name=`${team.name} ${p.kitType}`;
+          return `<div class="prod-card" onclick="openDetail(${p.id})">
+            ${p.badge?`<div class="badge ${p.badge}">${p.badge.toUpperCase()}</div>`:''}
+            <div class="prod-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" alt="${name}" onerror="this.parentNode.innerHTML='<div class=prod-emoji>${p.emoji||'👟'}</div>'">`:`<div class="prod-emoji">${p.emoji||'👟'}</div>`}</div>
+            <div class="prod-info">
+              <div class="prod-league">${kitIcon(p.kitType)} ${p.kitType}</div>
+              <div class="prod-name">${name}</div>
+              <div class="prod-foot"><div class="prod-price">${fmt(p.price)}</div>
+                <button class="add-btn" onclick="event.stopPropagation();quickAdd(${p.id})">+</button>
+              </div>
+            </div>
+          </div>`;
+        }).join(''):`<div style="grid-column:span 2;text-align:center;padding:30px;color:var(--gray);font-size:13px">No items for this filter</div>`}
+      </div>`;
+  } else {
+    let leagues=cfg.leagues;
+    if(st.leagueId!=='all') leagues=leagues.filter(l=>l.id===st.leagueId);
+    let html='';
+    leagues.forEach(lg=>{
+      let teams=lg.teams||[];
+      if(query) teams=teams.filter(t=>t.name.toLowerCase().includes(query.toLowerCase()));
+      if(!teams.length) return;
+      if(st.leagueId==='all') html+=`<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:16px">${lg.emoji}</span>${lg.label}</div>`;
+      html+=`<div class="teams-grid">${teams.map(t=>{
+        const cs=t.crestUrl||t.crest||'';
+        return `<div class="team-card" onclick="selectTeam('${lg.id}','${t.id}')">
+          ${st.leagueId==='all'?`<div class="team-league-badge">${lg.emoji}</div>`:''}
+          <div class="team-crest" style="border-color:${cs?t.color+'66':'var(--border)44'};background:${t.color?t.color+'11':'var(--card2)'}">
+            ${cs?`<img src="${cs}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;font-size:30px">${t.emoji}</span>`:`<span style="font-size:30px">${t.emoji}</span>`}
+          </div>
+          <div class="team-name">${t.name}</div>
+          <div class="team-kit-count">${(t.products||[]).length} items</div>
+        </div>`;
+      }).join('')}</div>`;
+    });
+    grid.innerHTML=html||`<div style="text-align:center;padding:40px;color:var(--gray);font-size:13px">No models found</div>`;
+  }
+}
+
+function openDetail(pid){
+  const found=findProduct(pid); if(!found) return;
+  const {p,team,lg}=found;
+  curProduct={...p,teamId:team.id,teamName:team.name,leagueId:lg.id,name:`${team.name} ${p.kitType}`};
+  selSize=cfg.sizes[2]||'M'; selQty=1;
+  const cs=team.crestUrl||team.crest||'';
+  document.getElementById('det-title').textContent=`${team.name} — ${p.kitType}`;
+  document.getElementById('det-content').innerHTML=`
+    <div class="det-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'👟'}</div>'">`:`<div class="det-emoji">${p.emoji||'👟'}</div>`}</div>
+    <div class="det-body">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:30px;height:30px;border-radius:8px;background:${team.color?team.color+'11':'var(--card2)'};display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--border);overflow:hidden">
+          ${cs?`<img src="${cs}" style="width:100%;height:100%;object-fit:contain;padding:2px" onerror="this.style.display='none';this.parentNode.textContent='${team.emoji}'">`:team.emoji}
+        </div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.4px">${lg.label}</div><div style="font-size:12px;color:var(--light)">${team.name}</div></div>
+        <div style="margin-left:auto;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:4px 9px;font-size:11px;font-weight:600;color:var(--light)">${kitIcon(p.kitType)} ${p.kitType}</div>
+      </div>
+      <div class="det-name">${team.name} ${p.kitType}</div>
+      <div class="det-price">${fmt(p.price)}</div>
+      <div class="size-lbl">Select Size</div>
+      <div class="sizes">${cfg.sizes.map((s,i)=>`<div class="sz-btn ${i===2?'active':''}" onclick="selSz('${s}',this)">${s}</div>`).join('')}</div>
+      <div class="qty-row">
+        <div class="qty-lbl">Quantity</div>
+        <div class="qty-ctrl"><button onclick="chgQty(-1)">−</button><div class="qty-num" id="qty-disp">1</div><button onclick="chgQty(1)">+</button></div>
+      </div>
+      <div class="det-desc">${p.desc}</div>
+      <button class="add-cart-btn" onclick="addToCart()">Add to Cart 🛒</button>
+      ${(team.products||[]).filter(x=>x.id!==p.id).length?`
+      <div style="margin-top:16px;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--light)">More from ${team.name}</div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none">
+        ${(team.products||[]).filter(x=>x.id!==p.id).map(x=>`
+          <div onclick="openDetail(${x.id})" style="flex-shrink:0;width:78px;cursor:pointer">
+            <div style="width:78px;height:78px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;border:1px solid var(--border);margin-bottom:5px">
+              ${x.imgUrl?`<img src="${x.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${x.emoji||'👟'}'">`:x.emoji||'👟'}
+            </div>
+            <div style="font-size:10px;font-weight:600;color:var(--light);text-align:center;line-height:1.3">${x.kitType}</div>
+            <div style="font-size:11px;color:var(--accent);text-align:center;font-weight:700">${fmt(x.price)}</div>
+          </div>`).join('')}
+      </div>`:''}
+      <div style="height:20px"></div>
+    </div>`;
+  showPage('detail');
+}
+
+function detGoBack(){ showPage('shop'); }
+function selSz(s,el){ selSize=s; document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function chgQty(d){ selQty=Math.max(1,selQty+d); document.getElementById('qty-disp').textContent=selQty; }
+function addToCart(){ const ex=cart.find(i=>i.id===curProduct.id&&i.size===selSize&&!i.custom); if(ex) ex.qty+=selQty; else cart.push({...curProduct,size:selSize,qty:selQty}); saveCart(); updateBadge(); showToast('Added to cart! 🛒'); }
+function quickAdd(pid){ const found=findProduct(pid); if(!found) return; const {p,team}=found; const name=`${team.name} ${p.kitType}`; const item={...p,name,teamName:team.name,size:cfg.sizes[2]||'M',qty:1}; const ex=cart.find(i=>i.id===p.id&&i.size===item.size&&!i.custom); if(ex) ex.qty++; else cart.push(item); saveCart(); updateBadge(); showToast(`${name} added! 🛒`); }
+
+function updateBadge(){ const n=cart.reduce((a,i)=>a+i.qty,0); const b=document.getElementById('cart-badge'); b.textContent=n; b.style.display=n>0?'flex':'none'; const nb=document.getElementById('nav-cart-badge'); if(nb){ nb.textContent=n>9?'9+':n; nb.style.display=n>0?'flex':'none'; } }
+
+function renderShipOpts(){
+  curShipping=cfg.shipping[0]||null;
+  document.getElementById('ship-opts-container').innerHTML=cfg.shipping.map((s,i)=>`
+    <div class="ship-opt ${i===0?'selected':''}" id="sopt-${s.id}" onclick="selShip('${s.id}')">
+      <div class="ship-radio"><div class="ship-dot"></div></div>
+      <div class="ship-icon">${s.icon}</div>
+      <div class="ship-text"><div class="ship-name">${s.name}</div><div class="ship-desc">${s.desc}</div></div>
+      <div class="ship-price">${s.price===0?'Free':fmt(s.price)}</div>
+    </div>`).join('');
+}
+function selShip(id){
+  curShipping=cfg.shipping.find(s=>s.id===id);
+  document.querySelectorAll('.ship-opt').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('sopt-'+id).classList.add('selected');
+  const isPickup=curShipping?.id==='pickup';
+  document.getElementById('addr-form-wrap').style.display=isPickup?'none':'block';
+  document.getElementById('pickup-info-wrap').style.display=isPickup?'block':'none';
+  if(isPickup){ selectPayment('cash'); } else if(selectedPayment==='cash'){ selectPayment('cbe'); }
+  updateCheckoutSummary();
+}
+function renderPickupCard(){
+  document.getElementById('pickup-store-card').innerHTML=`
+    <div style="font-size:14px;font-weight:600;margin-bottom:3px">${cfg.storeName}</div>
+    <div style="font-size:12px;color:var(--gray);margin-bottom:7px">${cfg.address}</div>
+    <div style="font-size:11px;color:var(--accent)">⏰ ${cfg.hours}</div>
+    <div style="font-size:11px;color:var(--gray);margin-top:3px">📞 ${cfg.phone}</div>`;
+}
+
+function selectPayment(method){
+  selectedPayment=method;
+  document.querySelectorAll('.pay-opt').forEach(el=>el.classList.remove('selected'));
+  const map={cbe:'pay-cbe',telebirr:'pay-telebirr',cash:'pay-pickup-cash'};
+  if(map[method]) document.getElementById(map[method]).classList.add('selected');
+  renderPaymentInstructions(method); updateCheckoutSummary();
+}
+
+function renderPaymentInstructions(method){
+  const box=document.getElementById('payment-instructions-box');
+  const pay=cfg.payment||DEFAULT_CONFIG.payment;
+  if(method==='cbe'){
+    box.innerHTML=`
+      <div class="pay-instructions">
+        <div class="pay-instr-title" style="color:#4CAF50">🏦 CBE Birr Transfer Instructions</div>
+        <div class="pay-step"><div class="pay-step-num">1</div><div class="pay-step-text">Open your <b>CBE Birr</b> app on your phone</div></div>
+        <div class="pay-step"><div class="pay-step-num">2</div><div class="pay-step-text">Tap <b>Send Money</b> and enter the account number below</div></div>
+        <div class="copy-number" onclick="copyToClipboard('${pay.cbeNum}')">
+          <div style="font-size:12px;color:var(--gray);margin-bottom:2px">CBE Account Number</div>
+          <div class="copy-num-val">${pay.cbeNum}</div>
+          <button class="copy-num-btn">📋 Copy</button>
+        </div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:8px">Account Name: <b style="color:var(--light)">${pay.cbeName}</b></div>
+        <div class="pay-step"><div class="pay-step-num">3</div><div class="pay-step-text">Enter the <b>exact total amount</b> shown in the summary below</div></div>
+        <div class="pay-step"><div class="pay-step-num">4</div><div class="pay-step-text">Use your <b>Order ID</b> (shown after confirming) as the reference/note</div></div>
+        <div class="pay-step"><div class="pay-step-num">5</div><div class="pay-step-text">Take a screenshot of the transfer confirmation</div></div>
+      </div>`;
+  } else if(method==='telebirr'){
+    box.innerHTML=`
+      <div class="pay-instructions">
+        <div class="pay-instr-title" style="color:#a78bfa">📱 Telebirr Transfer Instructions</div>
+        <div class="pay-step"><div class="pay-step-num">1</div><div class="pay-step-text">Open your <b>Telebirr</b> app on your phone</div></div>
+        <div class="pay-step"><div class="pay-step-num">2</div><div class="pay-step-text">Tap <b>Send Money</b> and enter the number below</div></div>
+        <div class="copy-number" onclick="copyToClipboard('${pay.telebirrNum}')">
+          <div style="font-size:12px;color:var(--gray);margin-bottom:2px">Telebirr Number</div>
+          <div class="copy-num-val">${pay.telebirrNum}</div>
+          <button class="copy-num-btn">📋 Copy</button>
+        </div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:8px">Account Name: <b style="color:var(--light)">${pay.telebirrName}</b></div>
+        <div class="pay-step"><div class="pay-step-num">3</div><div class="pay-step-text">Send the <b>exact total amount</b> shown in the order summary</div></div>
+        <div class="pay-step"><div class="pay-step-num">4</div><div class="pay-step-text">Keep the Telebirr receipt for verification</div></div>
+      </div>`;
+  } else {
+    box.innerHTML=`
+      <div class="pay-instructions">
+        <div class="pay-instr-title" style="color:var(--success)">🏪 Pay at Store</div>
+        <div class="pay-step"><div class="pay-step-num">1</div><div class="pay-step-text">Your order will be <b>held for 24 hours</b> at the store</div></div>
+        <div class="pay-step"><div class="pay-step-num">2</div><div class="pay-step-text">Come to <b>${cfg.storeName}</b> at ${cfg.address}</div></div>
+        <div class="pay-step"><div class="pay-step-num">3</div><div class="pay-step-text">Show your <b>Telegram receipt</b> or Order ID to the cashier</div></div>
+        <div class="pay-step"><div class="pay-step-num">4</div><div class="pay-step-text">Pay by <b>cash or any mobile payment</b> at the counter</div></div>
+        <div style="margin-top:10px;font-size:11px;color:var(--accent)">⏰ Store hours: ${cfg.hours}</div>
+      </div>`;
+  }
+}
+
+function copyToClipboard(text){ if(navigator.clipboard){ navigator.clipboard.writeText(text).then(()=>showToast('Copied! 📋')); } else { showToast(text); } }
+
+function showCart(){
+  const con=document.getElementById('cart-content');
+  if(!cart.length){
+    con.innerHTML=`<div class="empty"><div class="empty-icon">🛒</div><h3>Cart is empty</h3><p>Add some shoes to your cart!</p><button class="cta-btn" style="width:auto;padding:11px 22px;margin:0" onclick="goShop()">Browse Shoes</button></div>`;
+  } else {
+    const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0;
+    con.innerHTML=`<div style="height:12px"></div>
+      <div style="padding:0 14px">${cart.map((item,idx)=>`
+        <div class="cart-item" style="align-items:flex-start">
+          <div class="cart-thumb">${item.imgUrl?`<img src="${item.imgUrl}" onerror="this.parentNode.textContent='${item.emoji||'👟'}'">`:item.emoji||'👟'}</div>
+          <div class="cart-info" style="flex:1">
+            <div class="cart-name">${item.name}</div>
+            <div class="cart-meta">Size: ${item.size}${item.custom&&(item.custom.name||item.custom.number)?` · 🎨 ${[item.custom.name,item.custom.number?'#'+item.custom.number:''].filter(Boolean).join(' ')}`:''}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:0;background:var(--card2);border:1px solid var(--border);border-radius:9px;overflow:hidden">
+                <button onclick="cartChgQty(${idx},-1)" style="background:none;border:none;color:var(--white);width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:300">−</button>
+                <div style="min-width:28px;text-align:center;font-size:13px;font-weight:700;color:var(--white)">${item.qty}</div>
+                <button onclick="cartChgQty(${idx},1)" style="background:none;border:none;color:var(--white);width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:300">+</button>
+              </div>
+              <div class="cart-price">${fmt(item.price*item.qty)}</div>
+            </div>
+          </div>
+          <button class="cart-rm" onclick="rmItem(${idx})" style="margin-top:2px">✕</button>
+        </div>`).join('')}</div>
+      <div class="summary-box">
+        <div class="sum-row"><span>Subtotal (${cart.reduce((a,i)=>a+i.qty,0)} items)</span><span>${fmt(sub)}</span></div>
+        <div class="sum-row"><span>Shipping</span><span>${ship===0?'Free':fmt(ship)}</span></div>
+        <div class="sum-row total"><span>Total</span><span>${fmt(sub+ship)}</span></div>
+      </div>
+      <button class="cta-btn" onclick="showCheckout()">Proceed to Checkout →</button>
+      <div style="height:16px"></div>`;
+  }
+  setNav('cart'); showPage('cart');
+}
+function rmItem(idx){ cart.splice(idx,1); saveCart(); updateBadge(); showCart(); }
+function cartChgQty(idx, delta){
+  cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+  saveCart(); updateBadge(); showCart();
+}
+
+function showCheckout(){ restoreCheckoutScroll(); if(!curShipping) curShipping=cfg.shipping[0]; renderShipOpts(); renderPickupCard(); selectPayment(selectedPayment); updateCheckoutSummary(); showPage('checkout'); }
+function updateCheckoutSummary(){
+  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0;
+  const payLabels={cbe:'CBE Birr',telebirr:'Telebirr',cash:'Pay at Store'};
+  document.getElementById('checkout-summary-box').innerHTML=`
+    <div class="sum-row"><span>Items (${cart.reduce((a,i)=>a+i.qty,0)})</span><span>${fmt(sub)}</span></div>
+    <div class="sum-row"><span>Shipping</span><span>${ship===0?'Free':fmt(ship)}</span></div>
+    <div class="sum-row"><span>Payment</span><span>${payLabels[selectedPayment]||selectedPayment}</span></div>
+    <div class="sum-row total"><span>Total</span><span>${fmt(sub+ship)}</span></div>`;
+}
+
+function placeOrder(){
+  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0; const total=sub+ship;
+  const m=curShipping||cfg.shipping[0];
+  const buyer=tgUser?[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' '):'Guest';
+  const phone=document.getElementById('inp-phone')?.value||cfg.phone;
+  const address=document.getElementById('inp-address')?.value||''; const city=document.getElementById('inp-city')?.value||'';
+  const payMethods={cbe:'CBE Birr',telebirr:'Telebirr',cash:'Pay at Store'}; const payMethod=payMethods[selectedPayment]||selectedPayment;
+  if(selectedPayment==='cbe'||selectedPayment==='telebirr'){
+    showTxnProofScreen({rawPayment:selectedPayment,paymentMethod:payMethod,totalFmt:fmt(total),sub,ship,total,buyer,phone,address,city,m:deepClone(m),cartSnapshot:deepClone(cart),txnUrl:null}); return;
+  }
+  completeOrder({rawPayment:'cash',paymentMethod:payMethod,totalFmt:fmt(total),sub,ship,total,buyer,phone,address,city,m:deepClone(m),cartSnapshot:deepClone(cart),txnUrl:null});
+}
+
+function completeOrder(o){
+  const {sub,ship,total,m,buyer,phone,address,city,cartSnapshot,txnUrl}=o;
+  const payMethod=o.paymentMethod+(o.needsManualReview?' ⚠️ Needs Manual Review':'');
+  const oid='EM'+Date.now().toString().slice(-6); const now=new Date();
+  const dateStr=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  const timeStr=now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  const itemsHtml=(cartSnapshot||[]).map(item=>`
+    <div class="receipt-item">
+      <div class="receipt-item-img">${item.imgUrl?`<img src="${item.imgUrl}" onerror="this.parentNode.textContent='${item.emoji||'👟'}'">`:item.emoji||'👟'}</div>
+      <div class="receipt-item-info"><div class="receipt-item-name">${item.name}</div><div class="receipt-item-meta">Size: ${item.size} · Qty: ${item.qty}</div></div>
+      <div class="receipt-item-price">${fmt(item.price*item.qty)}</div>
+    </div>`).join('');
+  const payBadgeClass=o.rawPayment==='cbe'?'cbe':o.rawPayment==='telebirr'?'telebirr':'pickup';
+  const payInstr=o.rawPayment==='cbe'?`Transfer verified via CBE Birr. Order ID: <b>#${oid}</b>.`:o.rawPayment==='telebirr'?`Transfer verified via Telebirr. Order ID: <b>#${oid}</b>.`:`Pay <b>${fmt(total)}</b> when you pick up your order at the store. Show this receipt.`;
+  const txnHtml=txnUrl?`<div class="receipt-section"><div class="receipt-section-title">Payment Proof</div><div class="receipt-row"><span class="receipt-row-label">Transaction</span><span class="receipt-row-val" style="font-size:11px;word-break:break-all;color:var(--accent)">${txnUrl}</span></div></div>`:'';
+  const deliveryInfo=m?.id==='pickup'
+    ?`<div class="receipt-row"><span class="receipt-row-label">Pickup At</span><span class="receipt-row-val">${cfg.storeName}<br><span style="font-size:11px;color:var(--gray)">${cfg.address}</span></span></div><div class="receipt-row"><span class="receipt-row-label">Hours</span><span class="receipt-row-val">${cfg.hours}</span></div>`
+    :`<div class="receipt-row"><span class="receipt-row-label">Deliver To</span><span class="receipt-row-val">${city}${address?', '+address:''}</span></div><div class="receipt-row"><span class="receipt-row-label">Contact</span><span class="receipt-row-val">${phone}</span></div>`;
+  document.getElementById('receipt-card').innerHTML=`
+    <div class="receipt-header">
+      <div class="receipt-header-top"><div class="receipt-brand">🏆 ${cfg.storeName}</div><div class="receipt-num">#${oid}</div></div>
+      <div class="receipt-date">${dateStr} at ${timeStr}</div>
+    </div>
+    <div class="receipt-section"><div class="receipt-section-title">Customer</div>
+      <div class="receipt-row"><span class="receipt-row-label">Name</span><span class="receipt-row-val">${buyer}</span></div>
+      ${tgUser?.username?`<div class="receipt-row"><span class="receipt-row-label">Telegram</span><span class="receipt-row-val">@${tgUser.username}</span></div>`:''}
+      ${tgUser?.id?`<div class="receipt-row"><span class="receipt-row-label">User ID</span><span class="receipt-row-val" style="font-family:monospace">${tgUser.id}</span></div>`:''}
+    </div>
+    <div class="receipt-section"><div class="receipt-section-title">Items Ordered</div><div class="receipt-items-list">${itemsHtml}</div></div>
+    <div class="receipt-section"><div class="receipt-section-title">Pricing</div>
+      <div class="receipt-row"><span class="receipt-row-label">Subtotal</span><span class="receipt-row-val">${fmt(sub)}</span></div>
+      <div class="receipt-row"><span class="receipt-row-label">Shipping</span><span class="receipt-row-val">${ship===0?'Free':fmt(ship)}</span></div>
+      <div class="receipt-row total-row"><span class="receipt-row-label">Total Paid</span><span class="receipt-row-val">${fmt(total)}</span></div>
+    </div>
+    <div class="receipt-section"><div class="receipt-section-title">${m?.id==='pickup'?'Store Pickup':'Delivery'}</div>
+      <div class="receipt-row"><span class="receipt-row-label">Method</span><span class="receipt-row-val">${m?.icon} ${m?.name}</span></div>
+      ${deliveryInfo}
+    </div>
+    <div class="receipt-section"><div class="receipt-section-title">Payment</div>
+      <div class="receipt-row" style="margin-bottom:10px"><span class="receipt-row-label">Method</span><span class="receipt-row-val"><span class="receipt-pay-badge ${payBadgeClass}">${payMethod}</span></span></div>
+      <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:9px;padding:11px;font-size:12px;color:var(--light);line-height:1.6">${payInstr}</div>
+    </div>
+    ${txnHtml}
+    <div style="padding:14px 18px;background:var(--card2);display:flex;align-items:center;gap:10px">
+      <div style="font-size:11px;color:var(--gray);flex:1;line-height:1.5">Thank you for shopping at ${cfg.storeName}! For help: ${cfg.phone}</div>
+      <div style="font-size:22px">🙏</div>
+    </div>`;
+  orderHistory.push({id:oid,userId:tgUser?String(tgUser.id):'guest',date:dateStr,total,itemCount:(cartSnapshot||[]).reduce((a,i)=>a+i.qty,0),method:m?.id||'delivery',methodIcon:m?.icon||'📦',methodName:m?.name||'Delivery',paymentMethod:payMethod,txnUrl:txnUrl||null,items:(cartSnapshot||[]).map(i=>({name:i.name+(i.custom&&(i.custom.name||i.custom.number)?' ['+[i.custom.name,i.custom.number?'#'+i.custom.number:''].filter(Boolean).join(' ')+']':''),qty:i.qty,size:i.size,price:i.price}))});
+  saveOrders();
+  // Send to bot Worker — customer gets receipt, owner gets full order details
+  const orderPayload = {
+    type:'order',
+    orderId:oid,
+    buyer,
+    telegramId:tgUser?.id,
+    username:tgUser?.username,
+    items:(cartSnapshot||[]).map(i=>({name:i.name+(i.custom&&(i.custom.name||i.custom.number)?' ['+[i.custom.name,i.custom.number?'#'+i.custom.number:''].filter(Boolean).join(' ')+']':''),qty:i.qty,size:i.size,price:i.price})),
+    subtotal:fmt(sub),
+    shipping:ship===0?'Free':fmt(ship),
+    total:fmt(total),
+    totalRaw:total,
+    delivery:m?.name,
+    paymentMethod:payMethod,
+    txnUrl:txnUrl||null,
+    address:m?.id==='pickup'?cfg.storeName:(city+(address?', '+address:'')),
+    date:dateStr,
+    time:timeStr,
+    ownerNotifyId:cfg.ownerNotifyId||'5158823198',
+  };
+  // Send via Worker (works even outside Telegram WebApp context)
+  fetch(BOT_WORKER_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(orderPayload)
+  }).catch(()=>{});
+  // Also try sendData for Telegram native flow
+  try{
+    const tg=window.Telegram?.WebApp;
+    if(tg&&tg.sendData){ tg.sendData(JSON.stringify(orderPayload)); }
+  }catch(e){}
+  cart=[]; saveCart(); updateBadge(); _pendingOrder=null; showPage('success');
+}
+
+function shareReceipt(){
+  const oid=document.querySelector('.receipt-num')?.textContent||'';
+  const text=`🧾 My Stylish Addis Order ${oid}\nShop at ${cfg.storeName}`;
+  if(navigator.share){ navigator.share({title:'Stylish Addis Receipt',text}).catch(()=>{}); }
+  else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(()=>showToast('Receipt info copied!')); }
+  else { showToast('Use the Share button in your browser'); }
+}
+
+function showInfo(){
+  document.getElementById('store-info-card').innerHTML=`
+    <h3 style="margin-bottom:10px">🏪 ${cfg.storeName}</h3>
+    <div class="info-row"><div class="info-icon">📞</div><div class="info-text">${cfg.phone}<span>Phone</span></div></div>
+    <div class="info-row"><div class="info-icon">📧</div><div class="info-text">${cfg.email}<span>Email</span></div></div>
+    <div class="info-row"><div class="info-icon">📍</div><div class="info-text">${cfg.address}<span>Address</span></div></div>
+    <div class="info-row"><div class="info-icon">⏰</div><div class="info-text">${cfg.hours}<span>Opening Hours</span></div></div>`;
+  document.getElementById('about-text').textContent=cfg.about;
+  const custSec=document.getElementById('store-customers-section');
+  if(isAdmin()){
+    custSec.style.display='block';
+    if(!_custDashData) loadCustomerDashboard();
+  } else {
+    custSec.style.display='none';
+  }
+  setNav('info'); showPage('info');
+}
+
+function showProfile(){
+  if(!tgUser){ showToast('Not logged in'); return; }
+  const u=tgUser; const full=[u.first_name,u.last_name].filter(Boolean).join(' ');
+  const ini=((u.first_name||'?')[0]+(u.last_name?u.last_name[0]:'')).toUpperCase();
+  const av=document.getElementById('profile-avatar-big');
+  if(u.photo_url){ av.innerHTML=`<img src="${u.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${ini}'">` } else { av.textContent=ini; }
+  const rb=document.getElementById('profile-role-badge'); const hb=document.getElementById('profile-hdr-badge');
+  if(isOwner()){ const b=`<span style="background:linear-gradient(90deg,#ffffff,#cccccc);color:#000;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px">👑 Owner</span>`; rb.innerHTML=b; hb.innerHTML=b; }
+  else if(isAdmin()){ const b=`<span style="background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.4);color:var(--accent);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px">⚙️ Admin</span>`; rb.innerHTML=b; hb.innerHTML=b; }
+  else { rb.innerHTML=`<span style="background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.25);color:#2ecc71;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px">● Member</span>`; hb.innerHTML=''; }
+  document.getElementById('profile-name').textContent=full||'Telegram User';
+  document.getElementById('profile-handle').textContent=u.username?'@'+u.username:'No username set';
+  document.getElementById('profile-id').textContent=u.id;
+  document.getElementById('profile-lang').textContent=u.language_code?u.language_code.toUpperCase():'—';
+  const uOrders=orderHistory.filter(o=>o.userId===String(u.id));
+  document.getElementById('profile-order-count').textContent=uOrders.length;
+  document.getElementById('profile-total-spent').textContent=fmt(uOrders.reduce((a,o)=>a+(o.total||0),0));
+  const cc=cart.reduce((a,i)=>a+i.qty,0); document.getElementById('profile-cart-count').textContent=cc===0?'Empty':`${cc} item${cc!==1?'s':''}`;
+  const ol=document.getElementById('profile-orders-list');
+  if(!uOrders.length){ ol.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;padding:28px 16px;text-align:center"><div style="font-size:38px;margin-bottom:10px">📦</div><div style="font-size:14px;font-weight:600;margin-bottom:5px">No orders yet</div><div style="font-size:12px;color:var(--gray)">Your order history will appear here</div></div>`; }
+  else { ol.innerHTML=[...uOrders].reverse().map(o=>`<div style="padding:13px 14px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><div style="font-size:13px;font-weight:700">#${o.id}</div><div style="font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;background:${o.method==='pickup'?'rgba(46,204,113,.12)':'rgba(245,166,35,.12)'};color:${o.method==='pickup'?'#2ecc71':'var(--accent)'}">${o.methodIcon} ${o.methodName}</div></div><div style="font-size:11px;color:var(--gray);margin-bottom:4px">${o.date} · ${o.itemCount} item${o.itemCount!==1?'s':''} · ${o.paymentMethod||''}</div><div style="font-size:14px;font-weight:700;color:var(--accent)">${fmt(o.total)}</div></div>`).join(''); }
+  document.getElementById('profile-admin-section').style.display=isAdmin()?'block':'none';
+  document.getElementById('profile-owner-section').style.display=isOwner()?'block':'none';
+  if(isAdmin()){ populatePadmForms(); updateSyncStatusPanel(); }
+  if(isOwner()){ renderManageAdmins(); const oid=document.getElementById('owner-id-display'); const mid=document.getElementById('owner-my-id-copy'); if(oid) oid.textContent=OWNER_IDS.join(", "); if(mid) mid.textContent=String(u.id);
+    const oName=document.getElementById('owner-row-name'); const oAv=document.getElementById('owner-row-avatar');
+    if(oName) oName.textContent=[u.first_name,u.last_name].filter(Boolean).join(' ')||'You (Owner)';
+    if(oAv&&u.photo_url) oAv.innerHTML=`<img src="${u.photo_url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.innerHTML='👑'">`;
+  }
+  setNav('profile'); showPage('profile');
+}
+
+function populatePadmForms(){
+  padmRenderProducts(); padmRenderShipping();
+  const pay=cfg.payment||DEFAULT_CONFIG.payment;
+  const f={'padm-store-name':cfg.storeName,'padm-store-sub':cfg.storeSub,'padm-phone':cfg.phone,'padm-email':cfg.email,'padm-address':cfg.address,'padm-hours':cfg.hours,'padm-about':cfg.about,'padm-logo-url':cfg.logoUrl,'padm-logo-emoji':cfg.logoEmoji,'padm-brand1':cfg.brandName1,'padm-brand2':cfg.brandName2,'padm-cbe-num':pay.cbeNum,'padm-cbe-name':pay.cbeName,'padm-telebirr-num':pay.telebirrNum,'padm-telebirr-name':pay.telebirrName,'padm-owner-notify-id':cfg.ownerNotifyId||''};
+  Object.entries(f).forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
+  renderThemeColorEditors();
+  const cu=document.getElementById('padm-currency'); const cp=document.getElementById('padm-cur-pos');
+  if(cu) cu.value=cfg.currency||'ETB'; if(cp) cp.value=cfg.currencyPos||'before';
+  const h=cfg.hero; [['padm-hero-tag',h.tag],['padm-hero-h1a',h.h1a],['padm-hero-h1b',h.h1b],['padm-hero-sub',h.sub],['padm-hero-img',h.imgUrl]].forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
+}
+function switchProfileAdminTab(idx,el){ document.querySelectorAll('.padm-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.padm-panel').forEach(p=>p.classList.remove('active')); document.getElementById('padm-panel-'+idx).classList.add('active'); if(idx===6) updateSyncStatusPanel(); if(idx===4) renderThemeColorEditors(); }
+
+function padmRenderProducts(){
+  const list=document.getElementById('padm-products-list'); if(!list) return;
+  let html='';
+  cfg.leagues.forEach(lg=>{
+    html+=`<div style="margin:8px 0 4px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lg.emoji} ${lg.label}</div>`;
+    lg.teams.forEach(team=>{
+      const cs=team.crestUrl||team.crest||'';
+      html+=`<div style="background:var(--card2);border:1px solid var(--border);border-radius:11px;margin-bottom:9px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openTeamCrestModal('${lg.id}','${team.id}')">
+          <div style="width:38px;height:38px;border-radius:8px;background:${team.color?team.color+'11':'var(--card2)'};border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">
+            ${cs?`<img src="${cs}" style="width:100%;height:100%;object-fit:contain;padding:2px" onerror="this.style.display='none';this.parentNode.textContent='${team.emoji}'">`:team.emoji}
+          </div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:700">${team.name}</div><div style="font-size:10px;color:var(--accent)">📷 Tap to change model photo</div></div>
+          <div style="font-size:12px;color:var(--gray)">›</div>
+        </div>`;
+      (team.products||[]).forEach(p=>{
+        html+=`<div style="display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openProdModal('${lg.id}','${team.id}',${p.id})">
+          <div style="width:40px;height:40px;border-radius:8px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0;border:1px solid var(--border)">
+            ${p.imgUrl?`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'👟'}'">`:p.emoji||'👟'}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${team.name} ${p.kitType}</div>
+            <div style="font-size:11px;color:var(--accent);font-weight:700">${fmt(p.price)}</div>
+          </div>
+          <div style="font-size:10px;color:var(--gray)">✏️ edit</div>
+          <div onclick="event.stopPropagation(); deleteProduct('${lg.id}','${team.id}',${p.id})" style="width:24px;height:24px;border-radius:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-left:6px">✕</div>
+        </div>`;
+      });
+      html+=`<div onclick="addProduct('${lg.id}','${team.id}')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:700">+ Add Style</div>`;
+      html+=`</div>`;
+    });
+  });
+  list.innerHTML=html;
+}
+
+function padmRenderShipping(){
+  const list=document.getElementById('padm-shipping-list'); if(!list) return;
+  list.innerHTML=cfg.shipping.map((s,i)=>`
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <input value="${s.icon}" oninput="cfg.shipping[${i}].icon=this.value;save()" style="width:36px;background:none;border:none;color:var(--white);font-size:20px;outline:none;text-align:center">
+        <input value="${s.name}" oninput="cfg.shipping[${i}].name=this.value;save()" style="flex:1;background:none;border:none;color:var(--white);font-size:13px;font-weight:600;outline:none;font-family:var(--font)">
+        <button onclick="cfg.shipping.splice(${i},1);save();padmRenderShipping()" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px">${cfg.shipping.length>1?'✕':''}</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="adm-field"><label>Description</label><input value="${s.desc}" oninput="cfg.shipping[${i}].desc=this.value;save()"></div>
+        <div class="adm-field"><label>Price (0=Free)</label><input type="number" value="${s.price}" min="0" oninput="cfg.shipping[${i}].price=parseInt(this.value)||0;save()"></div>
+      </div>
+    </div>`).join('');
+}
+function padmAddShipping(){ cfg.shipping.push({id:'ship-'+Date.now(),icon:'📦',name:'New Method',desc:'Description',price:0}); save(); padmRenderShipping(); showToast('Method added'); }
+function padmSavePayment(){ if(!cfg.payment) cfg.payment={}; cfg.payment.cbeNum=document.getElementById('padm-cbe-num').value||''; cfg.payment.cbeName=document.getElementById('padm-cbe-name').value||''; cfg.payment.telebirrNum=document.getElementById('padm-telebirr-num').value||''; cfg.payment.telebirrName=document.getElementById('padm-telebirr-name').value||''; save(); showToast('Payment info saved! ✅'); }
+function padmSaveStore(){ cfg.storeName=document.getElementById('padm-store-name').value; cfg.storeSub=document.getElementById('padm-store-sub').value; cfg.phone=document.getElementById('padm-phone').value; cfg.email=document.getElementById('padm-email').value; cfg.address=document.getElementById('padm-address').value; cfg.hours=document.getElementById('padm-hours').value; cfg.about=document.getElementById('padm-about').value; const notifyEl=document.getElementById('padm-owner-notify-id'); if(notifyEl&&notifyEl.value.trim()) cfg.ownerNotifyId=notifyEl.value.trim(); save(); renderHeader(); renderPickupCard(); showToast('Store info saved! ✅'); }
+function padmSaveLogo(){ cfg.logoUrl=document.getElementById('padm-logo-url').value; cfg.logoEmoji=document.getElementById('padm-logo-emoji').value||'👟'; cfg.brandName1=document.getElementById('padm-brand1').value; cfg.brandName2=document.getElementById('padm-brand2').value; save(); renderHeader(); showToast('Logo saved! 🎨'); }
+function padmSaveTheme(){
+  THEME_COLORS.forEach(({key})=>{
+    const hexEl=document.getElementById('clr-hex-'+key);
+    if(hexEl){ const hex=colorToHex(hexEl.value); if(hex) cfg.theme['--'+key]=hex; }
+  });
+  cfg.currency=document.getElementById('padm-currency')?.value||'ETB';
+  cfg.currencyPos=document.getElementById('padm-cur-pos')?.value||'before';
+  save(); applyTheme(); renderHeader(); renderHero(); renderShopGrid();
+  showToast('Theme saved! 🎨');
+}
+function padmResetTheme(){ cfg.theme=deepClone(DEFAULT_CONFIG.theme); save(); applyTheme(); populatePadmForms(); showToast('Theme reset'); }
+function padmSaveHero(){ cfg.hero={tag:document.getElementById('padm-hero-tag')?.value||'',h1a:document.getElementById('padm-hero-h1a')?.value||'',h1b:document.getElementById('padm-hero-h1b')?.value||'',sub:document.getElementById('padm-hero-sub')?.value||'',imgUrl:document.getElementById('padm-hero-img')?.value||''}; save(); renderHero(); showToast('Hero saved! 🎉'); }
+
+function openTeamCrestModal(lgId,teamId){
+  const lg=(cfg.leagues||[]).find(l=>l.id===lgId); if(!lg) return;
+  const team=(lg.teams||[]).find(t=>t.id===teamId); if(!team) return;
+  modalCtx={type:'crest',lgId,teamId};
+  document.getElementById('prod-modal-title').textContent=`${team.name} — Model Photo`;
+  document.getElementById('pm-img').value=team.crestUrl||''; document.getElementById('pm-emoji').value=team.emoji||'👟';
+  document.getElementById('pm-name-row').style.display='none'; document.getElementById('pm-price-row').style.display='none';
+  document.getElementById('pm-badge-row').style.display='none'; document.getElementById('pm-desc-row').style.display='none';
+  document.getElementById('pm-img-hint').textContent='Model photo URL. Use PNG with transparent background. Try worldvectorlogo.com or Wikipedia.';
+  const prev=document.getElementById('prod-modal-preview'); const cu=team.crestUrl||'';
+  prev.innerHTML=cu?`<img src="${cu}" style="width:100%;height:100%;object-fit:contain;padding:20px" onerror="this.parentNode.textContent='${team.emoji}'">`:`<span style="font-size:56px">${team.emoji}</span>`;
+  document.getElementById('prod-modal').style.display='block';
+}
+
+function openProdModal(lgId,teamId,prodId){
+  const found=findProduct(prodId); if(!found) return;
+  const {p,team}=found;
+  modalCtx={type:'product',lgId,teamId,prodId};
+  document.getElementById('prod-modal-title').textContent=`${team.name} — ${p.kitType}`;
+  document.getElementById('pm-img').value=p.imgUrl||''; document.getElementById('pm-emoji').value=p.emoji||'👟';
+  document.getElementById('pm-name-row').style.display='block'; document.getElementById('pm-price-row').style.display='block';
+  document.getElementById('pm-badge-row').style.display='block'; document.getElementById('pm-desc-row').style.display='block';
+  document.getElementById('pm-name').value=p.kitType; document.getElementById('pm-price').value=p.price;
+  document.getElementById('pm-badge').value=p.badge||''; document.getElementById('pm-desc').value=p.desc||'';
+  document.getElementById('pm-img-hint').textContent='Shoe image URL. Upload to imgur.com and paste the direct link.';
+  const prev=document.getElementById('prod-modal-preview');
+  if(p.imgUrl){ prev.innerHTML=`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'👟'}'">` } else { prev.textContent=p.emoji||'👟'; }
+  document.getElementById('prod-modal').style.display='block';
+}
+
+function closeProdModal(){
+  document.getElementById('prod-modal').style.display='none';
+  ['pm-name-row','pm-price-row','pm-badge-row','pm-desc-row'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='block'; });
+  modalCtx=null;
+}
+
+function previewProdImg(url){
+  const prev=document.getElementById('prod-modal-preview'); const fb=document.getElementById('pm-emoji').value||'👟';
+  const isCrest=modalCtx?.type==='crest';
+  if(url){ prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:${isCrest?'contain;padding:16px':'cover'}" onerror="this.parentNode.textContent='${fb}'">` } else { prev.textContent=fb; }
+}
+
+function saveProdModal(){
+  if(!modalCtx) return;
+  const lg=cfg.leagues.find(l=>l.id===modalCtx.lgId); if(!lg) return;
+  const team=lg.teams.find(t=>t.id===modalCtx.teamId); if(!team) return;
+  if(modalCtx.type==='crest'){
+    team.crestUrl=document.getElementById('pm-img').value||''; team.emoji=document.getElementById('pm-emoji').value||team.emoji;
+    save(); closeProdModal(); padmRenderProducts(); renderShopGrid(); showToast('Model photo saved! 🎨'); return;
+  }
+  const pidx=team.products.findIndex(p=>p.id===modalCtx.prodId); if(pidx===-1) return;
+  team.products[pidx].kitType=document.getElementById('pm-name').value||team.products[pidx].kitType;
+  team.products[pidx].imgUrl=document.getElementById('pm-img').value||'';
+  team.products[pidx].emoji=document.getElementById('pm-emoji').value||'👟';
+  team.products[pidx].price=parseInt(document.getElementById('pm-price').value)||0;
+  team.products[pidx].badge=document.getElementById('pm-badge').value||'';
+  team.products[pidx].desc=document.getElementById('pm-desc').value||'';
+  save(); closeProdModal(); padmRenderProducts(); renderShopGrid(); showToast('Product saved! ✅');
+}
+
+function renderManageAdmins(){
+  const list=document.getElementById('admin-ids-list'); if(!list) return;
+  const ids=cfg.adminIds||[];
+  if(!ids.length){ list.innerHTML=`<div style="padding:14px;text-align:center;font-size:12px;color:var(--gray)">No admins added yet.</div>`; return; }
+  list.innerHTML=ids.map((id,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)"><div id="admin-avatar-${id}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden">⚙️</div><div style="flex:1;min-width:0"><div id="admin-name-${id}" style="font-size:13px;font-weight:600;font-family:monospace;color:var(--light)">${id}</div><div id="admin-sub-${id}" style="font-size:11px;color:var(--gray);margin-top:1px">Admin #${i+1}</div></div><button onclick="removeAdmin('${id}')" style="background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);padding:6px 11px;border-radius:8px;font-size:12px;cursor:pointer;flex-shrink:0">Remove</button></div>`).join('');
+  loadAdminProfiles(ids);
+}
+// Fetches each admin's real Telegram name + profile photo from the Worker (which calls the Bot API
+// server-side — the browser never needs the bot token) and patches the rows in place once ready.
+async function loadAdminProfiles(ids){
+  if(!tgInitData||!ids.length) return;
+  try{
+    const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'get_admin_profiles',initData:tgInitData,ids})});
+    const data=await res.json();
+    if(!data.ok||!data.profiles) return;
+    ids.forEach(id=>{
+      const p=data.profiles[id]; if(!p) return;
+      const nameEl=document.getElementById('admin-name-'+id);
+      const subEl=document.getElementById('admin-sub-'+id);
+      const avEl=document.getElementById('admin-avatar-'+id);
+      const fullName=[p.firstName,p.lastName].filter(Boolean).join(' ');
+      if(nameEl&&fullName) nameEl.textContent=fullName;
+      if(subEl) subEl.textContent=p.username?'@'+p.username:('ID '+id);
+      if(avEl&&p.photoDataUrl) avEl.innerHTML=`<img src="${p.photoDataUrl}" style="width:100%;height:100%;object-fit:cover">`;
+      else if(avEl&&fullName) avEl.innerHTML=`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">${fullName[0].toUpperCase()}</div>`;
+    });
+  }catch(e){ /* fall back silently to ID-only display */ }
+}
+async function addAdmin(){
+  const inp=document.getElementById('new-admin-id-inp'); const val=(inp?.value||'').trim().replace(/\D/g,'');
+  if(!val){ showToast('Enter a valid Telegram ID'); return; }
+  if(OWNER_IDS.includes(val)){ showToast("That's an owner ID — owners already have full access"); return; }
+  if((cfg.adminIds||[]).includes(val)){ showToast('Already an admin'); return; }
+  if(!cfg.adminIds) cfg.adminIds=[];
+  cfg.adminIds.push(val);
+  localStorage.setItem('emartzon_cfg',JSON.stringify(cfg)); // save locally first so the UI updates immediately
+  if(inp) inp.value=''; renderManageAdmins();
+  showToast('Admin added — syncing… ☁️');
+  const synced=await pushCloudConfig(false);
+  syncAdminsToWorker();
+  if(synced) showToast('Synced! ✅ They now have access.');
+  // on failure, pushCloudConfig already showed why and is retrying automatically — no need to duplicate here
+}
+async function removeAdmin(id){
+  cfg.adminIds=(cfg.adminIds||[]).filter(x=>x!==id);
+  localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
+  renderManageAdmins();
+  showToast('Admin removed — syncing… ☁️');
+  const synced=await pushCloudConfig(false);
+  syncAdminsToWorker();
+  if(synced) showToast('Synced! ✅');
+  // on failure, pushCloudConfig already showed why and is retrying automatically — no need to duplicate here
+}
+// Tells the Worker who the current admins are, so the admin-dashboard endpoint (get_dashboard)
+// grants access to the right people. Only works if the caller is a verified owner — the Worker
+// checks tgInitData's Telegram signature, not anything the browser merely claims.
+function syncAdminsToWorker(){
+  if(!isOwner()||!tgInitData) return;
+  fetch(BOT_WORKER_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({type:'sync_admins',initData:tgInitData,adminIds:cfg.adminIds||[]})
+  }).catch(()=>{});
+}
+function copyOwnerId(){ const id=String(tgUser?.id||''); if(navigator.clipboard) navigator.clipboard.writeText(id).then(()=>showToast('ID copied! 📋')); else showToast(id); }
+
+// ── CUSTOMER / SALES DASHBOARD (admin + owner only) ──────────────────
+let _custDashData=null;
+async function loadCustomerDashboard(){
+  if(!isAdmin()) return;
+  if(!tgInitData){ document.getElementById('cust-list-wrap').innerHTML=`<div style="padding:20px;text-align:center;font-size:12px;color:var(--gray)">Open this app from inside Telegram to load customer data (needed to verify admin access).</div>`; return; }
+  document.getElementById('cust-list-wrap').innerHTML=`<div style="padding:20px;text-align:center;font-size:12px;color:var(--gray)">Loading…</div>`;
+  try{
+    const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'get_dashboard',initData:tgInitData})});
+    const raw=await res.text();
+    let data; try{ data=JSON.parse(raw); }catch{ data=null; }
+    if(!data){ document.getElementById('cust-list-wrap').innerHTML=`<div style="padding:20px;text-align:center;font-size:12px;color:var(--danger)">Worker returned an invalid response (HTTP ${res.status}). Check Cloudflare → Worker → Logs.<br><span style="opacity:.6;font-size:10px">${(raw||'').slice(0,200)}</span></div>`; return; }
+    if(!data.ok){ document.getElementById('cust-list-wrap').innerHTML=`<div style="padding:20px;text-align:center;font-size:12px;color:var(--danger)">Couldn't load data: ${data.error||'not authorized'}</div>`; return; }
+    _custDashData=data;
+    renderCustDashStats();
+    renderCustomerList();
+  }catch(e){
+    document.getElementById('cust-list-wrap').innerHTML=`<div style="padding:20px;text-align:center;font-size:12px;color:var(--danger)">Network error loading customer data: ${e.message||e}</div>`;
+  }
+}
+function renderCustDashStats(){
+  const d=_custDashData; if(!d) return;
+  const stat=(label,val)=>`<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-size:20px;font-weight:800;color:var(--accent)">${val}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">${label}</div></div>`;
+  document.getElementById('cust-dash-stats').innerHTML=
+    stat('Total Users',d.totalUsers)+
+    stat('Total Buyers',d.totalBuyers)+
+    stat('Total Orders',d.totalOrders)+
+    stat('Total Revenue',fmt(d.totalRevenue))+
+    stat('Active Carts',d.activeCarts);
+}
+function renderCustomerList(){
+  const d=_custDashData; if(!d) return;
+  const q=(document.getElementById('cust-search')?.value||'').trim().toLowerCase();
+  let list=d.customers||[];
+  if(q){
+    list=list.filter(c=>
+      (c.username||'').toLowerCase().includes(q)||
+      (c.firstName||'').toLowerCase().includes(q)||
+      (c.lastName||'').toLowerCase().includes(q)||
+      String(c.id).includes(q)
+    );
+  }
+  const wrap=document.getElementById('cust-list-wrap');
+  if(!list.length){ wrap.innerHTML=`<div style="padding:20px;text-align:center;font-size:12px;color:var(--gray)">No matching customers.</div>`; return; }
+  wrap.innerHTML=list.map(c=>{
+    const name=[c.firstName,c.lastName].filter(Boolean).join(' ')||'Telegram User';
+    const cartCount=(c.cart||[]).reduce((a,i)=>a+(i.qty||0),0);
+    return `<div onclick="openCustomerDetail('${c.id}')" style="display:flex;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid var(--border);cursor:pointer">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">${c.ordersCount>0?'🛍️':'👤'}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600">${name}${c.username?` <span style="color:var(--gray);font-weight:400">@${c.username}</span>`:''}</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:1px">${c.ordersCount} order${c.ordersCount!==1?'s':''} · ${fmt(c.totalSpent||0)}${cartCount?` · 🛒 ${cartCount} in cart`:''}</div>
+      </div>
+      <div style="color:var(--gray);font-size:18px">›</div>
+    </div>`;
+  }).join('');
+}
+function openCustomerDetail(id){
+  const c=(_custDashData?.customers||[]).find(x=>String(x.id)===String(id)); if(!c) return;
+  const name=[c.firstName,c.lastName].filter(Boolean).join(' ')||'Telegram User';
+  const ordersHtml=(c.orders||[]).length ? c.orders.map(o=>`
+    <div style="padding:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="font-size:13px">#${o.id}</b><span style="font-size:12px;color:var(--accent);font-weight:700">${fmt(o.total)}</span></div>
+      <div style="font-size:11px;color:var(--gray);margin-bottom:6px">${o.date} · ${o.method||''} · ${o.paymentMethod||''}</div>
+      <div style="font-size:12px;line-height:1.7">${(o.items||[]).map(i=>`${i.name} (${i.size}) ×${i.qty}`).join('<br>')}</div>
+    </div>`).join('') : `<div style="font-size:12px;color:var(--gray)">No orders yet.</div>`;
+  const cartHtml=(c.cart||[]).length ? c.cart.map(i=>`<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--border)">${i.name} (${i.size}) ×${i.qty} — ${fmt(i.price*i.qty)}</div>`).join('') : `<div style="font-size:12px;color:var(--gray)">Cart is empty.</div>`;
+  document.getElementById('cust-modal-content').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:22px">👤</div>
+      <div>
+        <div style="font-size:16px;font-weight:700">${name}</div>
+        <div style="font-size:12px;color:var(--gray)">${c.username?'@'+c.username:'No username set'} · ID <span style="font-family:monospace">${c.id}</span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <a href="tg://user?id=${c.id}" style="flex:1;text-align:center;background:var(--accent);color:var(--bg);padding:10px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none">💬 Message on Telegram</a>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Current Cart</div>
+    ${cartHtml}
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 8px">Order History (${(c.orders||[]).length})</div>
+    ${ordersHtml}
+  `;
+  document.getElementById('cust-modal').style.display='block';
+}
+function closeCustModal(){ document.getElementById('cust-modal').style.display='none'; }
+
+function goShop(){ shopState={leagueId:'all',teamId:null,kitFilter:'all'}; renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle(); setNav('shop'); showPage('shop'); }
+function goSearch(){
+  const overlay=document.getElementById('search-overlay');
+  overlay.style.display='flex';
+  setTimeout(()=>{ document.getElementById('search-input').focus(); },100);
+  setNav('search');
+  renderSearchResults('');
+}
+function closeSearch(){
+  document.getElementById('search-overlay').style.display='none';
+  document.getElementById('search-input').value='';
+  document.getElementById('search-clear').style.display='none';
+  document.getElementById('search-results').innerHTML='';
+  setNav('shop');
+}
+function clearSearch(){
+  document.getElementById('search-input').value='';
+  document.getElementById('search-clear').style.display='none';
+  document.getElementById('search-input').focus();
+  renderSearchResults('');
+}
+function liveSearch(q){
+  document.getElementById('search-clear').style.display=q?'block':'none';
+  renderSearchResults(q);
+}
+function renderSearchResults(q){
+  const el=document.getElementById('search-results');
+  const query=(q||'').trim().toLowerCase();
+  if(!query){
+    // Show all leagues as quick picks
+    el.innerHTML=`
+      <div style="padding:14px 14px 8px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.6px">Browse by Brand</div>
+      ${cfg.leagues.map(lg=>`
+        <div onclick="closeSearch();selectLeague('${lg.id}',document.querySelector('#cats-bar .cat-btn'))"
+          style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border);cursor:pointer;active:background:var(--card)">
+          <div style="width:38px;height:38px;border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid var(--border)">${lg.emoji}</div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600">${lg.label}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">${lg.teams.length} models</div></div>
+          <div style="color:var(--gray);font-size:18px">›</div>
+        </div>`).join('')}`;
+    return;
+  }
+  // Search teams and products
+  const teamResults=[];
+  const productResults=[];
+  cfg.leagues.forEach(lg=>{
+    (lg.teams||[]).forEach(team=>{
+      if(team.name.toLowerCase().includes(query)||lg.label.toLowerCase().includes(query)){
+        teamResults.push({team,lg});
+      }
+      (team.products||[]).forEach(p=>{
+        if(p.kitType.toLowerCase().includes(query)||(p.desc||'').toLowerCase().includes(query)){
+          productResults.push({p,team,lg});
+        }
+      });
+    });
+  });
+  if(!teamResults.length&&!productResults.length){
+    el.innerHTML=`
+      <div style="display:flex;flex-direction:column;align-items:center;padding:60px 20px;text-align:center">
+        <div style="font-size:48px;margin-bottom:14px">🔍</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:6px">No results for "${q}"</div>
+        <div style="font-size:13px;color:var(--gray)">Try searching a model, brand, or style</div>
+      </div>`;
+    return;
+  }
+  let out='';
+  if(teamResults.length){
+    out+=`<div style="padding:14px 14px 8px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.6px">Models (${teamResults.length})</div>`;
+    out+=teamResults.slice(0,8).map(({team,lg})=>{
+      const cs=team.crestUrl||team.crest||'';
+      return `<div onclick="closeSearch();selectTeam('${lg.id}','${team.id}')"
+        style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer">
+        <div style="width:40px;height:40px;border-radius:10px;background:${team.color?team.color+'11':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid var(--border);overflow:hidden">
+          ${cs?`<img src="${cs}" style="width:100%;height:100%;object-fit:contain;padding:4px" onerror="this.parentNode.textContent='${team.emoji}'">`:team.emoji}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600">${team.name}</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px">${lg.emoji} ${lg.label} · ${(team.products||[]).length} items</div>
+        </div>
+        <div style="color:var(--gray);font-size:18px">›</div>
+      </div>`;
+    }).join('');
+  }
+  if(productResults.length){
+    out+=`<div style="padding:14px 14px 8px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.6px">Styles (${productResults.length})</div>`;
+    out+=productResults.slice(0,10).map(({p,team,lg})=>`
+      <div onclick="closeSearch();openDetail(${p.id})"
+        style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer">
+        <div style="width:48px;height:48px;border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid var(--border);overflow:hidden">
+          ${p.imgUrl?`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'👟'}'">`:p.emoji||'👟'}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">${team.name} ${p.kitType}</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px">${lg.emoji} ${lg.label}</div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--accent)">${fmt(p.price)}</div>
+      </div>`).join('');
+  }
+  el.innerHTML=out;
+}
+function showAdminDirect(){ if(isAdmin()) showProfile(); }
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('main-hdr').style.display=['detail','cart','checkout','success','info','profile'].includes(p)?'none':'flex';
+}
+function setNav(p){ document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); const m={shop:'nav-shop',cart:'nav-cart',info:'nav-info',profile:'nav-profile'}; if(m[p]) document.getElementById(m[p]).classList.add('active'); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Vision Sportswear</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="styles.css">
