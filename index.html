@@ -437,8 +437,8 @@
     </div>
     <div class="adm-field" id="pm-video-row">
       <label>Video URL <span style="font-weight:400;color:var(--gray)">(optional)</span></label>
-      <input id="pm-video" type="url" placeholder="https://... .mp4 or a YouTube link">
-      <div class="img-url-hint">Direct video file link, or a YouTube URL — shown as an extra slide in the gallery.</div>
+      <input id="pm-video" type="url" placeholder="https://... .mp4, YouTube, or Google Drive link">
+      <div class="img-url-hint">Direct video file link, a YouTube URL, or a Google Drive share link (must be shared as "Anyone with the link"). Shown as an extra slide in the gallery.</div>
     </div>
     <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="👟" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'👟'"></div>
     <div class="adm-field" id="pm-name-row"><label>Style / Colorway</label><input id="pm-name" type="text" placeholder="e.g. Triple White"></div>
@@ -1580,11 +1580,23 @@ function youtubeEmbedUrl(u){
   const m=(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
   return m?`https://www.youtube.com/embed/${m[1]}?autoplay=1&playsinline=1`:u;
 }
-function playDetVideo(url,isYt){
+function isDriveUrl(u){ return /drive\.google\.com/i.test(u||''); }
+// Converts any Google Drive share link (view / edit / open?id=... / drivesdk, etc.) into
+// Drive's embeddable preview URL — a plain "view" link can't be played as a video file directly.
+function driveEmbedUrl(u){
+  const m=(u||'').match(/\/file\/d\/([\w-]{10,})/) || (u||'').match(/[?&]id=([\w-]{10,})/);
+  return m?`https://drive.google.com/file/d/${m[1]}/preview`:u;
+}
+function videoKind(u){ if(isYoutubeUrl(u)) return 'youtube'; if(isDriveUrl(u)) return 'drive'; return 'direct'; }
+function playDetVideo(url,kind){
   const slide=document.getElementById('det-gallery-video-slide'); if(!slide) return;
-  slide.innerHTML=isYt
-    ?`<iframe src="${youtubeEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
-    :`<video src="${url}" controls autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>`;
+  if(kind==='youtube'){
+    slide.innerHTML=`<iframe src="${youtubeEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  } else if(kind==='drive'){
+    slide.innerHTML=`<iframe src="${driveEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay" allowfullscreen></iframe>`;
+  } else {
+    slide.innerHTML=`<video src="${url}" controls autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>`;
+  }
 }
 function onDetGalleryScroll(track){
   const idx=Math.round(track.scrollLeft/Math.max(1,track.clientWidth));
@@ -1602,11 +1614,11 @@ function buildDetGallery(p){
     if(s.type==='image'){
       return `<div class="det-gallery-slide"><img src="${s.src}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'👟'}</div>'"></div>`;
     }
-    const isYt=isYoutubeUrl(s.src);
+    const kind=videoKind(s.src);
     const poster=imgs.length?` style="background:url('${imgs[0].replace(/'/g,"&#39;")}') center/cover"`:'';
     const safeUrl=s.src.replace(/'/g,"&#39;");
     return `<div class="det-gallery-slide" id="det-gallery-video-slide"${poster}>
-      <div class="det-gallery-playbtn" onclick="playDetVideo('${safeUrl}',${isYt})"><div class="playcircle">▶</div></div>
+      <div class="det-gallery-playbtn" onclick="playDetVideo('${safeUrl}','${kind}')"><div class="playcircle">▶</div></div>
     </div>`;
   }).join('');
   const dots=slides.length>1?`<div class="det-gallery-dots">${slides.map((_,i)=>`<div class="det-gallery-dot ${i===0?'active':''}"></div>`).join('')}</div>`:'';
