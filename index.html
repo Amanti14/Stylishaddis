@@ -266,7 +266,7 @@
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;overflow:hidden">
         <div class="padm-panel active" id="padm-panel-0" style="padding:12px">
-          <div style="font-size:11px;color:var(--gray);margin-bottom:10px;line-height:1.5">Tap any model photo to change it. Tap any style to edit its image URL and price.</div>
+          <div style="font-size:11px;color:var(--gray);margin-bottom:10px;line-height:1.5">Tap any model photo to change it. Tap any style to edit its cover image, extra photos, video, and price. Use the ✕ next to a brand or model to remove it, or "＋ Add Brand" at the bottom to create a new one.</div>
           <div id="padm-products-list"></div>
         </div>
         <div class="padm-panel" id="padm-panel-1" style="padding:12px">
@@ -424,10 +424,21 @@
   </div>
   <div style="padding:14px">
     <div class="adm-field">
-      <label id="pm-img-label">Image URL</label>
+      <label id="pm-img-label">Cover Image URL</label>
       <div class="img-preview" id="prod-modal-preview">👟</div>
       <input id="pm-img" type="url" placeholder="https://i.imgur.com/..." oninput="previewProdImg(this.value)">
-      <div class="img-url-hint" id="pm-img-hint">Paste a direct image URL (Imgur, etc.)</div>
+      <div class="img-url-hint" id="pm-img-hint">Paste a direct image URL (Imgur, etc.) — this is the main photo shown in listings.</div>
+    </div>
+    <div class="adm-field" id="pm-images-row">
+      <label>Additional Photos</label>
+      <div class="pm-img-list" id="pm-images-list"></div>
+      <div class="pm-img-add" onclick="pmAddImageRow()">+ Add Photo</div>
+      <div class="img-url-hint">Shown as a swipeable gallery on the product page, after the cover image.</div>
+    </div>
+    <div class="adm-field" id="pm-video-row">
+      <label>Video URL <span style="font-weight:400;color:var(--gray)">(optional)</span></label>
+      <input id="pm-video" type="url" placeholder="https://... .mp4 or a YouTube link">
+      <div class="img-url-hint">Direct video file link, or a YouTube URL — shown as an extra slide in the gallery.</div>
     </div>
     <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="👟" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'👟'"></div>
     <div class="adm-field" id="pm-name-row"><label>Style / Colorway</label><input id="pm-name" type="text" placeholder="e.g. Triple White"></div>
@@ -477,6 +488,8 @@ const DEFAULT_CONFIG = {
   theme:{"--accent":"#ffffff","--bg":"#1a1a1a","--card":"#242424","--dark":"#111111","--white":"#ffffff","--border":"#333333","--accent2":"#cccccc"},
   sizes:["38","39","40","41","42","43","44","45","46"],
   deletedProductIds:[],
+  deletedLeagueIds:[],   // brand categories removed via admin — kept so a future default-config merge can't resurrect them
+  deletedTeamIds:[],     // models removed via admin, stored as "leagueId::teamId"
   shipping:[
     {id:"delivery",icon:"🚚",name:"Home Delivery",desc:"3–5 business days",price:80},
     {id:"pickup",  icon:"🏪",name:"Pick from Store",desc:"Ready in 1–2 hours · Addis",price:0},
@@ -606,6 +619,14 @@ function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
 // Removes products the admin has explicitly deleted, even though mergeLeagues would
 // otherwise resurrect them from DEFAULT_CONFIG on the next sync/reload.
 function applyDeletedProducts(c){
+  const deletedLeagues=c.deletedLeagueIds||[];
+  if(deletedLeagues.length) c.leagues=(c.leagues||[]).filter(lg=>!deletedLeagues.includes(lg.id));
+  const deletedTeams=c.deletedTeamIds||[];
+  if(deletedTeams.length){
+    (c.leagues||[]).forEach(lg=>{
+      lg.teams=(lg.teams||[]).filter(t=>!deletedTeams.includes(`${lg.id}::${t.id}`));
+    });
+  }
   const deleted=c.deletedProductIds||[];
   if(!deleted.length) return;
   (c.leagues||[]).forEach(lg=>(lg.teams||[]).forEach(team=>{
@@ -622,7 +643,7 @@ function addProduct(lgId,teamId){
   const team=lg.teams.find(t=>t.id===teamId); if(!team) return;
   const newId=nextProductId();
   team.products=team.products||[];
-  team.products.push({id:newId,kitType:'New Style',emoji:'👟',imgUrl:'',price:1500,badge:'',desc:''});
+  team.products.push({id:newId,kitType:'New Style',emoji:'👟',imgUrl:'',images:[],videoUrl:'',price:1500,badge:'',desc:''});
   save();
   padmRenderProducts();
   renderShopGrid();
@@ -643,12 +664,80 @@ function deleteProduct(lgId,teamId,prodId){
   showToast('Product deleted 🗑️');
 }
 
+// ── BRAND CATEGORIES (leagues) — add / remove ──────────────────────
+function slugify(s,fallback){ return (s||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||fallback; }
+function nextLeagueId(base){
+  const ids=new Set(cfg.leagues.map(l=>l.id));
+  let id=base,n=2; while(ids.has(id)){ id=`${base}-${n}`; n++; } return id;
+}
+function addLeague(){
+  const name=prompt('New brand name (e.g. "New Balance"):'); if(!name||!name.trim()) return;
+  const emoji=prompt('Emoji for this brand (optional):','👟')||'👟';
+  const id=nextLeagueId(slugify(name,'brand'));
+  cfg.leagues.push({id,label:name.trim(),emoji,teams:[]});
+  save(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid();
+  showToast(`${name.trim()} added — now add a model 👟`);
+}
+function deleteLeague(lgId){
+  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
+  const teamCount=(lg.teams||[]).length;
+  const msg=teamCount
+    ? `Delete "${lg.label}" and all ${teamCount} model${teamCount!==1?'s':''} (and every style under them)? This can't be undone and removes it for all users.`
+    : `Delete "${lg.label}"? This can't be undone.`;
+  if(!confirm(msg)) return;
+  // Remember every product/model/brand id removed here so a future config merge with the
+  // built-in defaults can't silently bring a deleted default brand back to life.
+  if(!cfg.deletedProductIds) cfg.deletedProductIds=[];
+  if(!cfg.deletedTeamIds) cfg.deletedTeamIds=[];
+  if(!cfg.deletedLeagueIds) cfg.deletedLeagueIds=[];
+  (lg.teams||[]).forEach(t=>{
+    (t.products||[]).forEach(p=>{ if(!cfg.deletedProductIds.includes(p.id)) cfg.deletedProductIds.push(p.id); });
+    const key=`${lg.id}::${t.id}`; if(!cfg.deletedTeamIds.includes(key)) cfg.deletedTeamIds.push(key);
+  });
+  if(!cfg.deletedLeagueIds.includes(lgId)) cfg.deletedLeagueIds.push(lgId);
+  cfg.leagues=cfg.leagues.filter(l=>l.id!==lgId);
+  if(shopState.leagueId===lgId){ shopState={leagueId:'all',teamId:null,kitFilter:'all'}; }
+  save(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
+  showToast('Brand deleted 🗑️');
+}
+
+// ── MODELS (teams) — add / remove ───────────────────────────────────
+function nextTeamId(lg,base){
+  const ids=new Set((lg.teams||[]).map(t=>t.id));
+  let id=base,n=2; while(ids.has(id)){ id=`${base}-${n}`; n++; } return id;
+}
+function addTeam(lgId){
+  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
+  const name=prompt(`New model name for ${lg.label} (e.g. "Classic Runner"):`); if(!name||!name.trim()) return;
+  const id=nextTeamId(lg,slugify(name,'model'));
+  lg.teams=lg.teams||[];
+  lg.teams.push({id,name:name.trim(),emoji:'👟',color:'',crestUrl:'',products:[]});
+  save(); padmRenderProducts(); renderShopGrid();
+  showToast(`${name.trim()} added — now add a style ✏️`);
+}
+function deleteTeam(lgId,teamId){
+  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
+  const team=(lg.teams||[]).find(t=>t.id===teamId); if(!team) return;
+  const prodCount=(team.products||[]).length;
+  const msg=prodCount
+    ? `Delete "${team.name}" and all ${prodCount} style${prodCount!==1?'s':''} under it? This can't be undone and removes it for all users.`
+    : `Delete "${team.name}"? This can't be undone.`;
+  if(!confirm(msg)) return;
+  if(!cfg.deletedProductIds) cfg.deletedProductIds=[];
+  if(!cfg.deletedTeamIds) cfg.deletedTeamIds=[];
+  (team.products||[]).forEach(p=>{ if(!cfg.deletedProductIds.includes(p.id)) cfg.deletedProductIds.push(p.id); });
+  const key=`${lgId}::${teamId}`; if(!cfg.deletedTeamIds.includes(key)) cfg.deletedTeamIds.push(key);
+  lg.teams=lg.teams.filter(t=>t.id!==teamId);
+  save(); padmRenderProducts(); renderShopGrid();
+  showToast('Model deleted 🗑️');
+}
+
 function mergeLeagues(saved, defaults) {
   // If no saved data, use defaults
   if(!saved||!saved.length) return deepClone(defaults);
   const savedMap={};
   (saved||[]).forEach(lg=>{savedMap[lg.id]=lg;});
-  return defaults.map(defLg=>{
+  const merged=defaults.map(defLg=>{
     const savLg=savedMap[defLg.id];
     if(!savLg) return deepClone(defLg);
     const stm={};
@@ -667,6 +756,8 @@ function mergeLeagues(saved, defaults) {
           kitType: savProd.kitType||defProd.kitType,
           imgUrl: savProd.imgUrl||'',
           backImgUrl: savProd.backImgUrl||'',
+          images: Array.isArray(savProd.images)?savProd.images.filter(Boolean):[],
+          videoUrl: savProd.videoUrl||'',
           emoji:  savProd.emoji||defProd.emoji,
           price:  savProd.price,
           badge:  savProd.badge,
@@ -684,8 +775,17 @@ function mergeLeagues(saved, defaults) {
         products: mergedProds,
       };
     });
+    // Keep any models (teams) that exist only in saved data (e.g. newly added via "+ Add Model") —
+    // same reasoning as products above.
+    const defTeamIds=new Set(defLg.teams.map(dt=>dt.id));
+    (savLg.teams||[]).forEach(st=>{ if(!defTeamIds.has(st.id)) mergedTeams.push(deepClone(st)); });
     return {...deepClone(defLg),teams:mergedTeams};
   });
+  // Keep any brand categories that exist only in saved data (e.g. newly added via "+ Add Brand") —
+  // otherwise the merge would silently drop them since it only knows the original seed list.
+  const defLgIds=new Set(defaults.map(dl=>dl.id));
+  (saved||[]).forEach(sl=>{ if(!defLgIds.has(sl.id)) merged.push(deepClone(sl)); });
+  return merged;
 }
 
 // ── CLOUD SYNC (JSONBin) ──────────────────────────
@@ -1474,6 +1574,48 @@ function renderShopGrid(query=''){
   }
 }
 
+// ── Product detail gallery (multiple photos + optional video slide) ──
+function isYoutubeUrl(u){ return /youtu\.?be/i.test(u||''); }
+function youtubeEmbedUrl(u){
+  const m=(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
+  return m?`https://www.youtube.com/embed/${m[1]}?autoplay=1&playsinline=1`:u;
+}
+function playDetVideo(url,isYt){
+  const slide=document.getElementById('det-gallery-video-slide'); if(!slide) return;
+  slide.innerHTML=isYt
+    ?`<iframe src="${youtubeEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+    :`<video src="${url}" controls autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>`;
+}
+function onDetGalleryScroll(track){
+  const idx=Math.round(track.scrollLeft/Math.max(1,track.clientWidth));
+  const dots=track.parentNode.querySelectorAll('.det-gallery-dot');
+  dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+}
+function buildDetGallery(p){
+  const imgs=[p.imgUrl,...(Array.isArray(p.images)?p.images:[])].filter(Boolean);
+  const slides=imgs.map(src=>({type:'image',src}));
+  if(p.videoUrl) slides.push({type:'video',src:p.videoUrl});
+  if(!slides.length){
+    return `<div class="det-gallery"><div class="det-gallery-track"><div class="det-gallery-slide"><div class="det-emoji">${p.emoji||'👟'}</div></div></div></div>`;
+  }
+  const slidesHtml=slides.map(s=>{
+    if(s.type==='image'){
+      return `<div class="det-gallery-slide"><img src="${s.src}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'👟'}</div>'"></div>`;
+    }
+    const isYt=isYoutubeUrl(s.src);
+    const poster=imgs.length?` style="background:url('${imgs[0].replace(/'/g,"&#39;")}') center/cover"`:'';
+    const safeUrl=s.src.replace(/'/g,"&#39;");
+    return `<div class="det-gallery-slide" id="det-gallery-video-slide"${poster}>
+      <div class="det-gallery-playbtn" onclick="playDetVideo('${safeUrl}',${isYt})"><div class="playcircle">▶</div></div>
+    </div>`;
+  }).join('');
+  const dots=slides.length>1?`<div class="det-gallery-dots">${slides.map((_,i)=>`<div class="det-gallery-dot ${i===0?'active':''}"></div>`).join('')}</div>`:'';
+  return `<div class="det-gallery">
+    <div class="det-gallery-track" onscroll="onDetGalleryScroll(this)">${slidesHtml}</div>
+    ${dots}
+  </div>`;
+}
+
 function openDetail(pid){
   const found=findProduct(pid); if(!found) return;
   const {p,team,lg}=found;
@@ -1482,7 +1624,7 @@ function openDetail(pid){
   const cs=team.crestUrl||team.crest||'';
   document.getElementById('det-title').textContent=`${team.name} — ${p.kitType}`;
   document.getElementById('det-content').innerHTML=`
-    <div class="det-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'👟'}</div>'">`:`<div class="det-emoji">${p.emoji||'👟'}</div>`}</div>
+    ${buildDetGallery(p)}
     <div class="det-body">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <div style="width:30px;height:30px;border-radius:8px;background:${team.color?team.color+'11':'var(--card2)'};display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--border);overflow:hidden">
@@ -1832,8 +1974,11 @@ function padmRenderProducts(){
   const list=document.getElementById('padm-products-list'); if(!list) return;
   let html='';
   cfg.leagues.forEach(lg=>{
-    html+=`<div style="margin:8px 0 4px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lg.emoji} ${lg.label}</div>`;
-    lg.teams.forEach(team=>{
+    html+=`<div class="padm-league-hdr">
+      <span style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lg.emoji} ${lg.label}</span>
+      <div class="padm-league-del" onclick="deleteLeague('${lg.id}')" title="Delete brand">✕</div>
+    </div>`;
+    (lg.teams||[]).forEach(team=>{
       const cs=team.crestUrl||team.crest||'';
       html+=`<div style="background:var(--card2);border:1px solid var(--border);border-radius:11px;margin-bottom:9px;overflow:hidden">
         <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openTeamCrestModal('${lg.id}','${team.id}')">
@@ -1841,7 +1986,7 @@ function padmRenderProducts(){
             ${cs?`<img src="${cs}" style="width:100%;height:100%;object-fit:contain;padding:2px" onerror="this.style.display='none';this.parentNode.textContent='${team.emoji}'">`:team.emoji}
           </div>
           <div style="flex:1"><div style="font-size:12px;font-weight:700">${team.name}</div><div style="font-size:10px;color:var(--accent)">📷 Tap to change model photo</div></div>
-          <div style="font-size:12px;color:var(--gray)">›</div>
+          <div onclick="event.stopPropagation(); deleteTeam('${lg.id}','${team.id}')" style="width:24px;height:24px;border-radius:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-right:2px" title="Delete model">✕</div>
         </div>`;
       (team.products||[]).forEach(p=>{
         html+=`<div style="display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openProdModal('${lg.id}','${team.id}',${p.id})">
@@ -1859,7 +2004,9 @@ function padmRenderProducts(){
       html+=`<div onclick="addProduct('${lg.id}','${team.id}')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:700">+ Add Style</div>`;
       html+=`</div>`;
     });
+    html+=`<div onclick="addTeam('${lg.id}')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;margin-bottom:14px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:700;border:1px dashed var(--border);border-radius:9px">+ Add Model to ${lg.label}</div>`;
   });
+  html+=`<div class="padm-add-brand-btn" onclick="addLeague()">＋ Add Brand</div>`;
   list.innerHTML=html;
 }
 
@@ -1903,6 +2050,8 @@ function openTeamCrestModal(lgId,teamId){
   document.getElementById('pm-img').value=team.crestUrl||''; document.getElementById('pm-emoji').value=team.emoji||'👟';
   document.getElementById('pm-name-row').style.display='none'; document.getElementById('pm-price-row').style.display='none';
   document.getElementById('pm-badge-row').style.display='none'; document.getElementById('pm-desc-row').style.display='none';
+  document.getElementById('pm-images-row').style.display='none'; document.getElementById('pm-video-row').style.display='none';
+  document.getElementById('pm-img-label').textContent='Model Photo URL';
   document.getElementById('pm-img-hint').textContent='Model photo URL. Use PNG with transparent background. Try worldvectorlogo.com or Wikipedia.';
   const prev=document.getElementById('prod-modal-preview'); const cu=team.crestUrl||'';
   prev.innerHTML=cu?`<img src="${cu}" style="width:100%;height:100%;object-fit:contain;padding:20px" onerror="this.parentNode.textContent='${team.emoji}'">`:`<span style="font-size:56px">${team.emoji}</span>`;
@@ -1917,17 +2066,46 @@ function openProdModal(lgId,teamId,prodId){
   document.getElementById('pm-img').value=p.imgUrl||''; document.getElementById('pm-emoji').value=p.emoji||'👟';
   document.getElementById('pm-name-row').style.display='block'; document.getElementById('pm-price-row').style.display='block';
   document.getElementById('pm-badge-row').style.display='block'; document.getElementById('pm-desc-row').style.display='block';
+  document.getElementById('pm-images-row').style.display='block'; document.getElementById('pm-video-row').style.display='block';
+  document.getElementById('pm-img-label').textContent='Cover Image URL';
   document.getElementById('pm-name').value=p.kitType; document.getElementById('pm-price').value=p.price;
   document.getElementById('pm-badge').value=p.badge||''; document.getElementById('pm-desc').value=p.desc||'';
-  document.getElementById('pm-img-hint').textContent='Shoe image URL. Upload to imgur.com and paste the direct link.';
+  document.getElementById('pm-video').value=p.videoUrl||'';
+  pmImagesWorking=Array.isArray(p.images)?[...p.images]:[];
+  renderPmImagesList();
+  document.getElementById('pm-img-hint').textContent='Shoe image URL. Upload to imgur.com and paste the direct link — this is the main photo shown in listings.';
   const prev=document.getElementById('prod-modal-preview');
   if(p.imgUrl){ prev.innerHTML=`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'👟'}'">` } else { prev.textContent=p.emoji||'👟'; }
   document.getElementById('prod-modal').style.display='block';
 }
 
+// ── Additional-photos repeatable list (inside the product modal) ──────
+let pmImagesWorking=[];
+function renderPmImagesList(){
+  const wrap=document.getElementById('pm-images-list'); if(!wrap) return;
+  wrap.innerHTML=pmImagesWorking.map((url,i)=>`
+    <div class="pm-img-row">
+      <div class="pm-img-thumb" id="pm-img-thumb-${i}">${url?`<img src="${url}" onerror="this.parentNode.textContent='🖼️'">`:'🖼️'}</div>
+      <input type="url" value="${(url||'').replace(/"/g,'&quot;')}" placeholder="https://i.imgur.com/..." oninput="pmUpdateImage(${i},this.value)">
+      <div class="pm-img-del" onclick="pmRemoveImage(${i})">✕</div>
+    </div>`).join('');
+}
+function pmAddImageRow(){
+  pmImagesWorking.push('');
+  renderPmImagesList();
+  const inputs=document.querySelectorAll('#pm-images-list input'); const last=inputs[inputs.length-1]; if(last) last.focus();
+}
+function pmRemoveImage(i){ pmImagesWorking.splice(i,1); renderPmImagesList(); }
+function pmUpdateImage(i,val){
+  pmImagesWorking[i]=val;
+  const thumb=document.getElementById(`pm-img-thumb-${i}`);
+  if(thumb) thumb.innerHTML=val?`<img src="${val}" onerror="this.parentNode.textContent='🖼️'">`:'🖼️';
+}
+
 function closeProdModal(){
   document.getElementById('prod-modal').style.display='none';
-  ['pm-name-row','pm-price-row','pm-badge-row','pm-desc-row'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='block'; });
+  ['pm-name-row','pm-price-row','pm-badge-row','pm-desc-row','pm-images-row','pm-video-row'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='block'; });
+  pmImagesWorking=[];
   modalCtx=null;
 }
 
@@ -1952,6 +2130,8 @@ function saveProdModal(){
   team.products[pidx].price=parseInt(document.getElementById('pm-price').value)||0;
   team.products[pidx].badge=document.getElementById('pm-badge').value||'';
   team.products[pidx].desc=document.getElementById('pm-desc').value||'';
+  team.products[pidx].images=pmImagesWorking.map(u=>(u||'').trim()).filter(Boolean);
+  team.products[pidx].videoUrl=document.getElementById('pm-video').value.trim()||'';
   save(); closeProdModal(); padmRenderProducts(); renderShopGrid(); showToast('Product saved! ✅');
 }
 
