@@ -83,6 +83,17 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 .det-img-wrap{width:100%;aspect-ratio:1.1;background:var(--card2);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .det-img-wrap img{width:100%;height:100%;object-fit:cover}
 .det-emoji{font-size:90px}
+/* DETAIL — swipeable gallery (multiple photos + optional video slide) */
+.det-gallery{width:100%;aspect-ratio:1.1;background:var(--card2);position:relative;overflow:hidden}
+.det-gallery-track{display:flex;width:100%;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.det-gallery-track::-webkit-scrollbar{display:none}
+.det-gallery-slide{flex:0 0 100%;width:100%;height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:var(--card2)}
+.det-gallery-slide img,.det-gallery-slide video{width:100%;height:100%;object-fit:cover}
+.det-gallery-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.det-gallery-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);transition:width .15s,border-radius .15s}
+.det-gallery-dot.active{background:var(--white);width:16px;border-radius:3px}
+.det-gallery-playbtn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);cursor:pointer}
+.det-gallery-playbtn .playcircle{width:56px;height:56px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;border:2px solid rgba(255,255,255,.8)}
 .det-body{padding:15px}
 .det-name{font-size:20px;font-weight:800;margin-bottom:5px;line-height:1.2}
 .det-price{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:14px}
@@ -230,6 +241,18 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 .img-preview{width:100%;aspect-ratio:2;border-radius:9px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:8px;overflow:hidden;border:1px solid var(--border)}
 .img-preview img{width:100%;height:100%;object-fit:cover}
 .img-url-hint{font-size:10px;color:var(--gray);margin-top:4px}
+/* Admin: repeatable "additional photos" list inside the product modal */
+.pm-img-list{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+.pm-img-row{display:flex;align-items:center;gap:8px}
+.pm-img-row input{flex:1}
+.pm-img-thumb{width:34px;height:34px;border-radius:7px;background:var(--card2);border:1px solid var(--border);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:14px}
+.pm-img-thumb img{width:100%;height:100%;object-fit:cover}
+.pm-img-del{width:26px;height:26px;border-radius:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;cursor:pointer}
+.pm-img-add{text-align:center;padding:9px;border:1px dashed var(--border);border-radius:9px;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer}
+/* Admin: brand (league) management */
+.padm-league-hdr{display:flex;align-items:center;gap:8px;margin:12px 0 4px}
+.padm-league-del{margin-left:auto;width:22px;height:22px;border-radius:6px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer}
+.padm-add-brand-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;margin:14px 0 6px;cursor:pointer;color:var(--accent);font-size:13px;font-weight:700;border:1px dashed var(--border);border-radius:11px}
 .btn-save{background:var(--accent);color:var(--bg);border:none;padding:9px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
 .btn-del{background:rgba(231,76,60,.15);color:var(--danger);border:1px solid rgba(231,76,60,.3);padding:9px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
 .btn-add{background:var(--card2);border:1px solid var(--border);color:var(--white);padding:10px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;width:100%;text-align:center;margin-bottom:12px}
