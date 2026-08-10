@@ -438,7 +438,7 @@
     <div class="adm-field" id="pm-video-row">
       <label>Video URL <span style="font-weight:400;color:var(--gray)">(optional)</span></label>
       <input id="pm-video" type="url" placeholder="https://... .mp4, YouTube, or Google Drive link">
-      <div class="img-url-hint">Direct video file link, a YouTube URL, or a Google Drive share link (must be shared as "Anyone with the link"). Shown as an extra slide in the gallery.</div>
+      <div class="img-url-hint">Direct video file or YouTube link: autoplays muted with no controls, like a moving product photo. Google Drive links must be shared as "Anyone with the link" and still need a tap to play (Drive's own player can't be stripped of controls).</div>
     </div>
     <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="👟" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'👟'"></div>
     <div class="adm-field" id="pm-name-row"><label>Style / Colorway</label><input id="pm-name" type="text" placeholder="e.g. Triple White"></div>
@@ -1576,9 +1576,15 @@ function renderShopGrid(query=''){
 
 // ── Product detail gallery (multiple photos + optional video slide) ──
 function isYoutubeUrl(u){ return /youtu\.?be/i.test(u||''); }
-function youtubeEmbedUrl(u){
+function youtubeVideoId(u){
   const m=(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
-  return m?`https://www.youtube.com/embed/${m[1]}?autoplay=1&playsinline=1`:u;
+  return m?m[1]:null;
+}
+// controls=0 hides YouTube's play/pause/seek bar; mute=1 is required by browsers for
+// autoplay; loop=1+playlist=<id> makes a single video loop (YouTube quirk).
+function youtubeEmbedUrl(u){
+  const id=youtubeVideoId(u); if(!id) return u;
+  return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${id}`;
 }
 function isDriveUrl(u){ return /drive\.google\.com/i.test(u||''); }
 // Converts any Google Drive share link (view / edit / open?id=... / drivesdk, etc.) into
@@ -1588,15 +1594,12 @@ function driveEmbedUrl(u){
   return m?`https://drive.google.com/file/d/${m[1]}/preview`:u;
 }
 function videoKind(u){ if(isYoutubeUrl(u)) return 'youtube'; if(isDriveUrl(u)) return 'drive'; return 'direct'; }
-function playDetVideo(url,kind){
+// Only Google Drive still needs a tap: Drive's embedded player is Google's own UI and can't
+// be stripped of its control bar or reliably autoplayed, so it stays a tap-to-play slide.
+// Direct video files and YouTube autoplay immediately, muted, with no visible controls.
+function playDriveVideo(url){
   const slide=document.getElementById('det-gallery-video-slide'); if(!slide) return;
-  if(kind==='youtube'){
-    slide.innerHTML=`<iframe src="${youtubeEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
-  } else if(kind==='drive'){
-    slide.innerHTML=`<iframe src="${driveEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay" allowfullscreen></iframe>`;
-  } else {
-    slide.innerHTML=`<video src="${url}" controls autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>`;
-  }
+  slide.innerHTML=`<iframe src="${driveEmbedUrl(url)}" style="width:100%;height:100%;border:0" allow="autoplay" allowfullscreen></iframe>`;
 }
 function onDetGalleryScroll(track){
   const idx=Math.round(track.scrollLeft/Math.max(1,track.clientWidth));
@@ -1615,11 +1618,18 @@ function buildDetGallery(p){
       return `<div class="det-gallery-slide"><img src="${s.src}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'👟'}</div>'"></div>`;
     }
     const kind=videoKind(s.src);
-    const poster=imgs.length?` style="background:url('${imgs[0].replace(/'/g,"&#39;")}') center/cover"`:'';
-    const safeUrl=s.src.replace(/'/g,"&#39;");
-    return `<div class="det-gallery-slide" id="det-gallery-video-slide"${poster}>
-      <div class="det-gallery-playbtn" onclick="playDetVideo('${safeUrl}','${kind}')"><div class="playcircle">▶</div></div>
-    </div>`;
+    if(kind==='youtube'){
+      return `<div class="det-gallery-slide"><iframe src="${youtubeEmbedUrl(s.src)}" style="width:100%;height:100%;border:0;pointer-events:none" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+    }
+    if(kind==='drive'){
+      const poster=imgs.length?` style="background:url('${imgs[0].replace(/'/g,"&#39;")}') center/cover"`:'';
+      const safeUrl=s.src.replace(/'/g,"&#39;");
+      return `<div class="det-gallery-slide" id="det-gallery-video-slide"${poster}>
+        <div class="det-gallery-playbtn" onclick="playDriveVideo('${safeUrl}')"><div class="playcircle">▶</div></div>
+      </div>`;
+    }
+    // Direct video file — autoplay muted, no controls, loops silently like a product GIF.
+    return `<div class="det-gallery-slide"><video src="${s.src}" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%;height:100%;object-fit:cover"></video></div>`;
   }).join('');
   const dots=slides.length>1?`<div class="det-gallery-dots">${slides.map((_,i)=>`<div class="det-gallery-dot ${i===0?'active':''}"></div>`).join('')}</div>`:'';
   return `<div class="det-gallery">
