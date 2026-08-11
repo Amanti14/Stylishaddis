@@ -1537,7 +1537,14 @@ function renderLeagueTabs(){
   bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">👟 All Models</div>`+cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${l.emoji} ${l.label}</div>`).join('');
 }
 function selectLeague(id,el){ document.querySelectorAll('#cats-bar .cat-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); shopState={leagueId:id,teamId:null,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
-function selectTeam(lid,tid){ shopState={leagueId:lid,teamId:tid,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); document.querySelector('.scroll').scrollTop=0; }
+function selectTeam(lid,tid){
+  // Each shoe is one product page — no colorway sub-list in between.
+  // Tapping a shoe goes straight to its detail; other colorways (if any) show as
+  // a "More from <shoe>" strip on that same detail page instead of a separate grid.
+  const team=findTeam(lid,tid);
+  if(!team||!(team.products||[]).length) return;
+  openDetail(team.products[0].id);
+}
 function backToLeague(){ shopState.teamId=null; shopState.kitFilter='all'; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
 function filterKitType(type){ shopState.kitFilter=type; renderShopGrid(); }
 function updateShopTitle(){
