@@ -337,7 +337,7 @@
           <div class="adm-field"><label>Headline Line 1</label><input id="padm-hero-h1a" type="text"></div>
           <div class="adm-field"><label>Headline Line 2 (accent)</label><input id="padm-hero-h1b" type="text"></div>
           <div class="adm-field"><label>Subtitle</label><input id="padm-hero-sub" type="text"></div>
-          <div class="adm-field"><label>Hero Image URL</label><input id="padm-hero-img" type="url" placeholder="https://..."></div>
+          <div class="adm-field"><label>Hero Background Photo URL</label><input id="padm-hero-img" type="url" placeholder="https://..."><div class="img-url-hint">Shows as a full photo behind the hero banner, with a soft white overlay so text stays readable. Leave blank to keep it a plain white/grey banner.</div></div>
           <button class="btn-save" onclick="padmSaveHero()" style="width:100%">Save Hero</button>
         </div>
         <!-- SYNC TAB -->
@@ -1573,7 +1573,13 @@ function renderHero(){
   document.getElementById('hero-tag').textContent=h.tag||'';
   document.getElementById('hero-title').innerHTML=`${h.h1a||'Step Into'}<br><span>${h.h1b||'Stylish Shoes'}</span>`;
   document.getElementById('hero-subtitle').textContent=h.sub||'';
-  document.getElementById('hero-img-container').innerHTML=h.imgUrl?`<img class="hero-img" src="${h.imgUrl}" onerror="this.style.display='none'">`:'';
+  const heroSec=document.getElementById('hero-section');
+  // Hero Image URL now renders as a full background photo behind the banner (with a soft white
+  // scrim so the heading/search bar stay readable), instead of a small floating corner thumbnail.
+  heroSec.style.background=h.imgUrl
+    ? `linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.78) 55%, rgba(255,255,255,.97) 100%), url('${h.imgUrl.replace(/'/g,"&#39;")}') center/cover no-repeat`
+    : '';
+  document.getElementById('hero-img-container').innerHTML='';
 }
 
 function kitIcon(t){ return '👟'; }
