@@ -1478,7 +1478,7 @@ function renderThemeColorEditors(){
         <div style="flex:1">
           <div style="font-size:10px;color:var(--gray);margin-bottom:3px">HEX</div>
           <input type="text" id="clr-hex-${key}" value="${val}" placeholder="#ffffff" maxlength="7"
-            style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:8px 10px;border-radius:8px;font-size:13px;font-family:monospace;outline:none;box-sizing:border-box"
+            style="width:100%;background:#F5F5F5;border:1px solid var(--border);color:#111111;padding:8px 10px;border-radius:8px;font-size:13px;font-family:monospace;outline:none;box-sizing:border-box"
             oninput="syncColorFromHex('${key}',this.value)"
             onblur="finalizeColor('${key}')">
         </div>
@@ -1488,7 +1488,7 @@ function renderThemeColorEditors(){
             <div style="font-size:9px;color:var(--gray);margin-bottom:2px">${c}</div>
             <input type="number" id="clr-${c.toLowerCase()}-${key}" min="0" max="255"
               value="${hexToRgbPart(safeVal,i)}"
-              style="width:42px;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:6px 4px;border-radius:7px;font-size:12px;text-align:center;outline:none"
+              style="width:42px;background:#F5F5F5;border:1px solid var(--border);color:#111111;padding:6px 4px;border-radius:7px;font-size:12px;text-align:center;outline:none"
               oninput="syncColorFromRgb('${key}')">
           </div>`).join('')}
         </div>
