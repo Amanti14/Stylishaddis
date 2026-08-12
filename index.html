@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Stylish Addis</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -80,6 +83,11 @@
       <p id="hero-subtitle">Premium sneakers for every step. Quality needs no introduction.</p>
       <button class="hero-btn" onclick="document.getElementById('cats-bar').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
       <div id="hero-img-container"></div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item"><span class="trust-icon">✓</span><span class="trust-txt">100% Genuine</span></div>
+      <div class="trust-item"><span class="trust-icon">🚚</span><span class="trust-txt">Fast Delivery</span></div>
+      <div class="trust-item"><span class="trust-icon">↺</span><span class="trust-txt">Easy Exchange</span></div>
     </div>
     <div class="sec-title" id="shop-sec-title">Brands</div>
     <div class="cats" id="cats-bar"></div>
@@ -220,10 +228,10 @@
   </div>
   <div class="scroll2" id="profile-scroll">
     <div style="margin:14px 14px 12px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:18px;padding:22px 18px 18px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(139,94,60,.14) 0%,transparent 70%);pointer-events:none"></div>
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ffffff,var(--accent),transparent)"></div>
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-        <div id="profile-avatar-big" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#ffffff);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:var(--bg);flex-shrink:0;overflow:hidden;border:3px solid rgba(255,255,255,.4);box-shadow:0 4px 20px rgba(255,255,255,.3)">?</div>
+        <div id="profile-avatar-big" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden;border:3px solid rgba(139,94,60,.25);box-shadow:0 4px 20px rgba(139,94,60,.2)">?</div>
         <div style="flex:1;min-width:0">
           <div id="profile-name" style="font-size:20px;font-weight:800;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
           <div id="profile-handle" style="font-size:13px;color:var(--accent);margin-bottom:8px">@—</div>
@@ -231,10 +239,10 @@
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Telegram ID</div><div id="profile-id" style="font-size:12px;font-weight:600;font-family:monospace;color:var(--light)">—</div></div>
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Language</div><div id="profile-lang" style="font-size:13px;font-weight:600;color:var(--light)">—</div></div>
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Orders</div><div id="profile-order-count" style="font-size:13px;font-weight:700;color:var(--accent)">0</div></div>
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Total Spent</div><div id="profile-total-spent" style="font-size:13px;font-weight:700;color:var(--accent)">—</div></div>
+        <div style="background:rgba(139,94,60,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Telegram ID</div><div id="profile-id" style="font-size:12px;font-weight:600;font-family:monospace;color:var(--light)">—</div></div>
+        <div style="background:rgba(139,94,60,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Language</div><div id="profile-lang" style="font-size:13px;font-weight:600;color:var(--light)">—</div></div>
+        <div style="background:rgba(139,94,60,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Orders</div><div id="profile-order-count" style="font-size:13px;font-weight:700;color:var(--accent)">0</div></div>
+        <div style="background:rgba(139,94,60,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Total Spent</div><div id="profile-total-spent" style="font-size:13px;font-weight:700;color:var(--accent)">—</div></div>
       </div>
     </div>
     <div style="margin:0 14px 12px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
@@ -306,30 +314,11 @@
           <!-- COLOR EDITORS -->
           <div id="theme-colors-list"></div>
 
-          <!-- PRESET THEMES -->
+          <!-- OCCASION DECORATIONS (purely cosmetic — never changes colors) -->
           <div style="margin-bottom:14px">
-            <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Quick Presets — Classic</div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px">
-              <button onclick="applyPreset('dark')"    style="background:#111;border:1px solid #333;color:#fff;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">⚫ Dark</button>
-              <button onclick="applyPreset('vision')"  style="background:#111;border:1px solid #ffffff;color:#ffffff;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🖤 Mono</button>
-              <button onclick="applyPreset('legacy')"  style="background:#080d1a;border:1px solid #1a56db;color:#1a56db;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">⚡ Legacy</button>
-              <button onclick="applyPreset('fire')"    style="background:#0d0500;border:1px solid #f97316;color:#f97316;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🔥 Fire</button>
-              <button onclick="applyPreset('emerald')" style="background:#021a0e;border:1px solid #10b981;color:#10b981;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">💚 Emerald</button>
-              <button onclick="applyPreset('royal')"   style="background:#0a0020;border:1px solid #7c3aed;color:#7c3aed;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">👑 Royal</button>
-              <button onclick="applyPreset('red')"     style="background:#0d0000;border:1px solid #ef4444;color:#ef4444;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">❤️ Red</button>
-            </div>
-            <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🇪🇹 Ethiopian &amp; Holiday <span style="text-transform:none;font-weight:400">— colors + floating icons, like Telegram's Christmas snow</span></div>
-            <div style="display:flex;flex-wrap:wrap;gap:7px">
-              <button onclick="applyPreset('meskel')"     style="background:#141008;border:1px solid #e8a33d;color:#e8a33d;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🌼 Meskel</button>
-              <button onclick="applyPreset('adwa')"       style="background:#07120b;border:1px solid #f1c40f;color:#f1c40f;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🇪🇹 Adwa</button>
-              <button onclick="applyPreset('timkat')"     style="background:#050d14;border:1px solid #4fb3e8;color:#4fb3e8;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">💧 Timkat</button>
-              <button onclick="applyPreset('enkutatash')" style="background:#0c1006;border:1px solid #f4d03f;color:#f4d03f;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🌼 Enkutatash</button>
-              <button onclick="applyPreset('eid')"        style="background:#05130d;border:1px solid #d4af37;color:#d4af37;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🌙 Eid</button>
-              <button onclick="applyPreset('genna')"      style="background:#0d0808;border:1px solid #e0483e;color:#e0483e;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">⭐ Genna</button>
-              <button onclick="applyPreset('xmas')"       style="background:#060d08;border:1px solid #e74c3c;color:#e74c3c;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">❄️ Christmas</button>
-              <button onclick="applyPreset('newyear')"    style="background:#0a0a0a;border:1px solid #ffd700;color:#ffd700;padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">🎆 New Year</button>
-              <button onclick="clearDecor()"               style="background:none;border:1px dashed var(--border);color:var(--gray);padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">✖ Icons Off</button>
-            </div>
+            <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Occasion Decorations</div>
+            <div style="font-size:10.5px;color:var(--gray);margin-bottom:8px">Adds subtle floating icons over the app — like Telegram's snow at Christmas. Doesn't change your colors.</div>
+            <div id="occasion-btns" style="display:flex;flex-wrap:wrap;gap:7px"></div>
           </div>
 
           <!-- CURRENCY -->
@@ -371,8 +360,8 @@
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px">
         <div style="padding:12px 14px;border-bottom:1px solid var(--border)"><div style="font-size:13px;font-weight:700">Manage Admins</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Give shop editing access to trusted accounts</div></div>
-        <div style="padding:12px 14px;background:rgba(255,255,255,.08);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
-          <div id="owner-row-avatar" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden">👑</div>
+        <div style="padding:12px 14px;background:rgba(139,94,60,.08);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+          <div id="owner-row-avatar" style="width:36px;height:36px;border-radius:50%;background:rgba(139,94,60,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden">👑</div>
           <div><div id="owner-row-name" style="font-size:12px;font-weight:700">You (Owner)</div><div id="owner-id-display" style="font-size:11px;font-family:monospace;color:var(--accent)">—</div></div>
           <div style="margin-left:auto;font-size:11px;color:var(--gray)">Full Access</div>
         </div>
@@ -386,7 +375,7 @@
           <div style="font-size:11px;color:var(--gray)">💡 User IDs are shown on each user's profile card inside the app.</div>
         </div>
       </div>
-      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin-bottom:12px">
+      <div style="background:rgba(139,94,60,.08);border:1px solid rgba(139,94,60,.25);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin-bottom:12px">
         <div style="font-size:18px">🪪</div>
         <div style="flex:1"><div style="font-size:12px;color:var(--gray);margin-bottom:2px">Your Telegram ID</div><div id="owner-my-id-copy" style="font-size:14px;font-weight:700;font-family:monospace;color:var(--accent)">—</div></div>
         <button onclick="copyOwnerId()" style="background:var(--card2);border:1px solid var(--border);color:var(--white);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer">Copy</button>
@@ -497,10 +486,10 @@ const DEFAULT_CONFIG = {
   currency:"ETB",currencyPos:"before",
   payment:{ cbeNum:"1000123456789", cbeName:"Stylish Addis", telebirrNum:"+251 911 234 567", telebirrName:"Stylish Addis" },
   hero:{tag:"👟 New Arrivals",h1a:"Step Into",h1b:"Stylish Shoes",sub:"Premium sneakers for every step. Quality needs no introduction.",imgUrl:""},
-  theme:{"--accent":"#ffffff","--bg":"#1a1a1a","--card":"#242424","--dark":"#111111","--white":"#ffffff","--border":"#333333","--accent2":"#cccccc"},
-  decor:null,  // active seasonal icon overlay (emoji) or null — persists across reloads
+  theme:{"--accent":"#8B5E3C","--bg":"#F7F2EA","--card":"#FFFFFF","--dark":"#FFFFFF","--white":"#2B2118","--border":"#E8DFD1","--accent2":"#C9A876"},
   sizes:["38","39","40","41","42","43","44","45","46"],
   deletedProductIds:[],
+  occasion:'none',
   deletedLeagueIds:[],   // brand categories removed via admin — kept so a future default-config merge can't resurrect them
   deletedTeamIds:[],     // models removed via admin, stored as "leagueId::teamId"
   shipping:[
@@ -510,117 +499,173 @@ const DEFAULT_CONFIG = {
   ],
   leagues:[
     {id:"nike",label:"Nike",emoji:"✔️",teams:[
-      {id:"af1",name:"Air Force 1",emoji:"👟",color:"#F2F2F2",crestUrl:"",products:[
+      {id:"af1-triple-white",name:"Air Force 1",emoji:"👟",color:"#F2F2F2",crestUrl:"",products:[
         {id:101,kitType:"Triple White",emoji:"👟",imgUrl:"",price:4200,badge:"hot",desc:"Classic all-white leather low-top. The everyday sneaker that never goes out of style."},
+      ]},
+      {id:"af1-triple-black",name:"Air Force 1",emoji:"👟",color:"#F2F2F2",crestUrl:"",products:[
         {id:102,kitType:"Triple Black",emoji:"👟",imgUrl:"",price:4200,badge:"",desc:"All-black leather Air Force 1. Sleek, versatile, easy to match with anything."},
+      ]},
+      {id:"af1-panda-white-black",name:"Air Force 1",emoji:"👟",color:"#F2F2F2",crestUrl:"",products:[
         {id:103,kitType:"Panda (White/Black)",emoji:"👟",imgUrl:"",price:4400,badge:"new",desc:"White leather upper with black Swoosh and outsole detailing."},
       ]},
-      {id:"am90",name:"Air Max 90",emoji:"👟",color:"#DA2C1F",crestUrl:"",products:[
+      {id:"am90-infrared",name:"Air Max 90",emoji:"👟",color:"#DA2C1F",crestUrl:"",products:[
         {id:104,kitType:"Infrared",emoji:"👟",imgUrl:"",price:5200,badge:"hot",desc:"OG 1990 colorway — white and grey base with the iconic Infrared accents."},
+      ]},
+      {id:"am90-triple-white",name:"Air Max 90",emoji:"👟",color:"#DA2C1F",crestUrl:"",products:[
         {id:105,kitType:"Triple White",emoji:"👟",imgUrl:"",price:4900,badge:"",desc:"Clean all-white Air Max 90 with the classic visible Air cushioning."},
       ]},
-      {id:"aj1",name:"Air Jordan 1 High",emoji:"👟",color:"#C8102E",crestUrl:"",products:[
+      {id:"aj1-chicago",name:"Air Jordan 1 High",emoji:"👟",color:"#C8102E",crestUrl:"",products:[
         {id:106,kitType:"Chicago",emoji:"👟",imgUrl:"",price:7800,badge:"hot",desc:"The original 1985 colorway — white, black and Varsity Red."},
+      ]},
+      {id:"aj1-bred-black-red",name:"Air Jordan 1 High",emoji:"👟",color:"#C8102E",crestUrl:"",products:[
         {id:107,kitType:"Bred (Black/Red)",emoji:"👟",imgUrl:"",price:7500,badge:"",desc:"Black leather with Varsity Red accents and a white midsole."},
+      ]},
+      {id:"aj1-university-blue",name:"Air Jordan 1 High",emoji:"👟",color:"#C8102E",crestUrl:"",products:[
         {id:108,kitType:"University Blue",emoji:"👟",imgUrl:"",price:7900,badge:"new",desc:"Off-white base with University Blue overlays and a black Swoosh."},
       ]},
-      {id:"dunk",name:"Dunk Low",emoji:"👟",color:"#1E88E5",crestUrl:"",products:[
+      {id:"dunk-panda-black-white",name:"Dunk Low",emoji:"👟",color:"#1E88E5",crestUrl:"",products:[
         {id:109,kitType:"Panda (Black/White)",emoji:"👟",imgUrl:"",price:5400,badge:"hot",desc:"Black and white leather in the Dunk's clean, minimal colorblocking."},
+      ]},
+      {id:"dunk-university-blue",name:"Dunk Low",emoji:"👟",color:"#1E88E5",crestUrl:"",products:[
         {id:110,kitType:"University Blue",emoji:"👟",imgUrl:"",price:5600,badge:"new",desc:"White base with University Blue overlays on the toe and heel."},
       ]},
-      {id:"pegasus",name:"Air Zoom Pegasus",emoji:"👟",color:"#333333",crestUrl:"",products:[
+      {id:"pegasus-black-volt",name:"Air Zoom Pegasus",emoji:"👟",color:"#333333",crestUrl:"",products:[
         {id:111,kitType:"Black/Volt",emoji:"👟",imgUrl:"",price:4700,badge:"",desc:"Everyday running shoe with responsive Zoom Air cushioning."},
+      ]},
+      {id:"pegasus-white-grey",name:"Air Zoom Pegasus",emoji:"👟",color:"#333333",crestUrl:"",products:[
         {id:112,kitType:"White/Grey",emoji:"👟",imgUrl:"",price:4700,badge:"",desc:"Lightweight mesh upper built for daily training miles."},
       ]},
     ]},
     {id:"adidas",label:"Adidas",emoji:"🔷",teams:[
-      {id:"stansmith",name:"Stan Smith",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
+      {id:"stansmith-white-green",name:"Stan Smith",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
         {id:113,kitType:"White/Green",emoji:"👟",imgUrl:"",price:3600,badge:"hot",desc:"The original tennis-court classic. Clean leather upper, perforated 3-Stripes."},
+      ]},
+      {id:"stansmith-triple-white",name:"Stan Smith",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
         {id:114,kitType:"Triple White",emoji:"👟",imgUrl:"",price:3600,badge:"",desc:"All-white Stan Smith for a minimal, monochrome look."},
       ]},
-      {id:"superstar",name:"Superstar",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"superstar-white-black-shell-toe",name:"Superstar",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:115,kitType:"White/Black Shell Toe",emoji:"👟",imgUrl:"",price:3800,badge:"",desc:"The classic shell-toe silhouette that defined 70s street style."},
+      ]},
+      {id:"superstar-triple-white",name:"Superstar",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:116,kitType:"Triple White",emoji:"👟",imgUrl:"",price:3800,badge:"new",desc:"Fully white Superstar, shell toe and all."},
       ]},
-      {id:"ultraboost",name:"Ultraboost",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"ultraboost-core-black",name:"Ultraboost",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:117,kitType:"Core Black",emoji:"👟",imgUrl:"",price:6800,badge:"hot",desc:"Boost cushioning wrapped in a Primeknit sock-like upper."},
+      ]},
+      {id:"ultraboost-cloud-white",name:"Ultraboost",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:118,kitType:"Cloud White",emoji:"👟",imgUrl:"",price:6800,badge:"",desc:"Bright, minimal colorway of adidas' flagship running shoe."},
       ]},
-      {id:"samba",name:"Samba OG",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"samba-black-white-gum",name:"Samba OG",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:119,kitType:"Black/White Gum",emoji:"👟",imgUrl:"",price:4100,badge:"hot",desc:"Football-terrace classic in black leather with a gum sole."},
+      ]},
+      {id:"samba-white-navy",name:"Samba OG",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:120,kitType:"White/Navy",emoji:"👟",imgUrl:"",price:4100,badge:"new",desc:"Crisp white leather Samba with navy detailing."},
       ]},
-      {id:"gazelle",name:"Gazelle",emoji:"👟",color:"#7B241C",crestUrl:"",products:[
+      {id:"gazelle-navy-suede",name:"Gazelle",emoji:"👟",color:"#7B241C",crestUrl:"",products:[
         {id:121,kitType:"Navy Suede",emoji:"👟",imgUrl:"",price:3900,badge:"",desc:"Retro suede trainer with the classic 3-Stripes on the side."},
+      ]},
+      {id:"gazelle-red-suede",name:"Gazelle",emoji:"👟",color:"#7B241C",crestUrl:"",products:[
         {id:122,kitType:"Red Suede",emoji:"👟",imgUrl:"",price:3900,badge:"",desc:"Bold red suede colorway of the 1968 original."},
       ]},
     ]},
     {id:"puma",label:"Puma",emoji:"🐆",teams:[
-      {id:"rsx",name:"RS-X",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
+      {id:"rsx-white-blue",name:"RS-X",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
         {id:123,kitType:"White/Blue",emoji:"👟",imgUrl:"",price:4300,badge:"new",desc:"Chunky retro-running silhouette with layered mesh and suede."},
+      ]},
+      {id:"rsx-black-red",name:"RS-X",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
         {id:124,kitType:"Black/Red",emoji:"👟",imgUrl:"",price:4300,badge:"",desc:"Bold colorblocked RS-X for a statement look."},
       ]},
-      {id:"suedeclassic",name:"Suede Classic",emoji:"👟",color:"#B71C1C",crestUrl:"",products:[
+      {id:"suedeclassic-black",name:"Suede Classic",emoji:"👟",color:"#B71C1C",crestUrl:"",products:[
         {id:125,kitType:"Black",emoji:"👟",imgUrl:"",price:3200,badge:"",desc:"The 1968 suede trainer that became a streetwear staple."},
+      ]},
+      {id:"suedeclassic-red",name:"Suede Classic",emoji:"👟",color:"#B71C1C",crestUrl:"",products:[
         {id:126,kitType:"Red",emoji:"👟",imgUrl:"",price:3200,badge:"",desc:"Same iconic silhouette in a bold red suede."},
       ]},
-      {id:"cali",name:"Cali",emoji:"👟",color:"#F8BBD0",crestUrl:"",products:[
+      {id:"cali-white-pink",name:"Cali",emoji:"👟",color:"#F8BBD0",crestUrl:"",products:[
         {id:127,kitType:"White/Pink",emoji:"👟",imgUrl:"",price:3700,badge:"new",desc:"Chunky platform sneaker with a soft, feminine colorway."},
+      ]},
+      {id:"cali-white-silver",name:"Cali",emoji:"👟",color:"#F8BBD0",crestUrl:"",products:[
         {id:128,kitType:"White/Silver",emoji:"👟",imgUrl:"",price:3700,badge:"",desc:"Clean white leather Cali with metallic silver accents."},
       ]},
-      {id:"roma",name:"Roma",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"roma-black-white",name:"Roma",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:129,kitType:"Black/White",emoji:"👟",imgUrl:"",price:3300,badge:"",desc:"Understated retro court sneaker with a low-profile silhouette."},
+      ]},
+      {id:"roma-white-gold",name:"Roma",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:130,kitType:"White/Gold",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"Premium leather Roma with gold detailing."},
       ]},
     ]},
     {id:"newbalance",label:"New Balance",emoji:"🔵",teams:[
-      {id:"nb550",name:"550",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
+      {id:"nb550-white-green",name:"550",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
         {id:131,kitType:"White/Green",emoji:"👟",imgUrl:"",price:4600,badge:"hot",desc:"Retro basketball silhouette from 1989, back in full force."},
+      ]},
+      {id:"nb550-white-grey",name:"550",emoji:"👟",color:"#2E7D32",crestUrl:"",products:[
         {id:132,kitType:"White/Grey",emoji:"👟",imgUrl:"",price:4600,badge:"",desc:"Clean tonal colorway of the 550."},
       ]},
-      {id:"nb574",name:"574",emoji:"👟",color:"#455A64",crestUrl:"",products:[
+      {id:"nb574-grey",name:"574",emoji:"👟",color:"#455A64",crestUrl:"",products:[
         {id:133,kitType:"Grey",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"The do-it-all New Balance classic — ENCAP cushioning, suede/mesh upper."},
+      ]},
+      {id:"nb574-navy",name:"574",emoji:"👟",color:"#455A64",crestUrl:"",products:[
         {id:134,kitType:"Navy",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"Navy suede colorway of the everyday 574."},
       ]},
-      {id:"nb990",name:"990v6",emoji:"👟",color:"#616161",crestUrl:"",products:[
+      {id:"nb990-grey-made-in-usa",name:"990v6",emoji:"👟",color:"#616161",crestUrl:"",products:[
         {id:135,kitType:"Grey (Made in USA)",emoji:"👟",imgUrl:"",price:7200,badge:"hot",desc:"Premium dad-shoe icon, handcrafted with pigskin suede."},
+      ]},
+      {id:"nb990-navy",name:"990v6",emoji:"👟",color:"#616161",crestUrl:"",products:[
         {id:136,kitType:"Navy",emoji:"👟",imgUrl:"",price:7200,badge:"",desc:"Navy colorway of the flagship 990 series."},
       ]},
-      {id:"nb327",name:"327",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"nb327-white-black",name:"327",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:137,kitType:"White/Black",emoji:"👟",imgUrl:"",price:4200,badge:"new",desc:"Chunky retro-runner with an exaggerated N logo."},
+      ]},
+      {id:"nb327-sea-salt",name:"327",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:138,kitType:"Sea Salt",emoji:"👟",imgUrl:"",price:4200,badge:"",desc:"Soft off-white colorway of the 327."},
       ]},
     ]},
     {id:"converse",label:"Converse",emoji:"⭐",teams:[
-      {id:"chuckall",name:"Chuck Taylor All Star",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"chuckall-black",name:"Chuck Taylor All Star",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:139,kitType:"Black",emoji:"👟",imgUrl:"",price:2600,badge:"",desc:"The original 1917 canvas high-top basketball shoe."},
+      ]},
+      {id:"chuckall-white",name:"Chuck Taylor All Star",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:140,kitType:"White",emoji:"👟",imgUrl:"",price:2600,badge:"hot",desc:"Classic white canvas Chuck Taylor."},
+      ]},
+      {id:"chuckall-red",name:"Chuck Taylor All Star",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:141,kitType:"Red",emoji:"👟",imgUrl:"",price:2600,badge:"",desc:"Bold red canvas colorway of the icon."},
       ]},
-      {id:"chuck70",name:"Chuck 70",emoji:"👟",color:"#5D4037",crestUrl:"",products:[
+      {id:"chuck70-black",name:"Chuck 70",emoji:"👟",color:"#5D4037",crestUrl:"",products:[
         {id:142,kitType:"Black",emoji:"👟",imgUrl:"",price:3400,badge:"",desc:"Premium remake of the Chuck Taylor with vintage detailing."},
+      ]},
+      {id:"chuck70-parchment",name:"Chuck 70",emoji:"👟",color:"#5D4037",crestUrl:"",products:[
         {id:143,kitType:"Parchment",emoji:"👟",imgUrl:"",price:3400,badge:"new",desc:"Off-white canvas with an aged, vintage look."},
       ]},
-      {id:"runstarhike",name:"Run Star Hike",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"runstarhike-black-platform",name:"Run Star Hike",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:144,kitType:"Black Platform",emoji:"👟",imgUrl:"",price:4500,badge:"hot",desc:"Chunky platform sole under the classic canvas high-top."},
+      ]},
+      {id:"runstarhike-white-platform",name:"Run Star Hike",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:145,kitType:"White Platform",emoji:"👟",imgUrl:"",price:4500,badge:"",desc:"Same bold platform silhouette in white canvas."},
       ]},
     ]},
     {id:"vans",label:"Vans",emoji:"🛹",teams:[
-      {id:"oldskool",name:"Old Skool",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"oldskool-black-white",name:"Old Skool",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:146,kitType:"Black/White",emoji:"👟",imgUrl:"",price:3100,badge:"hot",desc:"The Vans classic with the iconic side stripe, since 1977."},
+      ]},
+      {id:"oldskool-checkerboard",name:"Old Skool",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:147,kitType:"Checkerboard",emoji:"👟",imgUrl:"",price:3200,badge:"new",desc:"Signature checkerboard print Old Skool."},
       ]},
-      {id:"sk8hi",name:"Sk8-Hi",emoji:"👟",color:"#111111",crestUrl:"",products:[
+      {id:"sk8hi-black-white",name:"Sk8-Hi",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:148,kitType:"Black/White",emoji:"👟",imgUrl:"",price:3300,badge:"",desc:"High-top skate classic with padded collar for support."},
+      ]},
+      {id:"sk8hi-red",name:"Sk8-Hi",emoji:"👟",color:"#111111",crestUrl:"",products:[
         {id:149,kitType:"Red",emoji:"👟",imgUrl:"",price:3300,badge:"",desc:"Bold red colorway of the Sk8-Hi."},
       ]},
-      {id:"authentic",name:"Authentic",emoji:"👟",color:"#263238",crestUrl:"",products:[
+      {id:"authentic-black",name:"Authentic",emoji:"👟",color:"#263238",crestUrl:"",products:[
         {id:150,kitType:"Black",emoji:"👟",imgUrl:"",price:2700,badge:"",desc:"The original low-top Vans silhouette, simple canvas construction."},
+      ]},
+      {id:"authentic-navy",name:"Authentic",emoji:"👟",color:"#263238",crestUrl:"",products:[
         {id:151,kitType:"Navy",emoji:"👟",imgUrl:"",price:2700,badge:"",desc:"Navy canvas colorway of the Authentic."},
       ]},
-      {id:"era",name:"Era",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
+      {id:"era-black-white",name:"Era",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
         {id:152,kitType:"Black/White",emoji:"👟",imgUrl:"",price:2800,badge:"",desc:"Padded collar version of the Authentic, born from skate culture."},
+      ]},
+      {id:"era-blue",name:"Era",emoji:"👟",color:"#1565C0",crestUrl:"",products:[
         {id:153,kitType:"Blue",emoji:"👟",imgUrl:"",price:2900,badge:"new",desc:"Bold blue canvas colorway of the Era."},
       ]},
     ]},
@@ -983,7 +1028,7 @@ document.addEventListener('visibilitychange',()=>{
 function updateSyncStatusPanel(){
   const el=document.getElementById('sync-current-status'); if(!el) return;
   if(tgInitData){ el.innerHTML=`<span style="color:#22c55e;font-weight:700">☁️ Cloud Sync ENABLED</span><br>Synced through your secure Worker — no keys are stored in this app.<br>Every save pushes to all users automatically.`; }
-  else { el.innerHTML=`<span style="color:#ffffff;font-weight:700">⚠️ Pushing requires Telegram</span><br>You're viewing this outside Telegram, so identity can't be verified — reading still works, but pushing changes needs the real Telegram app.`; }
+  else { el.innerHTML=`<span style="color:var(--white);font-weight:700">⚠️ Pushing requires Telegram</span><br>You're viewing this outside Telegram, so identity can't be verified — reading still works, but pushing changes needs the real Telegram app.`; }
 }
 
 let savedCfg=JSON.parse(localStorage.getItem('emartzon_cfg')||'null');
@@ -1059,7 +1104,7 @@ function showTxnProofScreen(p){
   const logoText=isT?'tele<br>birr':'CBE';
   document.getElementById('checkout-scroll').innerHTML=`
     <div style="height:20px"></div>
-    <div style="margin:0 14px 14px;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.35);border-radius:16px;padding:18px;text-align:center">
+    <div style="margin:0 14px 14px;background:linear-gradient(135deg,rgba(139,94,60,.18),rgba(139,94,60,.06));border:1px solid rgba(139,94,60,.35);border-radius:16px;padding:18px;text-align:center">
       <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Amount to Transfer</div>
       <div style="font-size:32px;font-weight:900;color:var(--accent);letter-spacing:-1px">${p.totalFmt}</div>
       <div style="font-size:12px;color:var(--gray);margin-top:4px">via <b style="color:var(--white)">${providerName}</b></div>
@@ -1091,7 +1136,7 @@ function showTxnProofScreen(p){
       <div id="txn-err" style="display:none;margin-top:10px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px">
         <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:4px" id="txn-err-title">Verification Failed</div>
         <div style="font-size:12px;color:var(--gray);line-height:1.6;white-space:pre-wrap" id="txn-err-msg"></div>
-        <div id="txn-partial-info" style="display:none;margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:10px">
+        <div id="txn-partial-info" style="display:none;margin-top:10px;background:rgba(139,94,60,.08);border:1px solid rgba(139,94,60,.25);border-radius:8px;padding:10px">
           <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">💰 Partial Payment Detected</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">
             <div><div style="color:var(--gray);font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px">Order Total</div><div style="font-weight:700;color:var(--white)" id="txn-partial-total">—</div></div>
@@ -1241,7 +1286,7 @@ function isAdmin(){ if(!tgUser) return false; if(isOwner()) return true; return 
 function claimOwnership(){ /* ownership is hardcoded in OWNER_IDS — nothing to claim at runtime */ }
 // pushCloudConfigSafe removed — ownership is now hardcoded, no sensitive data to strip
 
-window.addEventListener('load',()=>{ applyTheme(); initLogin(); });
+window.addEventListener('load',()=>{ applyTheme(); renderOccasionFx(); initLogin(); });
 
 async function initLogin(){
   const li=document.getElementById('login-logo-inner');
@@ -1337,7 +1382,46 @@ function updateNavProfileIcon(){
   if(tgUser.photo_url){ el.innerHTML=`<img src="${tgUser.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${ini}'">` } else { el.textContent=ini; }
 }
 
-function applyTheme(){ const t=cfg.theme||DEFAULT_CONFIG.theme; Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v)); applyDecor(cfg.decor||null); }
+function applyTheme(){ const t=cfg.theme||DEFAULT_CONFIG.theme; Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v)); }
+
+// ── Occasion decorations: purely cosmetic floating icons (like Telegram's Christmas
+// snow) layered over the app. Never touches colors/theme — cfg.occasion just picks
+// which emoji set floats down. ──
+const OCCASIONS={
+  none:{emojis:[],label:'None',btn:'⭕'},
+  christmas:{emojis:['❄️','🎄'],label:'Christmas',btn:'🎄'},
+  newyear:{emojis:['🎉','✨'],label:'New Year',btn:'🎉'},
+  meskel:{emojis:['🌼','🔥'],label:'Meskel',btn:'🌼'},
+  adwa:{emojis:['🇪🇹','⭐'],label:'Adwa',btn:'🇪🇹'},
+  eid:{emojis:['🌙','⭐'],label:'Eid',btn:'🌙'},
+};
+function renderOccasionFx(){
+  let layer=document.getElementById('occasion-fx');
+  if(!layer){ layer=document.createElement('div'); layer.id='occasion-fx'; document.body.appendChild(layer); }
+  layer.innerHTML='';
+  const occ=OCCASIONS[cfg.occasion]||OCCASIONS.none;
+  if(!occ.emojis.length) return;
+  for(let i=0;i<18;i++){
+    const el=document.createElement('div');
+    el.className='occ-particle';
+    el.textContent=occ.emojis[i%occ.emojis.length];
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.fontSize=(14+Math.random()*10)+'px';
+    el.style.opacity=(0.55+Math.random()*0.35).toFixed(2);
+    el.style.animationDuration=(8+Math.random()*10)+'s';
+    el.style.animationDelay='-'+(Math.random()*12)+'s';
+    el.style.setProperty('--drift',(Math.random()*60-30)+'px');
+    layer.appendChild(el);
+  }
+}
+function setOccasion(id){ cfg.occasion=id; save(); renderOccasionFx(); renderOccasionBtns(); showToast('Decoration updated ✨'); }
+function renderOccasionBtns(){
+  const el=document.getElementById('occasion-btns'); if(!el) return;
+  const cur=cfg.occasion||'none';
+  el.innerHTML=Object.entries(OCCASIONS).map(([id,o])=>
+    `<button onclick="setOccasion('${id}')" style="background:${cur===id?'var(--accent)':'var(--card2)'};border:1px solid ${cur===id?'var(--accent)':'var(--border)'};color:${cur===id?'#fff':'var(--light)'};padding:6px 11px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer">${o.btn} ${o.label}</button>`
+  ).join('');
+}
 function liveColor(v,val){
   // Convert rgb(...) or named colors to hex
   const hex=colorToHex(val);
@@ -1461,59 +1545,21 @@ function syncColorFromRgb(key){
 }
 
 const PRESETS={
-  // ── Classic ──
-  dark:    {'--accent':'#f5a623','--bg':'#0a0a0a','--card':'#1a1a1a','--dark':'#111111','--white':'#ffffff','--border':'#2a2a2a','--gray':'#888888', decor:null},
-  vision:  {'--accent':'#ffffff','--bg':'#1a1a1a','--card':'#242424','--dark':'#111111','--white':'#ffffff','--border':'#333333','--gray':'#888888', decor:null},
-  legacy:  {'--accent':'#1a56db','--bg':'#080d1a','--card':'#0f1829','--dark':'#0a1020','--white':'#ffffff','--border':'#1e2d4a','--gray':'#6b82a0', decor:null},
-  fire:    {'--accent':'#f97316','--bg':'#0d0500','--card':'#1a0a00','--dark':'#110600','--white':'#ffffff','--border':'#2a1200','--gray':'#886644', decor:null},
-  emerald: {'--accent':'#10b981','--bg':'#021a0e','--card':'#0a2a1a','--dark':'#061508','--white':'#ffffff','--border':'#0f3020','--gray':'#4a8870', decor:null},
-  royal:   {'--accent':'#7c3aed','--bg':'#0a0020','--card':'#12003a','--dark':'#080018','--white':'#ffffff','--border':'#1e0050','--gray':'#7055aa', decor:null},
-  red:     {'--accent':'#ef4444','--bg':'#0d0000','--card':'#1a0000','--dark':'#0a0000','--white':'#ffffff','--border':'#2a0000','--gray':'#885555', decor:null},
-  // ── Ethiopian & Holiday (seasonal — colors + a light floating-icon overlay, like Telegram's Christmas snow) ──
-  meskel:  {'--accent':'#e8a33d','--bg':'#141008','--card':'#201808','--dark':'#0f0c06','--white':'#ffffff','--border':'#3a2c12','--gray':'#a08a5c', decor:'🌼'},
-  adwa:    {'--accent':'#f1c40f','--bg':'#07120b','--card':'#0e2015','--dark':'#08160e','--white':'#ffffff','--border':'#1c3a26','--gray':'#7fa38c', decor:'🇪🇹'},
-  timkat:  {'--accent':'#4fb3e8','--bg':'#050d14','--card':'#0d1c28','--dark':'#08141c','--white':'#ffffff','--border':'#1a3247','--gray':'#7ba0b8', decor:'💧'},
-  enkutatash:{'--accent':'#f4d03f','--bg':'#0c1006','--card':'#181f0d','--dark':'#0f140a','--white':'#ffffff','--border':'#33401a','--gray':'#a2a878', decor:'🌼'},
-  eid:     {'--accent':'#d4af37','--bg':'#05130d','--card':'#0d2418','--dark':'#081a11','--white':'#ffffff','--border':'#1c3d2b','--gray':'#7fa896', decor:'🌙'},
-  genna:   {'--accent':'#e0483e','--bg':'#0d0808','--card':'#1c0f0e','--dark':'#120a09','--white':'#ffffff','--border':'#3a1815','--gray':'#a37d78', decor:'⭐'},
-  xmas:    {'--accent':'#e74c3c','--bg':'#060d08','--card':'#0d1c10','--dark':'#08140a','--white':'#ffffff','--border':'#1a3320','--gray':'#7ba885', decor:'❄️'},
-  newyear: {'--accent':'#ffd700','--bg':'#0a0a0a','--card':'#1a1a1a','--dark':'#111111','--white':'#ffffff','--border':'#2a2a2a','--gray':'#a89858', decor:'🎆'},
+  dark:    {'--accent':'#f5a623','--bg':'#0a0a0a','--card':'#1a1a1a','--dark':'#111111','--white':'#ffffff','--border':'#2a2a2a','--gray':'#888888'},
+  vision:  {'--accent':'#ffffff','--bg':'#1a1a1a','--card':'#242424','--dark':'#111111','--white':'#ffffff','--border':'#333333','--gray':'#888888'},
+  legacy:  {'--accent':'#1a56db','--bg':'#080d1a','--card':'#0f1829','--dark':'#0a1020','--white':'#ffffff','--border':'#1e2d4a','--gray':'#6b82a0'},
+  fire:    {'--accent':'#f97316','--bg':'#0d0500','--card':'#1a0a00','--dark':'#110600','--white':'#ffffff','--border':'#2a1200','--gray':'#886644'},
+  emerald: {'--accent':'#10b981','--bg':'#021a0e','--card':'#0a2a1a','--dark':'#061508','--white':'#ffffff','--border':'#0f3020','--gray':'#4a8870'},
+  royal:   {'--accent':'#7c3aed','--bg':'#0a0020','--card':'#12003a','--dark':'#080018','--white':'#ffffff','--border':'#1e0050','--gray':'#7055aa'},
+  red:     {'--accent':'#ef4444','--bg':'#0d0000','--card':'#1a0000','--dark':'#0a0000','--white':'#ffffff','--border':'#2a0000','--gray':'#885555'},
 };
 
 function applyPreset(name){
   const p=PRESETS[name]; if(!p) return;
-  Object.entries(p).forEach(([k,v])=>{ if(k==='decor') return; cfg.theme[k]=v; document.documentElement.style.setProperty(k,v); });
-  cfg.decor = p.decor || null;
-  applyDecor(cfg.decor);
+  Object.entries(p).forEach(([k,v])=>{ cfg.theme[k]=v; document.documentElement.style.setProperty(k,v); });
   renderThemeColorEditors();
-  showToast(p.decor ? 'Preset applied with icons — tap Save Theme to keep it ✅' : 'Preset applied — tap Save Theme to keep it ✅');
+  showToast('Preset applied — tap Save Theme to keep it ✅');
 }
-
-// ── Decorative seasonal icon overlay (floating emoji, like Telegram's holiday snow) ──
-function applyDecor(emoji){
-  let layer=document.getElementById('decor-overlay');
-  if(!layer){
-    layer=document.createElement('div');
-    layer.id='decor-overlay';
-    document.body.appendChild(layer);
-  }
-  layer.innerHTML='';
-  if(!emoji){ layer.style.display='none'; return; }
-  layer.style.display='block';
-  const COUNT=16;
-  for(let i=0;i<COUNT;i++){
-    const s=document.createElement('span');
-    s.className='decor-icon';
-    s.textContent=emoji;
-    s.style.left=(Math.random()*100)+'vw';
-    s.style.fontSize=(14+Math.random()*14)+'px';
-    s.style.animationDuration=(9+Math.random()*10)+'s';
-    s.style.animationDelay=(Math.random()*10)+'s';
-    s.style.opacity=(0.35+Math.random()*0.45).toFixed(2);
-    layer.appendChild(s);
-  }
-}
-function clearDecor(){ cfg.decor=null; applyDecor(null); showToast('Icons off — tap Save Theme to keep it'); }
 
 function renderHeader(){
   const el=document.getElementById('hdr-logo-img');
@@ -1538,12 +1584,11 @@ function renderLeagueTabs(){
 }
 function selectLeague(id,el){ document.querySelectorAll('#cats-bar .cat-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); shopState={leagueId:id,teamId:null,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
 function selectTeam(lid,tid){
-  // Each shoe is one product page — no colorway sub-list in between.
-  // Tapping a shoe goes straight to its detail; other colorways (if any) show as
-  // a "More from <shoe>" strip on that same detail page instead of a separate grid.
   const team=findTeam(lid,tid);
-  if(!team||!(team.products||[]).length) return;
-  openDetail(team.products[0].id);
+  // Most shoes are single-product entries now — go straight to the product page,
+  // no in-between "category" list.
+  if(team && (team.products||[]).length===1){ openDetail(team.products[0].id); return; }
+  shopState={leagueId:lid,teamId:tid,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); document.querySelector('.scroll').scrollTop=0;
 }
 function backToLeague(){ shopState.teamId=null; shopState.kitFilter='all'; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
 function filterKitType(type){ shopState.kitFilter=type; renderShopGrid(); }
@@ -1624,7 +1669,7 @@ function renderShopGrid(query=''){
             ${cs?`<img src="${cs}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;font-size:30px">${t.emoji}</span>`:`<span style="font-size:30px">${t.emoji}</span>`}
           </div>
           <div class="team-name">${t.name}</div>
-          <div class="team-kit-count">${(t.products||[]).length} items</div>
+          <div class="team-kit-count">${(t.products||[]).length===1?(t.products[0].kitType||''):`${(t.products||[]).length} items`}</div>
         </div>`;
       }).join('')}</div>`;
     });
@@ -1723,18 +1768,18 @@ function openDetail(pid){
       </div>
       <div class="det-desc">${p.desc}</div>
       <button class="add-cart-btn" onclick="addToCart()">Add to Cart 🛒</button>
-      ${(team.products||[]).filter(x=>x.id!==p.id).length?`
-      <div style="margin-top:16px;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--light)">More from ${team.name}</div>
+      ${(()=>{ const siblings=(lg.teams||[]).filter(t2=>t2.name===team.name && t2.id!==team.id && (t2.products||[]).length); if(!siblings.length) return ''; return `
+      <div style="margin-top:16px;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--light)">More Colors of ${team.name}</div>
       <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none">
-        ${(team.products||[]).filter(x=>x.id!==p.id).map(x=>`
+        ${siblings.map(t2=>{ const x=t2.products[0]; return `
           <div onclick="openDetail(${x.id})" style="flex-shrink:0;width:78px;cursor:pointer">
             <div style="width:78px;height:78px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;border:1px solid var(--border);margin-bottom:5px">
               ${x.imgUrl?`<img src="${x.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${x.emoji||'👟'}'">`:x.emoji||'👟'}
             </div>
             <div style="font-size:10px;font-weight:600;color:var(--light);text-align:center;line-height:1.3">${x.kitType}</div>
             <div style="font-size:11px;color:var(--accent);text-align:center;font-weight:700">${fmt(x.price)}</div>
-          </div>`).join('')}
-      </div>`:''}
+          </div>`;}).join('')}
+      </div>`; })()}
       <div style="height:20px"></div>
     </div>`;
   showPage('detail');
@@ -2044,6 +2089,7 @@ function populatePadmForms(){
   const f={'padm-store-name':cfg.storeName,'padm-store-sub':cfg.storeSub,'padm-phone':cfg.phone,'padm-email':cfg.email,'padm-address':cfg.address,'padm-hours':cfg.hours,'padm-about':cfg.about,'padm-logo-url':cfg.logoUrl,'padm-logo-emoji':cfg.logoEmoji,'padm-brand1':cfg.brandName1,'padm-brand2':cfg.brandName2,'padm-cbe-num':pay.cbeNum,'padm-cbe-name':pay.cbeName,'padm-telebirr-num':pay.telebirrNum,'padm-telebirr-name':pay.telebirrName,'padm-owner-notify-id':cfg.ownerNotifyId||''};
   Object.entries(f).forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
   renderThemeColorEditors();
+  renderOccasionBtns();
   const cu=document.getElementById('padm-currency'); const cp=document.getElementById('padm-cur-pos');
   if(cu) cu.value=cfg.currency||'ETB'; if(cp) cp.value=cfg.currencyPos||'before';
   const h=cfg.hero; [['padm-hero-tag',h.tag],['padm-hero-h1a',h.h1a],['padm-hero-h1b',h.h1b],['padm-hero-sub',h.sub],['padm-hero-img',h.imgUrl]].forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
@@ -2119,7 +2165,7 @@ function padmSaveTheme(){
   save(); applyTheme(); renderHeader(); renderHero(); renderShopGrid();
   showToast('Theme saved! 🎨');
 }
-function padmResetTheme(){ cfg.theme=deepClone(DEFAULT_CONFIG.theme); cfg.decor=null; save(); applyTheme(); populatePadmForms(); showToast('Theme reset'); }
+function padmResetTheme(){ cfg.theme=deepClone(DEFAULT_CONFIG.theme); save(); applyTheme(); populatePadmForms(); showToast('Theme reset'); }
 function padmSaveHero(){ cfg.hero={tag:document.getElementById('padm-hero-tag')?.value||'',h1a:document.getElementById('padm-hero-h1a')?.value||'',h1b:document.getElementById('padm-hero-h1b')?.value||'',sub:document.getElementById('padm-hero-sub')?.value||'',imgUrl:document.getElementById('padm-hero-img')?.value||''}; save(); renderHero(); showToast('Hero saved! 🎉'); }
 
 function openTeamCrestModal(lgId,teamId){
@@ -2219,7 +2265,7 @@ function renderManageAdmins(){
   const list=document.getElementById('admin-ids-list'); if(!list) return;
   const ids=cfg.adminIds||[];
   if(!ids.length){ list.innerHTML=`<div style="padding:14px;text-align:center;font-size:12px;color:var(--gray)">No admins added yet.</div>`; return; }
-  list.innerHTML=ids.map((id,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)"><div id="admin-avatar-${id}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden">⚙️</div><div style="flex:1;min-width:0"><div id="admin-name-${id}" style="font-size:13px;font-weight:600;font-family:monospace;color:var(--light)">${id}</div><div id="admin-sub-${id}" style="font-size:11px;color:var(--gray);margin-top:1px">Admin #${i+1}</div></div><button onclick="removeAdmin('${id}')" style="background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);padding:6px 11px;border-radius:8px;font-size:12px;cursor:pointer;flex-shrink:0">Remove</button></div>`).join('');
+  list.innerHTML=ids.map((id,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)"><div id="admin-avatar-${id}" style="width:36px;height:36px;border-radius:50%;background:rgba(139,94,60,.15);border:1px solid rgba(139,94,60,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden">⚙️</div><div style="flex:1;min-width:0"><div id="admin-name-${id}" style="font-size:13px;font-weight:600;font-family:monospace;color:var(--light)">${id}</div><div id="admin-sub-${id}" style="font-size:11px;color:var(--gray);margin-top:1px">Admin #${i+1}</div></div><button onclick="removeAdmin('${id}')" style="background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);padding:6px 11px;border-radius:8px;font-size:12px;cursor:pointer;flex-shrink:0">Remove</button></div>`).join('');
   loadAdminProfiles(ids);
 }
 // Fetches each admin's real Telegram name + profile photo from the Worker (which calls the Bot API
