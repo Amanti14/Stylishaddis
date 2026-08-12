@@ -235,7 +235,10 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 /* ADMIN */
 .adm-field{margin-bottom:10px}
 .adm-field label{display:block;font-size:11px;color:var(--gray);margin-bottom:4px}
-.adm-field input,.adm-field select,.adm-field textarea{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:9px 10px;border-radius:8px;font-size:13px;font-family:var(--font);outline:none}
+/* Admin form fields are editing TOOLS, not storefront content — they must stay legible no
+   matter what wild colors the merchant picks for the live theme, so they use fixed safe
+   colors instead of the customizable --card2/--white theme variables. */
+.adm-field input,.adm-field select,.adm-field textarea{width:100%;background:#F5F5F5;border:1px solid var(--border);color:#111111;padding:9px 10px;border-radius:8px;font-size:13px;font-family:var(--font);outline:none}
 .adm-field input:focus,.adm-field select:focus{border-color:var(--accent)}
 .adm-field select option{background:var(--dark)}
 .adm-field textarea{resize:vertical;min-height:60px}
