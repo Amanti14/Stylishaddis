@@ -766,28 +766,24 @@ function nextTeamId(lg,base){
 }
 function addTeam(lgId){
   const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
-  const name=prompt(`New model name for ${lg.label} (e.g. "Classic Runner"):`); if(!name||!name.trim()) return;
-  const id=nextTeamId(lg,slugify(name,'model'));
+  const id=nextTeamId(lg,'shoe');
+  const newId=nextProductId();
   lg.teams=lg.teams||[];
-  lg.teams.push({id,name:name.trim(),emoji:'👟',color:'',crestUrl:'',products:[]});
+  lg.teams.push({id,name:'New Shoe',emoji:'👟',color:'',crestUrl:'',products:[{id:newId,kitType:'New Shoe',emoji:'👟',imgUrl:'',images:[],videoUrl:'',price:1500,badge:'',desc:''}]});
   save(); padmRenderProducts(); renderShopGrid();
-  showToast(`${name.trim()} added — now add a style ✏️`);
+  openProdModal(lgId,id,newId);
 }
 function deleteTeam(lgId,teamId){
   const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
   const team=(lg.teams||[]).find(t=>t.id===teamId); if(!team) return;
-  const prodCount=(team.products||[]).length;
-  const msg=prodCount
-    ? `Delete "${team.name}" and all ${prodCount} style${prodCount!==1?'s':''} under it? This can't be undone and removes it for all users.`
-    : `Delete "${team.name}"? This can't be undone.`;
-  if(!confirm(msg)) return;
+  if(!confirm(`Delete "${team.name}"? This can't be undone and removes it for all users.`)) return;
   if(!cfg.deletedProductIds) cfg.deletedProductIds=[];
   if(!cfg.deletedTeamIds) cfg.deletedTeamIds=[];
   (team.products||[]).forEach(p=>{ if(!cfg.deletedProductIds.includes(p.id)) cfg.deletedProductIds.push(p.id); });
   const key=`${lgId}::${teamId}`; if(!cfg.deletedTeamIds.includes(key)) cfg.deletedTeamIds.push(key);
   lg.teams=lg.teams.filter(t=>t.id!==teamId);
   save(); padmRenderProducts(); renderShopGrid();
-  showToast('Model deleted 🗑️');
+  showToast('Shoe deleted 🗑️');
 }
 
 function mergeLeagues(saved, defaults) {
@@ -1692,10 +1688,10 @@ function renderShopGrid(query=''){
       if(!teams.length) return;
       if(st.leagueId==='all') html+=`<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:16px">${lg.emoji}</span>${lg.label}</div>`;
       html+=`<div class="teams-grid">${teams.map(t=>{
-        const cs=t.crestUrl||t.crest||'';
+        const cs=(t.products&&t.products[0]&&t.products[0].imgUrl)||t.crestUrl||t.crest||'';
         return `<div class="team-card" onclick="selectTeam('${lg.id}','${t.id}')">
           ${st.leagueId==='all'?`<div class="team-league-badge">${lg.emoji}</div>`:''}
-          <div class="team-crest" style="border-color:${cs?t.color+'66':'var(--border)44'};background:${t.color?t.color+'11':'var(--card2)'}">
+          <div class="team-crest">
             ${cs?`<img src="${cs}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;font-size:30px">${t.emoji}</span>`:`<span style="font-size:30px">${t.emoji}</span>`}
           </div>
           <div class="team-name">${t.name}</div>
@@ -2122,32 +2118,22 @@ function padmRenderProducts(){
       <div class="padm-league-del" onclick="deleteLeague('${lg.id}')" title="Delete brand">✕</div>
     </div>`;
     (lg.teams||[]).forEach(team=>{
-      const cs=team.crestUrl||team.crest||'';
-      html+=`<div style="background:var(--card2);border:1px solid var(--border);border-radius:11px;margin-bottom:9px;overflow:hidden">
-        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openTeamCrestModal('${lg.id}','${team.id}')">
-          <div style="width:38px;height:38px;border-radius:8px;background:${team.color?team.color+'11':'var(--card2)'};border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">
-            ${cs?`<img src="${cs}" style="width:100%;height:100%;object-fit:contain;padding:2px" onerror="this.style.display='none';this.parentNode.textContent='${team.emoji}'">`:team.emoji}
-          </div>
-          <div style="flex:1"><div style="font-size:12px;font-weight:700">${team.name}</div><div style="font-size:10px;color:var(--accent)">📷 Tap to change model photo</div></div>
-          <div onclick="event.stopPropagation(); deleteTeam('${lg.id}','${team.id}')" style="width:24px;height:24px;border-radius:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-right:2px" title="Delete model">✕</div>
-        </div>`;
-      (team.products||[]).forEach(p=>{
-        html+=`<div style="display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer" onclick="openProdModal('${lg.id}','${team.id}',${p.id})">
-          <div style="width:40px;height:40px;border-radius:8px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0;border:1px solid var(--border)">
-            ${p.imgUrl?`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'👟'}'">`:p.emoji||'👟'}
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${team.name} ${p.kitType}</div>
-            <div style="font-size:11px;color:var(--accent);font-weight:700">${fmt(p.price)}</div>
-          </div>
-          <div style="font-size:10px;color:var(--gray)">✏️ edit</div>
-          <div onclick="event.stopPropagation(); deleteProduct('${lg.id}','${team.id}',${p.id})" style="width:24px;height:24px;border-radius:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-left:6px">✕</div>
-        </div>`;
-      });
-      html+=`<div onclick="addProduct('${lg.id}','${team.id}')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:700">+ Add Style</div>`;
-      html+=`</div>`;
+      const p=(team.products||[])[0];
+      const img=p?p.imgUrl:'';
+      const openAction=p?`openProdModal('${lg.id}','${team.id}',${p.id})`:`addProduct('${lg.id}','${team.id}')`;
+      html+=`<div style="display:flex;align-items:center;gap:9px;padding:10px 12px;margin-bottom:8px;background:var(--card2);border:1px solid var(--border);border-radius:11px;cursor:pointer" onclick="${openAction}">
+        <div style="width:44px;height:44px;border-radius:9px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0;border:1px solid var(--border)">
+          ${img?`<img src="${img}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${team.emoji||'👟'}'">`:(team.emoji||'👟')}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${team.name}</div>
+          <div style="font-size:11px;color:var(--accent);font-weight:700">${p?fmt(p.price):'Tap to finish setting up'}</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray)">✏️ edit</div>
+        <div onclick="event.stopPropagation(); deleteTeam('${lg.id}','${team.id}')" style="width:24px;height:24px;border-radius:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-left:6px" title="Delete shoe">✕</div>
+      </div>`;
     });
-    html+=`<div onclick="addTeam('${lg.id}')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;margin-bottom:14px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:700;border:1px dashed var(--border);border-radius:9px">+ Add Model to ${lg.label}</div>`;
+    html+=`<div onclick="addTeam('${lg.id}')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;margin-bottom:14px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:700;border:1px dashed var(--border);border-radius:9px">+ Add Shoe to ${lg.label}</div>`;
   });
   html+=`<div class="padm-add-brand-btn" onclick="addLeague()">＋ Add Brand</div>`;
   list.innerHTML=html;
