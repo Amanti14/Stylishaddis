@@ -964,6 +964,7 @@ function applyRemoteConfig(remote){
   cfg.storeName=DEFAULT_CONFIG.storeName;
   cfg.storeSub=DEFAULT_CONFIG.storeSub;
   localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
+  _lastKnownRemoteTs=Math.max(_lastKnownRemoteTs,remote._lastUpdated||0);
   applyTheme(); renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
 }
 
@@ -1274,7 +1275,18 @@ let selectedPayment='cbe';
 let shopState={leagueId:'all',teamId:null,kitFilter:'all'};
 let modalCtx=null;
 
-function save(){ localStorage.setItem('emartzon_cfg',JSON.stringify(cfg)); if(hasCloudSync()) pushCloudConfig(false); }
+function save(){
+  // Stamp the edit as "current" the instant it's made — not after the network push
+  // resolves. pushCloudConfig() is fire-and-forget, so without this, a reload or a
+  // live-poll tick landing *during* that in-flight request would fetch the still-stale
+  // cloud copy and — since nothing marked our local copy as newer — silently overwrite
+  // the image/video/edit that hadn't reached the cloud yet. This is what was making
+  // edits "disappear on reload": not a Worker bug, a client-side race.
+  cfg._lastUpdated=Date.now();
+  _lastKnownRemoteTs=cfg._lastUpdated;
+  localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
+  if(hasCloudSync()) pushCloudConfig(false);
+}
 function saveOrders(){ localStorage.setItem('emartzon_orders',JSON.stringify(orderHistory)); }
 function fmt(n){ return cfg.currencyPos==='after'?n.toLocaleString()+' '+cfg.currency:cfg.currency+' '+n.toLocaleString(); }
 function isOwner(){ if(!tgUser) return false; return OWNER_IDS.includes(String(tgUser.id)); }
@@ -1295,7 +1307,11 @@ async function initLogin(){
   // let it block the Telegram login check below, or the spinner spins forever.
   try{
     const remote=await fetchCloudConfig();
-    if(remote){ applyRemoteConfig(remote); }
+    // Only apply it if it isn't older than what we already have locally. Without this
+    // check, reloading right after an edit (before the fire-and-forget cloud push has
+    // landed) would fetch the pre-edit cloud copy and silently stomp the local one —
+    // exactly what was making freshly-added images/videos vanish on reload.
+    if(remote && (remote._lastUpdated||0)>=(cfg._lastUpdated||0)){ applyRemoteConfig(remote); }
   }catch(e){ console.error('Cloud config fetch/apply failed during login — continuing with cached config',e); }
   // Safety net: no matter what happens above or in tryTelegram(), never let the
   // "Connecting to Telegram…" spinner show for more than 6s.
