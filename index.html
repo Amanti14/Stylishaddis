@@ -824,6 +824,7 @@ function mergeLeagues(saved, defaults) {
       (savTeam.products||[]).forEach(sp=>{ if(!defIds.has(sp.id)) mergedProds.push(deepClone(sp)); });
       return {
         ...deepClone(defTeam),
+        name:     savTeam.name||defTeam.name,
         crestUrl: savTeam.crestUrl||savTeam.crest||'',
         emoji:    savTeam.emoji||defTeam.emoji,
         products: mergedProds,
@@ -1705,9 +1706,11 @@ function renderShopGrid(query=''){
       if(st.leagueId==='all') html+=`<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:16px">${lg.emoji}</span>${lg.label}</div>`;
       html+=`<div class="teams-grid">${teams.map(t=>{
         const cs=(t.products&&t.products[0]&&t.products[0].imgUrl)||t.crestUrl||t.crest||'';
+        const b=(t.products&&t.products[0]&&t.products[0].badge)||'';
         return `<div class="team-card" onclick="selectTeam('${lg.id}','${t.id}')">
           ${st.leagueId==='all'?`<div class="team-league-badge">${lg.emoji}</div>`:''}
           <div class="team-crest">
+            ${b?`<div class="badge ${b}">${b.toUpperCase()}</div>`:''}
             ${cs?`<img src="${cs}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;font-size:30px">${t.emoji}</span>`:`<span style="font-size:30px">${t.emoji}</span>`}
           </div>
           <div class="team-name">${t.name}</div>
@@ -1800,6 +1803,7 @@ function openDetail(pid){
         <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.4px">${lg.label}</div>
       </div>
       <div class="det-name">${team.name}</div>
+      ${p.badge?`<div class="badge ${p.badge}" style="position:static;display:inline-block;margin-bottom:8px">${p.badge.toUpperCase()}</div>`:''}
       <div class="det-price">${fmt(p.price)}</div>
       <div class="size-lbl">Select Size</div>
       <div class="sizes">${cfg.sizes.map((s,i)=>`<div class="sz-btn ${i===2?'active':''}" onclick="selSz('${s}',this)">${s}</div>`).join('')}</div>
