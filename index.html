@@ -736,6 +736,15 @@ function addLeague(){
   save(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid();
   showToast(`${name.trim()} added — now add a model 👟`);
 }
+function editLeague(lgId){
+  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
+  const name=prompt('Brand name:',lg.label); if(name===null) return;
+  if(!name.trim()){ showToast('Name can\'t be empty'); return; }
+  const emoji=prompt('Emoji / icon for this brand:',lg.emoji||'👟'); if(emoji===null) return;
+  lg.label=name.trim(); lg.emoji=emoji.trim()||'👟';
+  save(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
+  showToast('Brand updated ✏️');
+}
 function deleteLeague(lgId){
   const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
   const teamCount=(lg.teams||[]).length;
@@ -2135,7 +2144,10 @@ function padmRenderProducts(){
   cfg.leagues.forEach(lg=>{
     html+=`<div class="padm-league-hdr">
       <span style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lg.emoji} ${lg.label}</span>
-      <div class="padm-league-del" onclick="deleteLeague('${lg.id}')" title="Delete brand">✕</div>
+      <div class="padm-league-actions">
+        <div class="padm-league-edit" onclick="editLeague('${lg.id}')" title="Edit brand name/icon">✏️</div>
+        <div class="padm-league-del" onclick="deleteLeague('${lg.id}')" title="Delete brand">✕</div>
+      </div>
     </div>`;
     (lg.teams||[]).forEach(team=>{
       const p=(team.products||[])[0];
