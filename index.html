@@ -424,7 +424,7 @@
     <button class="btn-save" onclick="saveProdModal()" style="margin-left:auto">Save</button>
   </div>
   <div style="padding:14px">
-    <div class="adm-field">
+    <div class="adm-field" id="pm-img-row">
       <label id="pm-img-label">Cover Image URL</label>
       <div class="img-preview" id="prod-modal-preview">👟</div>
       <input id="pm-img" type="url" placeholder="https://i.imgur.com/..." oninput="previewProdImg(this.value)">
@@ -442,7 +442,7 @@
       <div class="img-url-hint">Direct video file or YouTube link: autoplays muted with no controls, like a moving product photo. Google Drive links must be shared as "Anyone with the link" and still need a tap to play (Drive's own player can't be stripped of controls).</div>
     </div>
     <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="👟" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'👟'"></div>
-    <div class="adm-field" id="pm-name-row"><label>Product Name</label><input id="pm-name" type="text" placeholder="e.g. Stan Smith"></div>
+    <div class="adm-field" id="pm-name-row"><label id="pm-name-label">Product Name</label><input id="pm-name" type="text" placeholder="e.g. Stan Smith"></div>
     <div class="adm-field" id="pm-price-row"><label>Price (ETB)</label><input id="pm-price" type="number" placeholder="1850" min="0"></div>
     <div class="adm-field" id="pm-badge-row"><label>Badge</label><select id="pm-badge"><option value="">None</option><option value="new">NEW</option><option value="hot">HOT</option><option value="sale">SALE</option><option value="local">LOCAL</option></select></div>
     <div class="adm-field" id="pm-desc-row"><label>Description</label><textarea id="pm-desc" rows="3" placeholder="Premium sneaker, true to size..."></textarea></div>
@@ -736,15 +736,7 @@ function addLeague(){
   save(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid();
   showToast(`${name.trim()} added — now add a model 👟`);
 }
-function editLeague(lgId){
-  const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
-  const name=prompt('Brand name:',lg.label); if(name===null) return;
-  if(!name.trim()){ showToast('Name can\'t be empty'); return; }
-  const emoji=prompt('Emoji / icon for this brand:',lg.emoji||'👟'); if(emoji===null) return;
-  lg.label=name.trim(); lg.emoji=emoji.trim()||'👟';
-  save(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
-  showToast('Brand updated ✏️');
-}
+function editLeague(lgId){ openLeagueModal(lgId); }
 function deleteLeague(lgId){
   const lg=cfg.leagues.find(l=>l.id===lgId); if(!lg) return;
   const teamCount=(lg.teams||[]).length;
@@ -843,7 +835,7 @@ function mergeLeagues(saved, defaults) {
     // same reasoning as products above.
     const defTeamIds=new Set(defLg.teams.map(dt=>dt.id));
     (savLg.teams||[]).forEach(st=>{ if(!defTeamIds.has(st.id)) mergedTeams.push(deepClone(st)); });
-    return {...deepClone(defLg),teams:mergedTeams};
+    return {...deepClone(defLg),label:savLg.label||defLg.label,emoji:savLg.emoji||defLg.emoji,imageUrl:savLg.imageUrl||'',teams:mergedTeams};
   });
   // Keep any brand categories that exist only in saved data (e.g. newly added via "+ Add Brand") —
   // otherwise the merge would silently drop them since it only knows the original seed list.
@@ -1632,7 +1624,8 @@ function kitIcon(t){ return '👟'; }
 
 function renderLeagueTabs(){
   const bar=document.getElementById('cats-bar');
-  bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">👟 All Models</div>`+cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${l.emoji} ${l.label}</div>`).join('');
+  const iconHtml=l=>l.imageUrl?`<img src="${l.imageUrl}" class="cat-btn-icon" onerror="this.outerHTML='${l.emoji||'👟'}'">`:(l.emoji||'👟');
+  bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">👟 All Models</div>`+cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${iconHtml(l)} ${l.label}</div>`).join('');
 }
 function selectLeague(id,el){ document.querySelectorAll('#cats-bar .cat-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); shopState={leagueId:id,teamId:null,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
 function selectTeam(lid,tid){
@@ -2142,8 +2135,9 @@ function padmRenderProducts(){
   const list=document.getElementById('padm-products-list'); if(!list) return;
   let html='';
   cfg.leagues.forEach(lg=>{
+    const lgIcon=lg.imageUrl?`<img src="${lg.imageUrl}" style="width:14px;height:14px;object-fit:contain;vertical-align:-2px;margin-right:1px" onerror="this.outerHTML='${lg.emoji||'👟'}'">`:(lg.emoji||'👟');
     html+=`<div class="padm-league-hdr">
-      <span style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lg.emoji} ${lg.label}</span>
+      <span style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lgIcon} ${lg.label}</span>
       <div class="padm-league-actions">
         <div class="padm-league-edit" onclick="editLeague('${lg.id}')" title="Edit brand name/icon">✏️</div>
         <div class="padm-league-del" onclick="deleteLeague('${lg.id}')" title="Delete brand">✕</div>
@@ -2202,6 +2196,23 @@ function padmSaveTheme(){
 }
 function padmResetTheme(){ cfg.theme=deepClone(DEFAULT_CONFIG.theme); save(); applyTheme(); populatePadmForms(); showToast('Theme reset'); }
 function padmSaveHero(){ cfg.hero={tag:document.getElementById('padm-hero-tag')?.value||'',h1a:document.getElementById('padm-hero-h1a')?.value||'',h1b:document.getElementById('padm-hero-h1b')?.value||'',sub:document.getElementById('padm-hero-sub')?.value||'',imgUrl:document.getElementById('padm-hero-img')?.value||''}; save(); renderHero(); showToast('Hero saved! 🎉'); }
+
+function openLeagueModal(lgId){
+  const lg=(cfg.leagues||[]).find(l=>l.id===lgId); if(!lg) return;
+  modalCtx={type:'league',lgId};
+  document.getElementById('prod-modal-title').textContent=`Edit Brand`;
+  document.getElementById('pm-img').value=lg.imageUrl||''; document.getElementById('pm-emoji').value=lg.emoji||'👟';
+  document.getElementById('pm-name-row').style.display='block'; document.getElementById('pm-price-row').style.display='none';
+  document.getElementById('pm-badge-row').style.display='none'; document.getElementById('pm-desc-row').style.display='none';
+  document.getElementById('pm-images-row').style.display='none'; document.getElementById('pm-video-row').style.display='none';
+  document.getElementById('pm-name-label').textContent='Brand Name';
+  document.getElementById('pm-name').value=lg.label||'';
+  document.getElementById('pm-img-label').textContent='Brand Icon Image (optional)';
+  document.getElementById('pm-img-hint').textContent='Optional logo image (transparent PNG works best). Leave blank to just use the emoji below.';
+  const prev=document.getElementById('prod-modal-preview'); const iu=lg.imageUrl||'';
+  prev.innerHTML=iu?`<img src="${iu}" style="width:100%;height:100%;object-fit:contain;padding:16px" onerror="this.parentNode.textContent='${lg.emoji||'👟'}'">`:`<span style="font-size:56px">${lg.emoji||'👟'}</span>`;
+  document.getElementById('prod-modal').style.display='block';
+}
 
 function openTeamCrestModal(lgId,teamId){
   const lg=(cfg.leagues||[]).find(l=>l.id===lgId); if(!lg) return;
@@ -2273,13 +2284,22 @@ function closeProdModal(){
 
 function previewProdImg(url){
   const prev=document.getElementById('prod-modal-preview'); const fb=document.getElementById('pm-emoji').value||'👟';
-  const isCrest=modalCtx?.type==='crest';
-  if(url){ prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:${isCrest?'contain;padding:16px':'cover'}" onerror="this.parentNode.textContent='${fb}'">` } else { prev.textContent=fb; }
+  const isLogoStyle=modalCtx?.type==='crest'||modalCtx?.type==='league';
+  if(url){ prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:${isLogoStyle?'contain;padding:16px':'cover'}" onerror="this.parentNode.textContent='${fb}'">` } else { prev.textContent=fb; }
 }
 
 function saveProdModal(){
   if(!modalCtx) return;
   const lg=cfg.leagues.find(l=>l.id===modalCtx.lgId); if(!lg) return;
+  if(modalCtx.type==='league'){
+    const newName=(document.getElementById('pm-name').value||'').trim();
+    if(!newName){ showToast("Brand name can't be empty"); return; }
+    lg.label=newName;
+    lg.emoji=(document.getElementById('pm-emoji').value||'').trim()||'👟';
+    lg.imageUrl=(document.getElementById('pm-img').value||'').trim();
+    save(); closeProdModal(); padmRenderProducts(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
+    showToast('Brand updated ✏️'); return;
+  }
   const team=lg.teams.find(t=>t.id===modalCtx.teamId); if(!team) return;
   if(modalCtx.type==='crest'){
     team.crestUrl=document.getElementById('pm-img').value||''; team.emoji=document.getElementById('pm-emoji').value||team.emoji;
