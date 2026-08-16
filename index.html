@@ -1624,8 +1624,7 @@ function kitIcon(t){ return '👟'; }
 
 function renderLeagueTabs(){
   const bar=document.getElementById('cats-bar');
-  const iconHtml=l=>l.imageUrl?`<img src="${l.imageUrl}" class="cat-btn-icon" onerror="this.outerHTML='${l.emoji||'👟'}'">`:(l.emoji||'👟');
-  bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">👟 All Models</div>`+cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${iconHtml(l)} ${l.label}</div>`).join('');
+  bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">👟 All Models</div>`+cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${lgIconHtml(l,14)} ${l.label}</div>`).join('');
 }
 function selectLeague(id,el){ document.querySelectorAll('#cats-bar .cat-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); shopState={leagueId:id,teamId:null,kitFilter:'all'}; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
 function selectTeam(lid,tid){
@@ -1651,13 +1650,17 @@ function updateBreadcrumb(){
   if(st.leagueId!=='all'){
     const lg=cfg.leagues.find(l=>l.id===st.leagueId);
     if(lg){ parts.push(`<span class="bc-sep">›</span>`);
-      if(st.teamId){ parts.push(`<span class="bc-item" onclick="backToLeague()">${lg.emoji} ${lg.label}</span>`); const t=findTeam(st.leagueId,st.teamId); if(t){ parts.push(`<span class="bc-sep">›</span><span class="bc-item active">${t.name}</span>`); } }
-      else { parts.push(`<span class="bc-item active">${lg.emoji} ${lg.label}</span>`); } }
+      if(st.teamId){ parts.push(`<span class="bc-item" onclick="backToLeague()">${lgIconHtml(lg,14)} ${lg.label}</span>`); const t=findTeam(st.leagueId,st.teamId); if(t){ parts.push(`<span class="bc-sep">›</span><span class="bc-item active">${t.name}</span>`); } }
+      else { parts.push(`<span class="bc-item active">${lgIconHtml(lg,14)} ${lg.label}</span>`); } }
   }
   bc.style.display=(st.leagueId!=='all'||st.teamId)?'flex':'none';
   bc.innerHTML=parts.join('');
 }
 function findTeam(lid,tid){ return (cfg.leagues.find(l=>l.id===lid)?.teams||[]).find(t=>t.id===tid)||null; }
+function lgIconHtml(lg,px){
+  px=px||16;
+  return lg.imageUrl?`<img src="${lg.imageUrl}" style="width:${px}px;height:${px}px;object-fit:contain;vertical-align:-${Math.round(px*0.15)}px" onerror="this.outerHTML='${lg.emoji||'👟'}'">`:(lg.emoji||'👟');
+}
 function findProduct(pid){ for(const lg of cfg.leagues) for(const team of (lg.teams||[])) for(const p of (team.products||[])) if(p.id===pid) return {p,team,lg}; return null; }
 
 function renderShopGrid(query=''){
@@ -1705,12 +1708,12 @@ function renderShopGrid(query=''){
       let teams=lg.teams||[];
       if(query) teams=teams.filter(t=>t.name.toLowerCase().includes(query.toLowerCase()));
       if(!teams.length) return;
-      if(st.leagueId==='all') html+=`<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:16px">${lg.emoji}</span>${lg.label}</div>`;
+      if(st.leagueId==='all') html+=`<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:16px">${lgIconHtml(lg,16)}</span>${lg.label}</div>`;
       html+=`<div class="teams-grid">${teams.map(t=>{
         const cs=(t.products&&t.products[0]&&t.products[0].imgUrl)||t.crestUrl||t.crest||'';
         const b=(t.products&&t.products[0]&&t.products[0].badge)||'';
         return `<div class="team-card" onclick="selectTeam('${lg.id}','${t.id}')">
-          ${st.leagueId==='all'?`<div class="team-league-badge">${lg.emoji}</div>`:''}
+          ${st.leagueId==='all'?`<div class="team-league-badge">${lgIconHtml(lg,14)}</div>`:''}
           <div class="team-crest">
             ${b?`<div class="badge ${b}">${b.toUpperCase()}</div>`:''}
             ${cs?`<img src="${cs}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;font-size:30px">${t.emoji}</span>`:`<span style="font-size:30px">${t.emoji}</span>`}
@@ -2135,7 +2138,7 @@ function padmRenderProducts(){
   const list=document.getElementById('padm-products-list'); if(!list) return;
   let html='';
   cfg.leagues.forEach(lg=>{
-    const lgIcon=lg.imageUrl?`<img src="${lg.imageUrl}" style="width:14px;height:14px;object-fit:contain;vertical-align:-2px;margin-right:1px" onerror="this.outerHTML='${lg.emoji||'👟'}'">`:(lg.emoji||'👟');
+    const lgIcon=lgIconHtml(lg,14);
     html+=`<div class="padm-league-hdr">
       <span style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px">${lgIcon} ${lg.label}</span>
       <div class="padm-league-actions">
@@ -2506,7 +2509,7 @@ function renderSearchResults(q){
       ${cfg.leagues.map(lg=>`
         <div onclick="closeSearch();selectLeague('${lg.id}',document.querySelector('#cats-bar .cat-btn'))"
           style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border);cursor:pointer;active:background:var(--card)">
-          <div style="width:38px;height:38px;border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid var(--border)">${lg.emoji}</div>
+          <div style="width:38px;height:38px;border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid var(--border);overflow:hidden">${lg.imageUrl?`<img src="${lg.imageUrl}" style="width:100%;height:100%;object-fit:contain;padding:6px" onerror="this.parentNode.textContent='${lg.emoji||'👟'}'">`:(lg.emoji||'👟')}</div>
           <div style="flex:1"><div style="font-size:14px;font-weight:600">${lg.label}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">${lg.teams.length} models</div></div>
           <div style="color:var(--gray);font-size:18px">›</div>
         </div>`).join('')}`;
@@ -2548,7 +2551,7 @@ function renderSearchResults(q){
         </div>
         <div style="flex:1">
           <div style="font-size:14px;font-weight:600">${team.name}</div>
-          <div style="font-size:11px;color:var(--gray);margin-top:1px">${lg.emoji} ${lg.label} · ${(team.products||[]).length} items</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px">${lgIconHtml(lg,12)} ${lg.label} · ${(team.products||[]).length} items</div>
         </div>
         <div style="color:var(--gray);font-size:18px">›</div>
       </div>`;
@@ -2564,7 +2567,7 @@ function renderSearchResults(q){
         </div>
         <div style="flex:1">
           <div style="font-size:13px;font-weight:600">${team.name} ${p.kitType}</div>
-          <div style="font-size:11px;color:var(--gray);margin-top:1px">${lg.emoji} ${lg.label}</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:1px">${lgIconHtml(lg,12)} ${lg.label}</div>
         </div>
         <div style="font-size:13px;font-weight:700;color:var(--accent)">${fmt(p.price)}</div>
       </div>`).join('');
