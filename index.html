@@ -886,7 +886,12 @@ async function pushCloudConfig(showMsg=true, _isAutoRetry=false){
   const controller=new AbortController();
   const timeoutId=setTimeout(()=>controller.abort(),8000);
   try{
-    cfg._lastUpdated=Date.now();
+    // Don't re-stamp _lastUpdated here. save() already stamps it and persists that exact
+    // timestamp to localStorage; re-stamping with a second, later Date.now() would push a
+    // config to the cloud whose timestamp no longer matches what's on disk locally, which
+    // is exactly the mismatch that let a stale remote copy look "newer" than a local edit
+    // (or a pending-sync marker) that was actually more current.
+    if(!cfg._lastUpdated) cfg._lastUpdated=Date.now();
     const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'push_config',initData:tgInitData,config:cfg}),signal:controller.signal});
     const data=await res.json().catch(()=>null);
     if(res.ok&&data&&data.ok){
@@ -894,6 +899,8 @@ async function pushCloudConfig(showMsg=true, _isAutoRetry=false){
       showMsg&&showToast('Config pushed to all users! ✅');
       if(_isAutoRetry) showToast('✅ Auto-synced — your earlier change is now live for everyone.');
       _lastKnownRemoteTs=cfg._lastUpdated; clearTimeout(_syncRetryTimer); _syncRetryAttempt=0;
+      const pendingTs=parseInt(localStorage.getItem('emartzon_pending_sync')||'0',10);
+      if(pendingTs&&pendingTs===cfg._lastUpdated) localStorage.removeItem('emartzon_pending_sync');
       return true;
     }
     else{
@@ -1282,12 +1289,34 @@ function save(){
   // resolves. pushCloudConfig() is fire-and-forget, so without this, a reload or a
   // live-poll tick landing *during* that in-flight request would fetch the still-stale
   // cloud copy and — since nothing marked our local copy as newer — silently overwrite
-  // the image/video/edit that hadn't reached the cloud yet. This is what was making
-  // edits "disappear on reload": not a Worker bug, a client-side race.
+  // the image/video/edit that hadn't reached the cloud yet.
+  //
+  // That covers the race *within* a session. It does NOT cover the push simply never
+  // finishing before the page goes away — the app is a Telegram WebApp, which Telegram
+  // is free to suspend/kill the instant the user swipes away or the modal closes, and
+  // pushCloudConfig()'s retry timer lives only in memory, so it dies with the page too.
+  // In that case the edit sat in localStorage, "synced" never actually landed, and on
+  // the NEXT load fetchCloudConfig() would return the old pre-edit copy — which, if its
+  // timestamp had since moved past ours (another admin/device pushed something else),
+  // would silently stomp the image/video that never made it to the cloud. That's the
+  // "added a photo, it synced, reloaded and it's gone" bug. Fixed by persisting a
+  // pending-sync marker so a future load knows to re-push instead of blindly pulling.
   cfg._lastUpdated=Date.now();
   _lastKnownRemoteTs=cfg._lastUpdated;
   localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
+  localStorage.setItem('emartzon_pending_sync',String(cfg._lastUpdated));
   if(hasCloudSync()) pushCloudConfig(false);
+}
+// Called once on every app load (from bootApp, once tgInitData is available) to re-push
+// any edit that got stamped+saved locally but was never confirmed as reaching the cloud
+// — e.g. the tab/WebApp was closed or reloaded mid-push, or all the auto-retries failed
+// and got abandoned when the page went away. Without this, that edit is stuck showing
+// correctly only on the device/browser that made it, forever, and is one stale remote
+// push away from being silently overwritten on this device too.
+async function flushPendingSync(){
+  if(!hasCloudSync()||!tgInitData) return;
+  const pendingTs=parseInt(localStorage.getItem('emartzon_pending_sync')||'0',10);
+  if(pendingTs&&pendingTs===cfg._lastUpdated){ await pushCloudConfig(false); }
 }
 function saveOrders(){ localStorage.setItem('emartzon_orders',JSON.stringify(orderHistory)); }
 function fmt(n){ return cfg.currencyPos==='after'?n.toLocaleString()+' '+cfg.currency:cfg.currency+' '+n.toLocaleString(); }
@@ -1311,9 +1340,19 @@ async function initLogin(){
     const remote=await fetchCloudConfig();
     // Only apply it if it isn't older than what we already have locally. Without this
     // check, reloading right after an edit (before the fire-and-forget cloud push has
-    // landed) would fetch the pre-edit cloud copy and silently stomp the local one —
-    // exactly what was making freshly-added images/videos vanish on reload.
-    if(remote && (remote._lastUpdated||0)>=(cfg._lastUpdated||0)){ applyRemoteConfig(remote); }
+    // landed) would fetch the pre-edit cloud copy and silently stomp the local one.
+    //
+    // That timestamp check alone isn't enough though: if the previous session's push
+    // never actually landed (tab/WebApp killed mid-request, or every auto-retry failed
+    // and died with the page), the *cloud's* timestamp can still end up newer than ours
+    // later on — e.g. another admin pushes an unrelated change — even though the cloud
+    // copy is still missing our image/video edit. So if localStorage shows an edit that
+    // was stamped+saved but never confirmed as synced, don't pull remote at all here;
+    // leave local as the source of truth and let flushPendingSync() (called from
+    // bootApp, once we have a verified Telegram session to push with) re-send it.
+    const pendingTs=parseInt(localStorage.getItem('emartzon_pending_sync')||'0',10);
+    const hasUnsyncedLocalEdit=pendingTs&&pendingTs===cfg._lastUpdated;
+    if(!hasUnsyncedLocalEdit && remote && (remote._lastUpdated||0)>=(cfg._lastUpdated||0)){ applyRemoteConfig(remote); }
   }catch(e){ console.error('Cloud config fetch/apply failed during login — continuing with cached config',e); }
   // Safety net: no matter what happens above or in tryTelegram(), never let the
   // "Connecting to Telegram…" spinner show for more than 6s.
@@ -1360,6 +1399,7 @@ function enterApp(){
 // ── CHANGE 4 of 4: start polling in bootApp ──
 function bootApp(){
   claimOwnership(); loadCart(); notifyUserLogin(); if(isOwner()) syncAdminsToWorker();
+  flushPendingSync(); // re-push any edit that saved locally last session but never confirmed as synced
   renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
   renderShipOpts(); renderPickupCard();
   curShipping=cfg.shipping[0];
