@@ -44,7 +44,6 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 .cats::-webkit-scrollbar{display:none}
 .cat-btn{background:var(--card);border:1px solid var(--border);color:var(--light);border-radius:20px;padding:7px 14px;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
 .cat-btn.active{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600}
-.cat-btn-icon{width:14px;height:14px;object-fit:contain;vertical-align:-2px;margin-right:1px}
 /* TEAM GRID */
 .teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 14px;margin-bottom:4px}
 .team-card{background:transparent;border:none;border-radius:4px;overflow:hidden;cursor:pointer;transition:opacity .15s;display:flex;flex-direction:column;align-items:stretch;padding:0;position:relative;box-shadow:none}
@@ -259,9 +258,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 .pm-img-add{text-align:center;padding:9px;border:1px dashed var(--border);border-radius:9px;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer}
 /* Admin: brand (league) management */
 .padm-league-hdr{display:flex;align-items:center;gap:8px;margin:12px 0 4px}
-.padm-league-actions{margin-left:auto;display:flex;gap:6px}
-.padm-league-del{width:22px;height:22px;border-radius:6px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer}
-.padm-league-edit{width:22px;height:22px;border-radius:6px;background:var(--card2);border:1px solid var(--border);color:var(--light);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
+.padm-league-del{margin-left:auto;width:22px;height:22px;border-radius:6px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer}
 .padm-add-brand-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;margin:14px 0 6px;cursor:pointer;color:var(--accent);font-size:13px;font-weight:700;border:1px dashed var(--border);border-radius:11px}
 .btn-save{background:var(--accent);color:var(--bg);border:none;padding:9px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
 .btn-del{background:rgba(231,76,60,.15);color:var(--danger);border:1px solid rgba(231,76,60,.3);padding:9px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
