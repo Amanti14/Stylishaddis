@@ -933,7 +933,7 @@ function scheduleSyncRetry(){
   }
   _syncRetryAttempt++;
   const delay=Math.min(5000*Math.pow(2,_syncRetryAttempt-1),60000); // 5s,10s,20s,40s,60s,60s
-  _syncRetryTimer=setTimeout(()=>{ pushCloudConfig(false,true); },delay);
+  _syncRetryTimer=setTimeout(()=>{ queuePush(false,true); },delay);
 }
 
 function setSyncStatus(msg,color){
@@ -950,7 +950,7 @@ async function testCloudSync(){
   else{ setSyncStatus('❌ Connection failed '+describeSyncError(),'#ef4444'); }
 }
 
-async function pushConfigToCloud(){ await pushCloudConfig(true); }
+async function pushConfigToCloud(){ await queuePush(true); }
 
 async function pullConfigFromCloud(){
   const remote=await fetchCloudConfig();
@@ -1027,7 +1027,7 @@ document.addEventListener('visibilitychange',()=>{
   else{
     if(hasCloudSync()){ pollForRemoteChanges(); startLiveSyncPolling(); }
     // If a push was still waiting to retry (e.g. timer got throttled while backgrounded), try now.
-    if(_syncRetryAttempt>0){ clearTimeout(_syncRetryTimer); pushCloudConfig(false,true); }
+    if(_syncRetryAttempt>0){ clearTimeout(_syncRetryTimer); queuePush(false,true); }
   }
 });
 
@@ -1305,7 +1305,30 @@ function save(){
   _lastKnownRemoteTs=cfg._lastUpdated;
   localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
   localStorage.setItem('emartzon_pending_sync',String(cfg._lastUpdated));
-  if(hasCloudSync()) pushCloudConfig(false);
+  if(hasCloudSync()) queuePush(false);
+}
+// pushCloudConfig() is fire-and-forget from the caller's point of view, and each call
+// serializes whatever cfg looks like AT THAT INSTANT. Editing several products back to
+// back (Nike, then Adidas, then Cole Haan, each hitting Save quickly) fires off several
+// overlapping requests — and network requests don't necessarily *finish* in the order
+// they were *sent*. If the Nike-only request happens to land on the server after the
+// Adidas+Cole-Haan one, it silently overwrites those newer edits with its older, smaller
+// snapshot — even though it was sent first. That's why isolated edits (New Balance,
+// edited alone) always stuck, while rapid edits across brands sometimes vanished.
+// queuePush() fixes this by never letting more than one push be in flight: a push that
+// arrives while one is already running just sets a flag, and exactly one follow-up push
+// fires once the current one finishes — capturing whatever cfg looks like by then (i.e.
+// every edit made in between). Pushes are now strictly sequential, so the last one to
+// complete is always the one holding the most up-to-date data.
+let _pushInFlight=false, _pushQueuedAgain=false;
+async function queuePush(showMsg,_isAutoRetry){
+  if(_pushInFlight){ _pushQueuedAgain=true; return; }
+  _pushInFlight=true;
+  try{ await pushCloudConfig(showMsg,_isAutoRetry); }
+  finally{
+    _pushInFlight=false;
+    if(_pushQueuedAgain){ _pushQueuedAgain=false; queuePush(false); }
+  }
 }
 // Called once on every app load (from bootApp, once tgInitData is available) to re-push
 // any edit that got stamped+saved locally but was never confirmed as reaching the cloud
@@ -1316,7 +1339,7 @@ function save(){
 async function flushPendingSync(){
   if(!hasCloudSync()||!tgInitData) return;
   const pendingTs=parseInt(localStorage.getItem('emartzon_pending_sync')||'0',10);
-  if(pendingTs&&pendingTs===cfg._lastUpdated){ await pushCloudConfig(false); }
+  if(pendingTs&&pendingTs===cfg._lastUpdated){ await queuePush(false); }
 }
 function saveOrders(){ localStorage.setItem('emartzon_orders',JSON.stringify(orderHistory)); }
 function fmt(n){ return cfg.currencyPos==='after'?n.toLocaleString()+' '+cfg.currency:cfg.currency+' '+n.toLocaleString(); }
